@@ -1,0 +1,98 @@
+﻿.adminMenu {
+    z-index: 1001;
+    width: 400px;
+    height: 90%;
+    top: 0;
+    right: -100%;
+    position: fixed;
+    visibility: hidden;
+    transition-duration: .25s;
+    border-radius: 15px 0px 0px 15px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .5);
+    background: #e5e5e5;
+}
+
+#adminMenu__toggle {
+    visibility: hidden;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+#adminMenu__toggle:checked + .adminMenu__btn > span {
+    transform: rotate(45deg);
+}
+
+#adminMenu__toggle:checked + .adminMenu__btn > i {
+    transform: rotate(-45deg);
+}
+
+.adminMenu__btn {
+    z-index: 1002;
+    width: 40px;
+    height: 40px;
+    top: 7px;
+    right: 7px;
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
+.adminMenu__btn > span,
+.adminMenu__btn > span::before,
+.adminMenu__btn > span::after,
+.adminMenu__btn > i,
+.adminMenu__btn > i::before,
+.adminMenu__btn > i::after {
+    width: 14px;
+    height: 7px;
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background-color: #616161;
+    transition-duration: .5s;
+}
+
+.adminMenu__btn > span::before,
+.adminMenu__btn > i::before {
+    content: '';
+    top: -12px;
+}
+
+.adminMenu__btn > span::after,
+.adminMenu__btn > i::after {
+    content: '';
+    top: 12px;
+}
+
+.adminMenu > ul {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    list-style: none;
+}
+
+#adminMenu__toggle:checked ~ .adminMenu {
+    right: 0;
+    visibility: visible;
+}
+
+.adminMenu > ul > li {
+    padding: 7px;
+    font-size: 20px;
+    cursor: pointer;
+    display: block;
+    border-radius: 15px;
+}
+
+.adminMenu li a {
+    text-decoration: none;
+}
+
+.adminMenu > ul > li:hover {
+	background: #ddd;
+}

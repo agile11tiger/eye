@@ -1,0 +1,22 @@
+﻿<div class="contextMenu">
+    <input type="checkbox" class="contextMenu__toggle" id="contextMenu__toggle@(ItemNumber)" />
+    <label for="contextMenu__toggle@(ItemNumber)" class="contextMenu__btn"><span></span><i></i></label>
+    <ul>
+        @if (ShowItemEditor.HasDelegate)
+        {
+            <li @onmouseup="async () => await ShowItemEditor.InvokeAsync(Item)">Изменить</li>
+        }
+        @if (DeleteItem.HasDelegate)
+        {
+            <li @onmouseup="async () => await DeleteItem.InvokeAsync(ItemId)">Удалить</li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public object Item { get; set; }
+    [Parameter] public int ItemId { get; set; }
+    [Parameter] public int ItemNumber { get; set; }
+    [Parameter] public EventCallback<object> ShowItemEditor { get; set; }
+    [Parameter] public EventCallback<int> DeleteItem { get; set; }
+}

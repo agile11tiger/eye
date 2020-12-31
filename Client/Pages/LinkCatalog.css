@@ -1,0 +1,13 @@
+﻿.linkCatalog .scroll__container__box {
+    width: 230px;
+}
+
+.linkCatalog .scroll__container__box h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.linkCatalog .scroll__container__box figure a {
+    cursor: pointer;
+}

@@ -1,0 +1,14 @@
+﻿<header class="oneLineAdder__header">
+    <h1>@((MarkupString)Header)</h1>
+    <EditForm class="oneLineAdder" Model="Model" OnValidSubmit="Create">
+        <input type="text" placeholder="@Placeholder" @bind-value="Model.Id">
+        <input type="submit" value="Добавить">
+    </EditForm>
+</header>
+
+@code {
+    [Parameter] public string Header { get; set; }
+    [Parameter] public ItemAdderViewModel Model { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public EventCallback Create { get; set; }
+}

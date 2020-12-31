@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EyE</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/bundle.css" asp-append-version="true">
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @RenderBody()
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - EyE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

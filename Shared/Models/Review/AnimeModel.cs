@@ -1,0 +1,13 @@
+﻿using EyE.Shared.Models.Common;
+
+namespace EyE.Shared.Models.Review
+{
+    public class AnimeModel : ReviewModel
+    {
+        public string AniDbId { get; set; }
+        public string Type { get; set; }
+        public ushort Episodecount { get; set; }
+        public double AniDbRating { get; set; }
+        public double MyRating { get; set; }
+    }
+}

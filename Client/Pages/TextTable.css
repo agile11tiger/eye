@@ -1,0 +1,14 @@
+﻿.textTable {
+}
+
+.textTable__number {
+    width: 5%;
+}
+
+.textTable__text {
+    width: 85%;
+}
+
+.textTable__contextMenu {
+    width: 10%;
+}

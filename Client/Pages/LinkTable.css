@@ -1,0 +1,17 @@
+﻿.linkTable__image {
+    width: 5%;
+}
+
+.linkTable__name {
+    width: 85%;
+}
+
+.linkTable__contextMenu {
+    width: 10%;
+}
+
+.linkTable td img {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}

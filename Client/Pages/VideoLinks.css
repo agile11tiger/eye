@@ -1,0 +1,18 @@
+﻿.videoLinks__videoBox {
+    margin: 10px;
+    position: relative;
+}
+
+.videoLinks__videoBox .contextMenu {
+    top: 5px;
+    right: 1px;
+}
+
+.videoLinks__videoBox iframe {
+    z-index: 1;
+    width: 300px;
+    height: 150px;
+    position:relative;
+    border-radius: 10px;
+    box-shadow: 0 0 3px;
+}

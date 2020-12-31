@@ -1,0 +1,106 @@
+﻿@using EyE.Shared.Models.Review
+@using System.Text.Json
+@inherits Reviews<MusicModel>
+
+<div class="music scroll">
+    <OneLineAdder Header=@($"<a href='{DiscogsHelper.BasePath}' target='_blank'>{Header}</a>")
+                  Model="ItemAdderViewModel"
+                  Placeholder="Введите ссылку Discogs"
+                  Create="CreateItemAsync" />
+
+    <div class="scroll__panel">
+        <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
+        <div class="scroll__panel__yLine"></div>
+        <Filter Model="FilterModel" Data="TempItems" UpdateData="UpdateTempItems" FilterParameters="FilterParameters" />
+        <footer>
+            <div class="scroll__panel__xLine"></div>
+            <button @onclick="Reset">Сбросить</button>
+        </footer>
+    </div>
+
+    <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+
+    <div class="scroll__container">
+        @if (TempItems != null && PaginationModel != null)
+        {
+            var itemsSkipCounter = 1;
+            var itemNumber = PaginationModel.PageFirstElementNumber;
+
+            foreach (var item in TempItems)
+            {
+                //пропускает элементы до нужного элемента
+                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
+                {
+                    itemsSkipCounter++;
+                    continue;
+                }
+                if (itemNumber > PaginationModel.PageLastElementNumber)
+                    break;
+
+                <div class="scroll__container__box">
+                    <figure>
+                        <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
+                        <img src="@item.ImageSource" alt="Изображение" onerror="this.style='height:250px;'">
+                    </figure>
+
+                    <dl>
+                        <dt>Год начала</dt>
+                        <dd>@item.StartingDate.Year</dd>
+                        <dt>Сайты</dt>
+                        <input type="checkbox" id="showSites@(itemNumber)" />
+                        <label label for="showSites@(itemNumber)">п/с</label>
+                        <dd class="grid">
+                            @foreach (var link in JsonDocument.Parse(item.Sites).RootElement.EnumerateArray())
+                            {
+                                <a href="@link.ToString()" target="_blank">@LinkHelper.GetDomain(link.ToString())</a>
+                            }
+                        </dd>
+                        <dt>Плейлист</dt>
+                        <input type="checkbox" id="youtubePlaylist@(itemNumber)" />
+                        <label label for="youtubePlaylist@(itemNumber)">п/с</label>
+                        <dd><a href="@item.YoutubePlaylist" target="_blank">слушать</a></dd>
+                        <dt>Комментарий</dt>
+                        <input type="checkbox" id="showComment@(itemNumber)" />
+                        <label label for="showComment@(itemNumber)">п/с</label>
+                        <dd>@item.Comment</dd>
+                        <dt>Описание</dt>
+                        <input type="checkbox" id="showDescription@(itemNumber)" />
+                        <label label for="showDescription@(itemNumber)">п/с</label>
+                        <dd>@item.Information</dd>
+                    </dl>
+
+                    <ContextMenu Item="item"
+                                 ItemId="item.Id"
+                                 ItemNumber="itemNumber"
+                                 ShowItemEditor="ShowItemEditor"
+                                 DeleteItem="DeleteItemAsync" />
+                </div>
+
+                itemNumber++;
+            }
+        }
+    </div>
+
+    <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+
+    <SemiTransparentWrapper @bind-isShowWrapper="@IsShowItemEditorWrapper">
+        <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="UpdateItemAsync">
+            <h4>Редактировать</h4>
+            <p>
+                <label for="scroll__itemEditor__folder">Папка: </label>
+                <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
+                    <option value="@FolderNames.MusicListened">@(FolderNames.MusicListened.GetAttribute<DisplayAttribute>().Name)</option>
+                    <option value="@FolderNames.MusicWillListen">@(FolderNames.MusicWillListen.GetAttribute<DisplayAttribute>().Name)</option>
+                </select>
+            </p>
+            <p>
+                <label for="scroll__itemEditor__comment">Комментарий: </label>
+                <textarea type="text" id="scroll__itemEditor__comment" @bind="ItemEditorModel.Comment" />
+            </p>
+            <p>
+                <input type="submit" value="Сохранить">
+                <input type="reset" value="Отмена" @onclick:preventDefault @onclick="() => IsShowItemEditorWrapper = false">
+            </p>
+        </EditForm>
+    </SemiTransparentWrapper>
+</div>

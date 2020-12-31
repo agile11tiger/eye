@@ -1,0 +1,50 @@
+﻿/*http://beloweb.ru/novichkam/kak-sdelat-krasivuyu-ten-dlya-bloka-s-pomoshhyu-css-8-primerov.html  --- тень*/
+
+main {
+    min-height: 90vh;
+    position: relative;
+    background-color: whitesmoke;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+main .content {
+    padding: 0 10px 10px 10px;
+}
+
+main:before,
+main:after {
+    content: "";
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    position: absolute;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    border-radius: 100px / 10px;
+}
+
+main:after {
+    left: auto;
+}
+
+
+@media (min-width: 1280px) and (max-width:1679px ) {
+    main {
+        width: 85vw;
+        margin: auto;
+    }
+}
+
+@media (min-width: 1680px) {
+    main {
+        width: 65vw;
+        margin: auto;
+    }
+}
+
+@media (min-width: 1000px) {
+    main .content {
+        padding: 0px 30px 30px 30px;
+    }
+}

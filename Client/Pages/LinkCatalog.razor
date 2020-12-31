@@ -1,0 +1,69 @@
+﻿@inherits Links
+
+<div class="linkCatalog scroll">
+    <OneLineAdder Header="@Header"
+                  Model="ItemAdderViewModel"
+                  Placeholder="Введите ссылку сайта"
+                  Create="CreateItemAsync" />
+
+    <div class="scroll__container">
+        @if (TempItems != null && PaginationModel != null)
+        {
+            var itemsSkipCounter = 1;
+            var itemNumber = PaginationModel.PageFirstElementNumber;
+
+            foreach (var item in TempItems)
+            {
+                //пропускает элементы до нужного элемента
+                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
+                {
+                    itemsSkipCounter++;
+                    continue;
+                }
+                if (itemNumber > PaginationModel.PageLastElementNumber)
+                    break;
+
+                <div class="scroll__container__box">
+                    <figure>
+                        <figcaption><h3>@item.Name</h3></figcaption>
+                        <a href="@item.Link" target="_blank">
+                            <img src="@item.ImageSource" alt="Изображение" onerror="this.style='height:250px;'"/>
+                        </a>
+                    </figure>
+
+                    <ContextMenu Item="item"
+                                 ItemId="item.Id"
+                                 ItemNumber="itemNumber"
+                                 ShowItemEditor="ShowItemEditor"
+                                 DeleteItem="DeleteItemAsync" />
+                </div>
+
+                itemNumber++;
+            }
+        }
+    </div>
+
+    <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+
+    <SemiTransparentWrapper @bind-isShowWrapper="@IsShowItemEditorWrapper">
+        <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="TryUpdateItemAsync">
+            <h4>Редактировать</h4>
+            <p>
+                <label for="scroll__itemEditor__name">Название: </label>
+                <input type="text" id="scroll__itemEditor__name" @bind-value="ItemEditorModel.Name">
+            </p>
+            <p>
+                <label for="scroll__itemEditor__link">Ссылка: </label>
+                <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Link">
+            </p>
+            <p>
+                <label for="scroll__itemEditor__image">Изображение: </label>
+                <input type="url" id="scroll__itemEditor__image" @bind-value="ItemEditorModel.ImageSource">
+            </p>
+            <p>
+                <input type="submit" value="Сохранить">
+                <input type="reset" value="Отмена" @onclick:preventDefault @onclick="() => IsShowItemEditorWrapper = false">
+            </p>
+        </EditForm>
+    </SemiTransparentWrapper>
+</div>

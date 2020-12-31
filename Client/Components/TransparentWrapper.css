@@ -1,0 +1,7 @@
+﻿.transparentWrapper {
+    z-index: 1010;
+    top: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+}

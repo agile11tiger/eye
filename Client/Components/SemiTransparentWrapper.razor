@@ -1,0 +1,35 @@
+﻿<div class="semiTransparentWrapper" style="@wrapperStyle" @onclick="HideWrapper">
+    <div @onclick:stopPropagation="true">
+        @ChildContent
+    </div>
+</div>
+
+@code{
+    private string wrapperStyle = "visibility:hidden;";
+    [Parameter] public bool IsShowWrapper
+    {
+        get
+        {
+            if (wrapperStyle == "visibility:visible;")
+                return true;
+            else
+                return false;
+        }
+        set
+        {
+            if (value == true)
+                wrapperStyle = "visibility:visible;";
+            else
+                wrapperStyle = "visibility:hidden;";
+
+        }
+    }
+    [Parameter] public EventCallback<bool> IsShowWrapperChanged { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private void HideWrapper()
+    {
+        IsShowWrapper = false;
+        IsShowWrapperChanged.InvokeAsync(IsShowWrapper);
+    }
+}

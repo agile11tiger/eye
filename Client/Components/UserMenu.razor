@@ -1,0 +1,11 @@
+﻿<nav class="userMenu">
+    <AuthorizeView>
+        <Authorized>
+            <a>Hello, @context.User.Identity.Name</a>
+            <a @onclick="BeginSignOut">Выход</a>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationAndRegistration />
+        </NotAuthorized>
+    </AuthorizeView>
+</nav>

@@ -1,0 +1,23 @@
+﻿.quote{
+    margin-top: 30px;
+}
+
+.quote .scroll__container__box{
+    width: 100%;
+    margin: 10px 0px 0px 0px;
+}
+
+.quote .scroll__container__box img {
+    margin-right: 10px;
+}
+
+.quote .scroll__container__box dd {
+    display: flex;
+    white-space: normal;
+}
+
+.quote .scroll__container__box dd iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+}

@@ -1,0 +1,13 @@
+﻿<div class="animetedCheckbox">
+    <InputCheckbox id=@($"animetedCheckbox{Number}") 
+                   @bind-Value="InputValue"
+                   @oninput="async (ChangeEventArgs e) => await InputValueChanged.InvokeAsync((bool)e.Value)"/>
+    <label for=@($"animetedCheckbox{Number}")>@ChildContent</label>
+</div>
+
+@code{
+    [Parameter] public bool InputValue { get; set; }
+    [Parameter] public EventCallback<bool> InputValueChanged { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public int Number { get; set; }
+}

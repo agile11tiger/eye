@@ -1,0 +1,24 @@
+.toolbar {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.toolbar > button {
+    margin: 0px 5px;
+    padding: 5px 10px;
+    font-size: 20px;
+    border: none;
+    background: none;
+}
+
+.toolbar > button:hover {
+    background: #ccc;
+    border-radius: 10px;
+    color: white;
+}
+
+.toolbar i {
+    margin-right: 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,28 @@
+﻿<ul class="pagination">
+    @if (Model.HasPreviousPages)
+    {
+        <li @onclick="GetFirstPage"><i class="fa fa-angle-double-left"></i></li>
+        <li @onclick="GetPreviousPages"><i class="fa fa-angle-left"></i></li>
+    }
+    @for (var i = Model.PaginationFirstElementNumber; i <= Model.TotalPages; i++)
+    {
+        if (i > Model.PaginationLastElementNumber)
+            break;
+
+        var pageNumber = i;
+
+        if (Model.PageNumber == pageNumber)
+        {
+            <li class="active" @onclick="() => GoToPage(pageNumber)">@i</li>
+        }
+        else
+        {
+            <li @onclick="() => GoToPage(pageNumber)">@i</li>
+        }
+    }
+    @if (Model.HasNextPages)
+    {
+        <li @onclick="GetNextPages"><i class="fa fa-angle-right"></i></li>
+        <li @onclick="GetLastPage"><i class="fa fa-angle-double-right"></i></li>
+    }
+</ul>

@@ -1,0 +1,11 @@
+﻿<EditForm class="filter" Model="Model" OnSubmit="Filtrate">
+    <select @bind-value="Model.Key" @bind-value:event="onchange">
+        @foreach (var pair in GetFilterParameters())
+        {
+            <option value="@pair.Key">@pair.Value:</option>
+        }
+    </select>
+    <input @bind-value="Model.Value" @bind-value:event="onchange">
+
+    <input type="submit" value="Фильтровать" />
+</EditForm>

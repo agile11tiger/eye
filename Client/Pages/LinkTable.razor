@@ -1,0 +1,91 @@
+﻿@inherits Links
+
+<table class="linkTable table scroll">
+    <caption>
+        <h1>@Header</h1>
+
+        <div class="scroll__panel">
+            <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
+            <div class="scroll__panel__yLine"></div>
+            <Filter Model="FilterModel" Data="TempItems" UpdateData="UpdateTempItems" FilterParameters="FilterParameters" />
+            <footer>
+                <div class="scroll__panel__xLine"></div>
+                <button @onclick="Reset">Сбросить</button>
+            </footer>
+        </div>
+
+        <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+    </caption>
+
+    <thead>
+        <tr>
+            <th class="linkTable__image"></th>
+            <th class="linkTable__name"></th>
+            <th class="linkTable__contextMenu"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            if (TempItems != null && PaginationModel != null)
+            {
+                <tr>
+                    <td></td>
+                    <td class="newItem">
+                        <textarea type="text" @bind="@ItemAdderViewModel.Id" placeholder="Введите ссылку сайта" />
+                        <button @onclick="CreateItemAsync">Сохранить</button>
+                    </td>
+                    <td></td>
+                </tr>
+
+                var itemsSkipCounter = 1;
+                var itemNumber = PaginationModel.PageFirstElementNumber;
+
+                foreach (var item in TempItems)
+                {
+                    //пропускает элементы до нужного элемента
+                    if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
+                    {
+                        itemsSkipCounter++;
+                        continue;
+                    }
+                    if (itemNumber > PaginationModel.PageLastElementNumber)
+                        break;
+
+                    <tr @ondblclick="async () => await OpenLinkInNewTabAsync(item.Link)">
+                        <td><img src="@item.ImageSource"></td>
+                        <td>@item.Name</td>
+                        <td>
+                            <ContextMenu Item="item"
+                                         ItemId="item.Id"
+                                         ItemNumber="itemNumber"
+                                         ShowItemEditor="ShowItemEditor"
+                                         DeleteItem="DeleteItemAsync" />
+                        </td>
+                    </tr>
+
+                    itemNumber++;
+                }
+            }
+        }
+    </tbody>
+
+    <SemiTransparentWrapper @bind-isShowWrapper="@IsShowItemEditorWrapper">
+        <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="TryUpdateItemAsync">
+            <h4>Редактировать</h4>
+            <p>
+                <label for="scroll__itemEditor__name">Название: </label>
+                <input type="text" id="scroll__itemEditor__name" @bind-value="ItemEditorModel.Name">
+            </p>
+            <p>
+                <label for="scroll__itemEditor__link">Ссылка: </label>
+                <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Link">
+            </p>
+            <p>
+                <input type="submit" value="Сохранить">
+                <input type="reset" value="Отмена" @onclick:preventDefault @onclick="() => IsShowItemEditorWrapper = false">
+            </p>
+        </EditForm>
+    </SemiTransparentWrapper>
+</table>
+<Pagination Model="PaginationModel" UpdateState="StateHasChanged" />

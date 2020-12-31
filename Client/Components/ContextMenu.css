@@ -1,0 +1,94 @@
+/* medium.com/@krokhin.ezh/%D0%BA%D0%B0%D0%BA-%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C-%D0%B3%D0%B0%D0%BC%D0%B1%D1%83%D1%80%D0%B3%D0%B5%D1%80-%D0%BC%D0%B5%D0%BD%D1%8E-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D1%8F-%D1%82%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-css-%D0%B8-html-c6abf7c32c6d */
+.contextMenu{
+	width: 130px;
+	height: 150px;
+	right: 5px;
+	display: flex;
+	position: absolute;
+	flex-direction: row-reverse;
+}
+
+.contextMenu__toggle {
+  	visibility: hidden;
+}
+.contextMenu__toggle:checked + .contextMenu__btn > span {
+  	transform: rotate(45deg);
+}
+.contextMenu__toggle:checked + .contextMenu__btn > i {
+  	transform: rotate(-45deg);
+}
+.contextMenu__toggle:checked + .contextMenu__btn {
+	z-index: 4;
+}
+
+.contextMenu__btn {
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	z-index: 2;
+	display: flex;
+	position: absolute;
+	align-items: center;
+	justify-content: center;
+	border-radius: 15px;
+	background-color: transparent;
+}
+.contextMenu__btn > span,
+.contextMenu__btn > span::before,
+.contextMenu__btn > span::after,
+.contextMenu__btn > i,
+.contextMenu__btn > i::before,
+.contextMenu__btn > i::after  {
+	width: 5px;
+	height: 5px;
+	display: block;
+	position: absolute;
+	border-radius: 50%;
+	pointer-events: none;
+	background-color: #616161;
+	transition-duration: .25s;
+}
+.contextMenu__btn > span::before,
+.contextMenu__btn > i::before {
+	content: '';
+	top: -9px;	
+}
+.contextMenu__btn > span::after,
+.contextMenu__btn > i::after {
+	content: '';
+	top: 9px;
+}
+
+.contextMenu > ul {
+	width: 100%;
+	height: 100%;
+	top: -50%;
+	margin: 0px;
+	padding: 0px;
+	display: block;
+	position: absolute;
+	list-style: none;
+	border-radius: 15px;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, .3);
+	background: linear-gradient(to bottom, #ddd 0%, #eee 100%);
+	transition-duration: .25s;
+	visibility: hidden;
+}
+.contextMenu__toggle:checked ~ ul {
+	top: 0;
+	z-index: 3;
+	visibility: visible;
+}
+
+.contextMenu > ul > li {
+	padding: 7px;
+	color: black;
+	cursor: pointer;
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	border-radius: 15px;
+}
+.contextMenu > ul > li:hover {
+	background: #d7d7d7;
+}

@@ -1,0 +1,20 @@
+﻿.userMenu {
+    display: flex;
+    align-items: center;
+}
+
+.userMenu > a{
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.userMenu a:first-child {
+    cursor: default;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .userMenu a:first-child {
+        display: none;
+    }
+}

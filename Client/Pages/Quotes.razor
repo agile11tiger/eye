@@ -1,0 +1,26 @@
+﻿<div class="quote scroll">
+    <OneLineAdder Header=@($"<a href='{WikiquoteHelper.BasePath}' target='_blank'>Цитаты</a>")
+                  Model="ItemAdderViewModel"
+                  Placeholder="Можно оставить пустым"
+                  Create="GetQuotesAsync" />
+
+    @if(WikiquoteViewModel != default)
+    {
+        <div class="scroll__container">
+            <div class="scroll__container__box">
+                <figure>
+                    <figcaption><h3>@((MarkupString)WikiquoteViewModel.Name)</h3></figcaption>
+                    <img src="@WikiquoteViewModel.ImageSource" alt="Изображение" onerror="this.style='height:250px;'">
+                </figure>
+
+                <dl>
+                    <dd>@WikiquoteViewModel.Information</dd>
+                    <dd>
+                        <iframe srcdoc="@WikiquoteViewModel.Quotes">
+                        </iframe>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    }
+</div>

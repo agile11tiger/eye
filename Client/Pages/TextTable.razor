@@ -1,0 +1,83 @@
+﻿@inherits Texts
+
+<table class="textTable table scroll" @onclick="CloseItemEditorAsync">
+    <caption>
+        <h1>@Header</h1>
+
+        <div class="scroll__panel">
+            <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParametersDictionary" />
+            <div class="scroll__panel__yLine"></div>
+            <Filter Model="FilterModel" Data="TempItems" UpdateData="UpdateTempItems" FilterParameters="FilterParametersDictionary" />
+            <footer>
+                <div class="scroll__panel__xLine"></div>
+                <button @onclick="Reset">Сбросить</button>
+            </footer>
+        </div>
+
+        <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+    </caption>
+
+    <thead>
+        <tr>
+            <th class="textTable__number"></th>
+            <th class="textTable__text"></th>
+            <th class="textTable__contextMenu"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            if (TempItems != null && PaginationModel != null)
+            {
+                <tr>
+                    <td></td>
+                    <td class="newItem">
+                        <textarea type="text" @bind="@NewTextModel.Text" placeholder="Введите текст" />
+                        <button @onclick="CreateItemAsync">Сохранить</button>
+                    </td>
+                    <td></td>
+                </tr>
+
+                var itemsSkipCounter = 1;
+                var itemNumber = PaginationModel.PageFirstElementNumber;
+
+                foreach (var item in TempItems)
+                {
+                    //пропускает элементы до нужного элемента
+                    if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
+                    {
+                        itemsSkipCounter++;
+                        continue;
+                    }
+                    if (itemNumber > PaginationModel.PageLastElementNumber)
+                        break;
+
+                    if (!item.IsEditing)
+                    {
+                        <tr @ondblclick="() => ShowItemEditor(item)">
+                            <td>@itemNumber</td>
+                            <td>@item.Text</td>
+                            <td>
+                                <ContextMenu Item="item"
+                                                ItemId="item.Id"
+                                                ItemNumber="itemNumber"
+                                                DeleteItem="DeleteItemAsync" />
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr @onclick:stopPropagation>
+                            <td>@itemNumber</td>
+                            <td><textarea type="text" @bind="@ItemEditorModel.Text" /></td>
+                            <td></td>
+                        </tr>
+                    }
+
+                    itemNumber++;
+                }
+            }
+        }
+    </tbody>
+</table>
+<Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
