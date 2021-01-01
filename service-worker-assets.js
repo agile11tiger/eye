@@ -205,7 +205,7 @@
       "url": "_framework\/EyE.Shared.dll"
     },
     {
-      "hash": "sha256-4u6Vc2\/J9qX4\/SGFJMDb4MPyjiaXcAesG3lR60C47qQ=",
+      "hash": "sha256-1kwNm7YJIw12VL7efBAl3S1rf13AAF0mMK1+InfM3BU=",
       "url": "_framework\/EyE.Client.dll"
     },
     {
@@ -385,7 +385,7 @@
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
-      "hash": "sha256-kvUxkT3hyx+A\/VHSM2JCsEXJKggcBva+yLKgBeuNSBw=",
+      "hash": "sha256-DIuajeo0BZOjuLma4xfk7yzv\/O1m4l9kyGuYc7bMabE=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -393,5 +393,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "3vnQVTtO"
+  "version": "1OIfh9Oj"
 };
