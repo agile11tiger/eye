@@ -15,14 +15,17 @@ namespace EyE.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            var baseAddress = builder.HostEnvironment.IsProduction() 
+                ? "https://eye.somee.com/" 
+                : builder.HostEnvironment.BaseAddress;
 
             //if AccessTokenNotAvailableException: https://chrissainty.com/avoiding-accesstokennotavailableexception-when-using-blazor-webassembly-hosted-template-with-individual-user-accounts/
             builder.Services
-                .AddHttpClient("EyE.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpClient("EyE.ServerAPI", client => client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("EyE.ServerAPI"));
-            builder.Services.AddScoped(sp => new PublicHttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new PublicHttpClient { BaseAddress = new Uri(baseAddress) });
             //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
             builder.Services.AddApiAuthorization();
             builder.Services.AddSingleton(JsonHelper.SerializeOptions);

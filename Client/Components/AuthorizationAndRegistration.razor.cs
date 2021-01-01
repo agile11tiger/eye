@@ -23,7 +23,7 @@ namespace EyE.Client.Components
 
         private async Task LoginToAccount()
         {
-            var response = await PublicClient.PostAsJsonAsync("/api/account/login", loginModel);
+            var response = await PublicClient.PostAsJsonAsync("api/account/login", loginModel);
 
             if (response.IsSuccessStatusCode == true)
             {
@@ -39,7 +39,7 @@ namespace EyE.Client.Components
 
         private async Task CreateAccount()
         {
-            var response = await PublicClient.PostAsJsonAsync("/api/account/register", registerModel);
+            var response = await PublicClient.PostAsJsonAsync("api/account/register", registerModel);
 
             if (response.IsSuccessStatusCode == true)
             {
@@ -54,7 +54,7 @@ namespace EyE.Client.Components
 
         private async Task ForgotPassword()
         {
-            var response = await PublicClient.PostAsJsonAsync("/api/account/forgotPassword", forgotPasswordModel);
+            var response = await PublicClient.PostAsJsonAsync("api/account/forgotPassword", forgotPasswordModel);
 
             if (response.IsSuccessStatusCode == true)
             {
@@ -70,7 +70,7 @@ namespace EyE.Client.Components
 
         private async Task ResetPassword()
         {
-            var response = await PublicClient.PostAsJsonAsync("/api/account/resetPassword", resetPasswordModel);
+            var response = await PublicClient.PostAsJsonAsync("api/account/resetPassword", resetPasswordModel);
 
             if (response.IsSuccessStatusCode == true)
             {
