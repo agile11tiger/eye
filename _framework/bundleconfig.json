@@ -1,0 +1,20 @@
+//Bundler&Minifier(Стили с цифрой 1 в конце названия находяться выше обычных)
+//(https://github.com/madskristensen/BundlerMinifier)
+[
+  {
+    "outputFileName": "wwwroot/css/bundle.css",
+    "inputFiles": [
+      "Shared/**/**/**/**/**/*.1.css",
+      "Components/**/**/**/**/**/*.1.css",
+      "Pages/**/**/**/**/**/*.1.css",
+      "Shared/**/**/**/**/**/*.css",
+      "Components/**/**/**/**/**/*.css",
+      "Pages/**/**/**/**/**/*.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
