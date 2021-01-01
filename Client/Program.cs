@@ -27,7 +27,7 @@ namespace EyE.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("EyE.ServerAPI"));
             builder.Services.AddScoped(sp => new PublicHttpClient { BaseAddress = new Uri(baseAddress) });
             //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
-            builder.Services.AddApiAuthorization();
+            builder.Services.AddApiAuthorization(options => options.ProviderOptions.ConfigurationEndpoint = baseAddress);
             builder.Services.AddSingleton(JsonHelper.SerializeOptions);
             //builder.Services.AddScoped<ServerAuthenticationStateProvider>();
             //builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
