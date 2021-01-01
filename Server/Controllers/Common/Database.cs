@@ -21,7 +21,7 @@ namespace EyE.Server.Controllers.Common
         protected readonly ApplicationDbContext Db;
         protected readonly IHttpClientFactory ClientFactory;
 
-        //[ResponseCache(Duration = int.MaxValue, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAsync()
