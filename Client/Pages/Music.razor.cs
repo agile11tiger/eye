@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
 {
-    [Route("/Music/{StrFolderName}")]
+    [Route("Music/{StrFolderName}")]
     public partial class Music
     {
         protected override async Task OnInitializedAsync()

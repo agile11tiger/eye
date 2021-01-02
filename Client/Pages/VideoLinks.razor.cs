@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
 {
-    [Route("/VideoLinks/{StrFolderName}")]
+    [Route("VideoLinks/{StrFolderName}")]
     public partial class VideoLinks
     {
         public override async Task CreateItemAsync()

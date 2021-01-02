@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
 {
-    [Route("/Anime/{StrFolderName}")]
+    [Route("Anime/{StrFolderName}")]
     public partial class Anime
     {
         protected override async Task OnInitializedAsync()

@@ -2,7 +2,7 @@
 
 namespace EyE.Client.Pages
 {
-    [Route("/LinkCatalog/{StrFolderName}")]
+    [Route("LinkCatalog/{StrFolderName}")]
     public partial class LinkCatalog
     {
     }

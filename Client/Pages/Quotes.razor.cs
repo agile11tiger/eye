@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EyE.Client.Pages
 {
     [Route("/")]
-    [Route("/Quotes")]
+    [Route("Quotes")]
     public partial class Quotes
     {
         [Inject] public PublicHttpClient PublicClient { get; set; }

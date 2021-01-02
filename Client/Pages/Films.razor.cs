@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
 {
-    [Route("/Films/{StrFolderName}")]
+    [Route("Films/{StrFolderName}")]
     public partial class Films
     {
         [Inject] public IAccessTokenProvider TokenProvider { get; set; }

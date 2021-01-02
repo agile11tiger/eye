@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
 {
-    [Route("/Serials/{StrFolderName}")]
+    [Route("Serials/{StrFolderName}")]
     public partial class Serials
     {
         protected override async Task OnInitializedAsync()
