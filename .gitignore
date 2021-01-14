@@ -436,3 +436,4 @@ $RECYCLE.BIN/
 .private/
 *.private.*
 Tests/
+Server/Logs/

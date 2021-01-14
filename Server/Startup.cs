@@ -2,6 +2,7 @@ using EyE.Server.Data;
 using EyE.Server.Services;
 using EyE.Shared.Helpers;
 using EyE.Shared.ViewModels.Identity;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -21,11 +24,13 @@ namespace EyE.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.private.json")
                 .AddConfiguration(configuration);
+
+            if (env.IsProduction())
+                builder.AddJsonFile("appsettings.Production.private.json");
 
             Configuration = builder.Build();
         }
@@ -38,11 +43,27 @@ namespace EyE.Server
         {
             services.AddSingleton(provider => Configuration);
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
             services
-                .AddIdentity<User, IdentityRole>(options =>
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
+                .AddDatabaseDeveloperPageExceptionFilter();
+
+            var allowedOrigins = new[] { Configuration.GetValue<string>("ClientUri") };
+            services
+                //Cors для ASP.NET Core
+                .AddCors(options =>
+                {
+                    options.AddPolicy("DefaultCorsPolicy", builder => builder
+                        .WithOrigins(allowedOrigins)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+                })
+                // Cors для IdentityServer
+                .AddSingleton<ICorsPolicyService>((container) => {
+                    var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+                    return new DefaultCorsPolicyService(logger) { AllowedOrigins = allowedOrigins };
+                })
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                     options.Password.RequireNonAlphanumeric = false;
@@ -52,24 +73,40 @@ namespace EyE.Server
                     options.Password.RequiredLength = 0;
                     options.Password.RequiredUniqueChars = 0;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
             //https://habr.com/ru/post/461433/
-            services.AddIdentityServer()
+            //https://www.scottbrady91.com/Identity-Server/Using-ECDSA-in-IdentityServer4
+            services
+                .AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                })
+               //.AddSigningCredential(new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256)), IdentityServerConstants.ECDsaSigningAlgorithm.ES256)
+               //.AddSigningCredential(new RsaSecurityKey(RSA.Create()), IdentityServerConstants.RsaSigningAlgorithm.RS256)
                .AddApiAuthorization<User, ApplicationDbContext>(options => {
                    options.IdentityResources["openid"].UserClaims.Add("role");
                    options.ApiResources.Single().UserClaims.Add("role");
                });
+
             // Need to do this as it maps "role" to ClaimTypes.Role and causes issues
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-            services.AddAuthentication().AddIdentityServerJwt();
+            services
+                .AddAuthentication()
+                .AddIdentityServerJwt();
 
             services.AddControllersWithViews();
-            services.AddHttpClient();
-            services.AddSingleton(new EmailService());
-            services.AddSingleton(JsonHelper.SerializeOptions);
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddRazorPages();
+            services
+                .AddSingleton(new EmailService())
+                .AddSingleton(JsonHelper.SerializeOptions)
+                .AddLocalization(options => options.ResourcesPath = "Resources")
+                .AddHttpClient("localClient", config => config.BaseAddress = new Uri(Configuration.GetValue<string>("ServerUri")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,7 +120,7 @@ namespace EyE.Server
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -102,19 +139,18 @@ namespace EyE.Server
                 app.UseBlazorFrameworkFiles();
 
             app.UseStaticFiles();
-
             app.UseRouting();
+            app.UseCors("DefaultCorsPolicy");
             app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                if (env.IsProduction())
-                    endpoints.MapFallbackToFile("serverIndex.html");
-                else
+
+                if (!env.IsProduction())
                     endpoints.MapFallbackToFile("index.html");
             });
         }

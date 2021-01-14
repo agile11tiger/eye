@@ -1,12 +1,10 @@
 ﻿using EyE.Shared.Enums;
 using EyE.Shared.Extensions;
-using EyE.Shared.Models.Common;
 using EyE.Shared.Models.Common.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace EyE.Client.Pages.Common

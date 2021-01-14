@@ -1,12 +1,8 @@
 ﻿using EyE.Client.Enums;
-using EyE.Shared.Enums;
 using EyE.Shared.Extensions;
 using EyE.Shared.Models.Common;
-using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EyE.Client.Pages.Common

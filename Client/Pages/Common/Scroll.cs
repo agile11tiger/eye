@@ -188,6 +188,11 @@ namespace EyE.Client.Pages.Common
             }
         }
 
+        public async Task ShowSomethingHappenedAsync()
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Что-то пошло не так. Сообщение об ошибке отправлено на сервер");
+        }
+
         public async Task ShowErrorAlertNotAllowNullOrWhiteSpaceAsync()
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Поле должно быть заполнено");

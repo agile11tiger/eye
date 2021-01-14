@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EyE.Shared.Enums
+﻿namespace EyE.Shared.Enums
 {
     public enum Roles
     {

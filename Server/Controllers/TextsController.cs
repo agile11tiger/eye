@@ -1,13 +1,10 @@
 ﻿using EyE.Server.Controllers.Common;
 using EyE.Server.Data;
-using EyE.Shared.Enums;
-using EyE.Shared.Helpers;
 using EyE.Shared.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace EyE.Server.Controllers
 {

@@ -1,8 +1,4 @@
-﻿using EyE.Shared.Models.Common;
-using EyE.Shared.Models.Review;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EyE.Client.Enums
 {

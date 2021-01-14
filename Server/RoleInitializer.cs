@@ -46,7 +46,7 @@ namespace EyE.Server
                 var result = await userManager.CreateAsync(admin, RoleInitializerData.PasswordAdmin);
 
                 if (result.Succeeded)
-                    await userManager.AddToRolesAsync(admin, new[] { Roles.Admin.ToString(), Roles.User.ToString() });
+                    await userManager.AddToRolesAsync(admin, new[] { Roles.Admin.ToString() });
             }
         }
     }

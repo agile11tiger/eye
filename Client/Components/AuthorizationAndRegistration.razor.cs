@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -20,6 +21,13 @@ namespace EyE.Client.Components
         private ServerSideValidator serverSideResetPasswordValidator = new ServerSideValidator();
         [Inject] public PublicHttpClient PublicClient { get; set; }
         [Inject] public AuthenticationStateProvider StateProvider { get; set; }
+        [Inject] public IJSRuntime JS { get; set; }
+        [Inject] public NavigationManager Navigation { get; set; }
+
+        private void SecretLoginToAccount()
+        {
+            Navigation.NavigateTo("authentication/" + RemoteAuthenticationActions.LogIn);
+        }
 
         private async Task LoginToAccount()
         {
@@ -29,12 +37,15 @@ namespace EyE.Client.Components
             {
                 loginModel = new LoginViewModel();
                 ToogleVisibilityWrapper();
-
-                var authService = StateProvider as RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, ApiAuthorizationProviderOptions>;
-                await authService?.SignInAsync(new RemoteAuthenticationContext<RemoteAuthenticationState>());
+                //var authService = StateProvider as RemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, ApiAuthorizationProviderOptions>;
+                //await authService?.SignInAsync(new RemoteAuthenticationContext<RemoteAuthenticationState>());
+                await JS.InvokeVoidAsync("alert", "Всё равно не пущу!!!");
             }
             else
+            {
                 await serverSideAuthorizationValidator.DisplayMessagesAsync(response.Content);
+                await JS.InvokeVoidAsync("alert", "Не пущу без регистрации!");
+            }
         }
 
         private async Task CreateAccount()

@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyE.Client", "Client\EyE.Client.csproj", "{5A124148-166A-4889-9D9A-AADA3E5ED55B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyE.Server", "Server\EyE.Server.csproj", "{545EEE07-E814-4369-AC64-F83157C28362}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5A124148-166A-4889-9D9A-AADA3E5ED55B} = {5A124148-166A-4889-9D9A-AADA3E5ED55B}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyE.Shared", "Shared\EyE.Shared.csproj", "{2F236FC5-666E-452B-89B5-484A31D13E9D}"
 EndProject

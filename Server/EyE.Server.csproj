@@ -2,19 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <SatelliteResourceLanguages>ru;en</SatelliteResourceLanguages>
     <UserSecretsId>EyE.Server-50C5E698-5DD3-43A7-BB79-7FD53511CD10</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
     <PackageReference Include="MimeKit" Version="2.10.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\EyE.Client.csproj" />
     <ProjectReference Include="..\Shared\EyE.Shared.csproj" />
   </ItemGroup>
 
@@ -32,6 +33,9 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
