@@ -3,6 +3,7 @@ using EyE.Server.Data;
 using EyE.Shared.Helpers;
 using EyE.Shared.Models.Review;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
@@ -26,7 +27,11 @@ namespace EyE.Server.Controllers
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.DiscogsId == model.DiscogsId) == null)
             {
-                await DiscogsHelper.SetDiscogsImageAsync(model);
+                var result = await DiscogsHelper.TrySetDiscogsImageAsync(model, ClientFactory.CreateClient("localClient"));
+
+                if (result == false)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
+
                 return await AddAsync(model);
             }
 

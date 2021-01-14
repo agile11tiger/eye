@@ -23,20 +23,38 @@ namespace EyE.Shared.Helpers
         /// <param name="link">Например: https://www.imdb.com/title/tt0380510/?ref_=vp_back </param>
         public static async Task<FilmModel> GetFilmModelAsync(string link, HttpClient client)
         {
-            var filmModel = new FilmModel();
-            var (imdbModel, _) = await GetModelAsync(link, client);
-            imdbModel.CopyProperties(filmModel);
-            return filmModel;
+            try
+            {
+                var filmModel = new FilmModel();
+                var (imdbModel, _) = await GetModelAsync(link, client);
+                imdbModel.CopyProperties(filmModel);
+                return filmModel;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(IMDbHelper).Name);
+            }
+
+            return default;
         }
 
         /// <param name="link">Например: https://www.imdb.com/title/tt7569592/?ref_=nv_sr_srsg_0 </param>
         public static async Task<SerialModel> GetSerialModelAsync(string link, HttpClient client)
         {
-            var serialModel = new SerialModel();
-            var (imdbModel, imdbJObject) = await GetModelAsync(link, client);
-            imdbModel.CopyProperties(serialModel);
-            serialModel.TotalSeasons = ushort.Parse(imdbJObject["totalSeasons"].ToString());
-            return serialModel;
+            try
+            {
+                var serialModel = new SerialModel();
+                var (imdbModel, imdbJObject) = await GetModelAsync(link, client);
+                imdbModel.CopyProperties(serialModel);
+                serialModel.TotalSeasons = ushort.Parse(imdbJObject["totalSeasons"].ToString());
+                return serialModel;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(IMDbHelper).Name);
+            }
+
+            return default;
         }
 
         /// <param name="link">Например: https://imdb.com/title/tt0380510/?ref_=vp_back 
@@ -66,6 +84,7 @@ namespace EyE.Shared.Helpers
                 ImageSource = imageRequestPattern + imdbObject["imdbID"].ToString(),
                 StartingDate = startingDate,
                 AddingDate = DateTime.Now,
+             
                 Runtime = runtime,
                 Genre = imdbObject["Genre"].ToString(),
                 Information = imdbObject["Plot"].ToString(),

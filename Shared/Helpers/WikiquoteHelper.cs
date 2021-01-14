@@ -1,7 +1,6 @@
 ﻿using EyE.Shared.Models.Common;
 using EyE.Shared.ViewModels;
 using HtmlAgilityPack;
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -43,21 +42,31 @@ namespace EyE.Shared.Helpers
         {
             WikiModel wikiModel;
 
-            if (string.IsNullOrWhiteSpace(link))
-                wikiModel = await WikiHelper.GetRandomPageSummaryAsync(BasePath, client);
-            else
-                wikiModel = await WikiHelper.GetPageSummaryAsync(link, client);
-
-            var htmlDoc = await WikiHelper.GetPageHtmlAsync(BasePath + "/wiki/" + wikiModel.WikiId, client);
-
-            return new WikiquoteViewModel()
+            try
             {
-                Name = InsertWikipediaLink(wikiModel.Name, htmlDoc),
-                ImageSource = wikiModel.ImageSource,
-                Information = wikiModel.Information,
-                Quotes = GetQuotesText(htmlDoc),
-                AddingDate = wikiModel.AddingDate,
-            };
+                if (string.IsNullOrWhiteSpace(link))
+                    wikiModel = await WikiHelper.GetRandomPageSummaryAsync(BasePath, client);
+                else
+                    wikiModel = await WikiHelper.GetPageSummaryAsync(link, client);
+
+                var htmlDoc = await WikiHelper.GetPageHtmlAsync(BasePath + "/wiki/" + wikiModel.WikiId, client);
+
+                return new WikiquoteViewModel()
+                {
+                    Name = InsertWikipediaLink(wikiModel.Name, htmlDoc),
+                    ImageSource = wikiModel.ImageSource,
+                    Information = wikiModel.Information,
+                    Quotes = GetQuotesText(htmlDoc),
+                    AddingDate = wikiModel.AddingDate,
+                };
+            }
+            catch
+            {
+                if(!string.IsNullOrWhiteSpace(link) && link.StartsWith("https://ru.wikiquote.org/wiki/"))
+                    await LoggingHelper.SendErrorAsync(link, client, typeof(WikiquoteHelper).Name);
+            }
+
+            return default;
         }
 
         private static string InsertWikipediaLink(string name, HtmlDocument htmlDoc)

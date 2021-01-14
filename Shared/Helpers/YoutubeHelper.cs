@@ -20,15 +20,24 @@ namespace EyE.Shared.Helpers
         /// <param name="link">Например: https://www.youtube.com/watch?v=jNQXAC9IVRw </param>
         public static async Task<LinkModel> GetLinkModelAsync(string link, HttpClient client)
         {
-            var responseStream = await client.GetStreamAsync(videoInfoRequestPattern + link);
-            var youtubeObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-
-            return new LinkModel()
+            try
             {
-                Link = link,
-                Name = youtubeObject["title"].ToString(),
-                ImageSource = $"//img.youtube.com/vi/{LinkHelper.GetLinkParameter(link, "v")}/hqdefault.jpg"
-            };
+                var responseStream = await client.GetStreamAsync(videoInfoRequestPattern + link);
+                var youtubeObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
+
+                return new LinkModel()
+                {
+                    Link = link,
+                    Name = youtubeObject["title"].ToString(),
+                    ImageSource = $"//img.youtube.com/vi/{LinkHelper.GetLinkParameter(link, "v")}/hqdefault.jpg"
+                };
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(YoutubeHelper).Name);
+            }
+
+            return default;
         }
     }
 }

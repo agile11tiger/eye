@@ -13,6 +13,13 @@ namespace EyE.Client.Pages
                 return;
 
             var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicClient);
+
+            if (linkModel == default)
+            {
+                await ShowSomethingHappenedAsync();
+                return;
+            }
+
             linkModel.FolderName = FolderName;
             await PutItemAsync(linkModel);
         }

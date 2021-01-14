@@ -23,37 +23,57 @@ namespace EyE.Shared.Helpers
         /// <param name="link">Например: https://www.discogs.com/artist/484423-Ария </param>
         public static async Task<MusicModel> GetMusicModelAsync(string link, HttpClient client)
         {
-            var id = GetId(link);
-            using var responseStream = await client.GetStreamAsync(artistsRequestPattern + id);
-            var artistObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-            using var stream = await client.GetStreamAsync($"https://api.discogs.com/artists/{id}/releases?page=1&per_page=1");
-            var artistFirstReleaseObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(stream);
-            var dateFirstRealease = artistFirstReleaseObject["releases"][0].EnumerateObject().First(obj => obj.Name == "year").Value;
-
-            return new MusicModel()
+            try
             {
-                Link = link,
-                DiscogsId = artistObject["id"].ToString(),
-                Name = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(artistObject["name"].ToString())),
-                StartingDate = DateTime.Parse($"1/1/{dateFirstRealease}"),
-                AddingDate = DateTime.Now,
-                Sites = artistObject["urls"].ToString(),
-                Information = artistObject["profile"].ToString().RemoveLinksAndSquareBrackets()
-            };
+                var id = GetId(link);
+                using var responseStream = await client.GetStreamAsync(artistsRequestPattern + id);
+                var artistObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
+                using var stream = await client.GetStreamAsync($"https://api.discogs.com/artists/{id}/releases?page=1&per_page=1");
+                var artistFirstReleaseObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(stream);
+                var dateFirstRealease = artistFirstReleaseObject["releases"][0].EnumerateObject().First(obj => obj.Name == "year").Value;
+
+                return new MusicModel()
+                {
+                    Link = link,
+                    DiscogsId = artistObject["id"].ToString(),
+                    Name = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(artistObject["name"].ToString())),
+                    StartingDate = DateTime.Parse($"1/1/{dateFirstRealease}"),
+                    AddingDate = DateTime.Now,
+                    Sites = artistObject["urls"].ToString(),
+                    Information = artistObject["profile"].ToString().RemoveLinksAndSquareBrackets()
+                };
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(DiscogsHelper).Name);
+            }
+
+            return default;
         }
 
         /// <summary>
         /// Парсит сайт и забирает ссылку на изображение
         /// </summary>
-        public static async Task SetDiscogsImageAsync(LinkModel model)
+        public static async Task<bool> TrySetDiscogsImageAsync(LinkModel model, HttpClient client)
         {
-            var web = new HtmlWeb();
-            var htmlDoc = await web.LoadFromWebAsync(model.Link);
-            var image = htmlDoc
-                .DocumentNode
-                .SelectSingleNode("//span[@class='thumbnail_center']/img")
-                .GetAttributeValue("src", string.Empty);
-            model.ImageSource = image;
+            try
+            {
+                var web = new HtmlWeb();
+                var htmlDoc = await web.LoadFromWebAsync(model.Link);
+                var image = htmlDoc
+                    .DocumentNode
+                    .SelectSingleNode("//span[@class='thumbnail_center']/img")
+                    .GetAttributeValue("src", string.Empty);
+                model.ImageSource = image;
+
+                return true;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(DiscogsHelper).Name);
+            }
+
+            return false;
         }
 
         /// <param name="link">Например: https://discogs.com/artist/484423-Ария или https://www.discogs.com/artist/484423-Ария </param>

@@ -2,9 +2,7 @@
 using EyE.Shared.Extensions;
 using EyE.Shared.Helpers;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
@@ -28,6 +26,13 @@ namespace EyE.Client.Pages
                 return;
 
             var serialModel = await IMDbHelper.GetSerialModelAsync(ItemAdderViewModel.Id, PublicClient);
+
+            if (serialModel == default)
+            {
+                await ShowSomethingHappenedAsync();
+                return;
+            }
+
             serialModel.FolderName = FolderName;
             await PutItemAsync(serialModel);
         }

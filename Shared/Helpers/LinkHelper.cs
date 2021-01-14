@@ -1,5 +1,6 @@
 ﻿using EyE.Shared.Models.Common;
 using HtmlAgilityPack;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -13,28 +14,48 @@ namespace EyE.Shared.Helpers
         /// <summary>
         /// Парсит сайт и забирает необходимые данные
         /// </summary>
-        public static async Task SetNameAndFaviconAsync(LinkModel model)
+        public static async Task<bool> TrySetNameAndFaviconAsync(LinkModel model, HttpClient client)
         {
-            var web = new HtmlWeb();;
-            var htmlDoc = await web.LoadFromWebAsync(model.Link);
-            var name = htmlDoc.DocumentNode.SelectSingleNode("//h1")
-                ?.InnerText.Trim(' ', '\n', '\r')
-                .Replace("&nbsp;", "\u00A0")
-                ?? htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText;
-            model.Name = string.IsNullOrWhiteSpace(name) ? model.Link : name;
-            model.ImageSource = "https://s2.googleusercontent.com/s2/favicons?domain=" + GetDomain(model.Link);
+            try
+            {
+                var web = new HtmlWeb();
+                var htmlDoc = await web.LoadFromWebAsync(model.Link);
+                var name = htmlDoc.DocumentNode.SelectSingleNode("//h1")
+                    ?.InnerText.Trim(' ', '\n', '\r')
+                    .Replace("&nbsp;", "\u00A0")
+                    ?? htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText;
+                model.Name = string.IsNullOrWhiteSpace(name) ? model.Link : name;
+                model.ImageSource = "https://s2.googleusercontent.com/s2/favicons?domain=" + GetDomain(model.Link);
+                return true;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(LinkHelper).Name);
+            }
+
+            return false;
         }
 
         /// <summary>
         /// Парсит сайт и забирает необходимые данные
         /// </summary>
-        public static async Task SetTitleAndImageAsync(LinkModel model)
+        public static async Task<bool> TrySetTitleAndImageAsync(LinkModel model, HttpClient client)
         {
-            var web = new HtmlWeb();
-            var htmlDoc = await web.LoadFromWebAsync(model.Link);
-            var title = htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText.Replace("&nbsp;", "\u00A0");
-            model.Name = string.IsNullOrWhiteSpace(title) ? model.Link : title;
-            model.ImageSource = string.Empty;
+            try
+            {
+                var web = new HtmlWeb();
+                var htmlDoc = await web.LoadFromWebAsync(model.Link);
+                var title = htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText.Replace("&nbsp;", "\u00A0");
+                model.Name = string.IsNullOrWhiteSpace(title) ? model.Link : title;
+                model.ImageSource = string.Empty;
+                return true;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(LinkHelper).Name);
+            }
+
+            return false;
         }
 
         /// <param name="link">Например: https://www.youtube.com/watch?v=5hVfxEc6WyY&list=WL&index=76 </param>

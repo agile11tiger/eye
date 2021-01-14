@@ -4,6 +4,7 @@ using EyE.Shared.Enums;
 using EyE.Shared.Helpers;
 using EyE.Shared.Models.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
@@ -27,18 +28,25 @@ namespace EyE.Server.Controllers
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
             {
+                var result = false;
+                var client = ClientFactory.CreateClient("localClient");
+
                 switch (model.FolderName)
                 {
                     case FolderNames.AnimeSites:
                     case FolderNames.MusicSites:
                     case FolderNames.FilmSites:
                     case FolderNames.SerialSites:
-                        await LinkHelper.SetTitleAndImageAsync(model); break;
+                        result = await LinkHelper.TrySetTitleAndImageAsync(model, client); break;
                     case FolderNames.BieutifulVideos:
                         break;
                     default:
-                        await LinkHelper.SetNameAndFaviconAsync(model); break;
+                        result = await LinkHelper.TrySetNameAndFaviconAsync(model, client); break;
                 }
+
+                if (result == false)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
+
                 return await AddAsync(model);
             }
 

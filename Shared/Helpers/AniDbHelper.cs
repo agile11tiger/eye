@@ -24,26 +24,35 @@ namespace EyE.Shared.Helpers
         public const string BasePath = "https://anidb.net";
 
         //Нельзя использовать на клиенте ошибка: Mixed Content
-        public static async Task<AnimeModel> SetValuesAsync(AnimeModel model, HttpClient client, bool isGzip = true)
+        public static async Task<bool> TrySetValuesAsync(AnimeModel model, HttpClient client, bool isGzip = true)
         {
-            using var responseStream = await client.GetStreamAsync(pageInfoRequestPattern + model.AniDbId);
-            using var decompressionStream = new GZipStream(responseStream, CompressionMode.Decompress);
-            var animeXml = XDocument.Load(isGzip ? decompressionStream : responseStream).Element("anime");
+            try
+            {
+                using var responseStream = await client.GetStreamAsync(pageInfoRequestPattern + model.AniDbId);
+                using var decompressionStream = new GZipStream(responseStream, CompressionMode.Decompress);
+                var animeXml = XDocument.Load(isGzip ? decompressionStream : responseStream).Element("anime");
 
-            model.Type = animeXml.Element("type").Value;
-            model.Episodecount = ushort.Parse(animeXml.Element("episodecount").Value);
-            model.StartingDate = DateTime.Parse(animeXml.Element("startdate").Value);
-            model.AddingDate = DateTime.Now;
-            model.Name = animeXml
-                .Element("titles")
-                .Elements()
-                .First(e => e.Attribute("{http://www.w3.org/XML/1998/namespace}lang").Value == "x-jat")
-                .Value;
-            model.Information = TakeAnimeDescription(animeXml.Element("description").Value).RemoveLinksAndSquareBrackets();
-            model.AniDbRating = double.Parse(animeXml.Element("ratings").Element("permanent").Value, CultureInfo.InvariantCulture);
-            model.ImageSource = imageRequestPattern + animeXml.Element("picture").Value;
+                model.Type = animeXml.Element("type").Value;
+                model.Episodecount = ushort.Parse(animeXml.Element("episodecount").Value);
+                model.StartingDate = DateTime.Parse(animeXml.Element("startdate").Value);
+                model.AddingDate = DateTime.Now;
+                model.Name = animeXml
+                    .Element("titles")
+                    .Elements()
+                    .First(e => e.Attribute("{http://www.w3.org/XML/1998/namespace}lang").Value == "x-jat")
+                    .Value;
+                model.Information = TakeAnimeDescription(animeXml.Element("description").Value).RemoveLinksAndSquareBrackets();
+                model.AniDbRating = double.Parse(animeXml.Element("ratings").Element("permanent").Value, CultureInfo.InvariantCulture);
+                model.ImageSource = imageRequestPattern + animeXml.Element("picture").Value;
 
-            return model;
+                return true;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(AniDbHelper).Name);
+            }
+
+            return false;
         }
 
         /// <param name="link">Например: https://anidb.net/anime/8691 или https://www.anidb.net/anime/8691 </param>

@@ -18,6 +18,13 @@ namespace EyE.Client.Pages
                 return;
 
             var musicModel = await DiscogsHelper.GetMusicModelAsync(ItemAdderViewModel.Id, PublicClient);
+
+            if (musicModel == default)
+            {
+                await ShowSomethingHappenedAsync();
+                return;
+            }
+
             musicModel.FolderName = FolderName;
             await PutItemAsync(musicModel);
         }

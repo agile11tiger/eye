@@ -1,10 +1,10 @@
-﻿using EyE.Shared.Enums;
-using EyE.Shared.Models.Common;
+﻿using EyE.Shared.Models.Common;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -24,30 +24,57 @@ namespace EyE.Shared.Helpers
         /// <param name="link">Например: https://ru.wikipedia.org/wiki/Ария_(группа) </param>
         public static async Task<WikiModel> GetPageSummaryAsync(string link, HttpClient client)
         {
-            using var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageSummaryRequestPattern + GetId(link));
-            var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-            return GetSummary(summaryObject, link);
+            try
+            {
+                using var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageSummaryRequestPattern + GetId(link));
+                var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
+                return GetSummary(summaryObject, link, client);
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+            }
+
+            return default;
         }
 
         /// <param name="link">Например: https://ru.wikipedia.org </param>
         public static async Task<WikiModel> GetRandomPageSummaryAsync(string link, HttpClient client)
         {
-            using var responseStream = await client.GetStreamAsync(link + randomPageSummaryRequestPattern);
-            var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-            var canonicalTitle = summaryObject["titles"].EnumerateObject().First(obj => obj.Name == "canonical").Value;
-            return GetSummary(summaryObject, $"{link}/wiki/{canonicalTitle}");
+            try
+            {
+                using var responseStream = await client.GetStreamAsync(link + randomPageSummaryRequestPattern);
+                var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
+                var canonicalTitle = summaryObject["titles"].EnumerateObject().First(obj => obj.Name == "canonical").Value;
+                return GetSummary(summaryObject, $"{link}/wiki/{canonicalTitle}", client);
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+            }
+
+            return default;
         }
 
         /// <param name="link">Например: https://ru.wikipedia.org/wiki/Ария_(группа) </param>
         public static async Task<HtmlDocument> GetPageHtmlAsync(string link, HttpClient client)
         {
-            var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageHtmlRequestPattern + GetId(link));
-            var document = new HtmlDocument();
-            document.Load(responseStream);
-            return document;
+            try
+            {
+                var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageHtmlRequestPattern + GetId(link));
+                var document = new HtmlDocument();
+                document.Load(responseStream);
+                return document;
+            }
+            catch
+            {
+                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+            }
+
+            return default;
         }
 
-        private static WikiModel GetSummary(Dictionary<string, JsonElement> summaryObject, string link)
+        private static WikiModel GetSummary(Dictionary<string, JsonElement> summaryObject, string link, HttpClient client)
         {
             return new WikiModel()
             {

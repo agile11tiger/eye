@@ -2,11 +2,8 @@
 using EyE.Shared.Extensions;
 using EyE.Shared.Helpers;
 using EyE.Shared.Models.Review;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EyE.Client.Pages
