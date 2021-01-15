@@ -20,7 +20,6 @@ namespace EyE.Server.Controllers
             this.logger = logger;
         }
 
-        [Route("/")]
         public IActionResult Index()
         {
             return View();

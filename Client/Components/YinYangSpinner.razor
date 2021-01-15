@@ -1,3 +1,8 @@
 ﻿<div class="yinyangSpinner">
-    <div class="symbol"></div>
+    <div class="yinyangSpinner__title">@Title</div>
+    <div class="yinyangSpinner__symbol"></div>
 </div>
+
+@code{
+    [Parameter] public string Title { get; set; }
+}

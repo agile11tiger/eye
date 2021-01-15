@@ -22,7 +22,7 @@ namespace EyE.Server.Controllers
         public LoggingController(ILogger<LoggingController> logger)
         {
             this.logger = logger;
-            errorsFilePath = Environment.CurrentDirectory + @"\Logs\errors.txt";
+            errorsFilePath = Environment.CurrentDirectory + @"\Logs\errors.log";
         }
 
         public IActionResult AddError([FromBody] string message)

@@ -2,6 +2,7 @@ using EyE.Server.Data;
 using EyE.Server.Services;
 using EyE.Shared.Helpers;
 using EyE.Shared.ViewModels.Identity;
+using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -14,10 +15,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 
 [assembly: ApiController]
 namespace EyE.Server
@@ -82,10 +85,14 @@ namespace EyE.Server
             services
                 .AddIdentityServer(options =>
                 {
+                    options.Endpoints.EnableJwtRequestUri = true;
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseSuccessEvents = true;
+                    //options.UserInteraction.LogoutUrl = "/Identity/account/logout";
+                    //options.UserInteraction.LoginUrl = "/Identity/account/login";
+                    //options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                 })
                //.AddSigningCredential(new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256)), IdentityServerConstants.ECDsaSigningAlgorithm.ES256)
                //.AddSigningCredential(new RsaSecurityKey(RSA.Create()), IdentityServerConstants.RsaSigningAlgorithm.RS256)
@@ -152,6 +159,8 @@ namespace EyE.Server
 
                 if (!env.IsProduction())
                     endpoints.MapFallbackToFile("index.html");
+                else
+                    endpoints.MapFallbackToController("Index", "Home");
             });
         }
     }
