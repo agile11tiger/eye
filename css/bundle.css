@@ -1399,6 +1399,7 @@ mark{
     position: relative;
     align-items: center;
     justify-content: space-between;
+    border: 1px solid #bbb;
     background: linear-gradient(to bottom, #ddd 0%, #ccc 100%);
 }
 
@@ -1594,12 +1595,19 @@ mark{
 .yinyangSpinner {
     margin: auto;
     position: absolute;
-    top: calc(50% - 15vmin);
+    top: calc(30% - 15vmin);
     left: calc(50% - 15vmin);
     background-color: transparent;
 }
 
-.yinyangSpinner .symbol {
+.yinyangSpinner__title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: "Monotype Corsiva";
+    font-size: 3.5vh;
+}
+
+.yinyangSpinner__symbol {
     position: relative;
     width: 30vmin;
     height: 30vmin;
@@ -1609,8 +1617,8 @@ mark{
     animation: r 4s linear infinite;
 }
 
-    .yinyangSpinner .symbol:before,
-    .yinyangSpinner .symbol:after {
+    .yinyangSpinner__symbol:before,
+    .yinyangSpinner__symbol:after {
         --i: 0;
         position: absolute;
         top: 25%;
@@ -1626,7 +1634,7 @@ mark{
         content: "";
     }
 
-    .yinyangSpinner .symbol:after {
+    .yinyangSpinner__symbol:after {
         --i: 1;
     }
 
@@ -1641,7 +1649,6 @@ mark{
         transform: rotate(1turn);
     }
 }
-
 .anime .scroll__container__box{
     width: 450px;
 }
