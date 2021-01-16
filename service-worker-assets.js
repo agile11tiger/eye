@@ -13,11 +13,11 @@
       "url": "appsettings.Production.json"
     },
     {
-      "hash": "sha256-h89ndKZFuPZdYTDKhgB8R1KT21UgdChyWoYeKgWIMyU=",
+      "hash": "sha256-5RHnS2mdu6BkjctwSYdbi6R+Tac0coV1UTlSLTR\/peI=",
       "url": "css\/bundle.css"
     },
     {
-      "hash": "sha256-bj\/SuBhHL1nS9aZxo0zalCjvy01MF74XMqjkgDv2z9o=",
+      "hash": "sha256-kj9GC3J+yGZouL3Q3cVb6CrwJhwf0pV06g2mx3S8ry8=",
       "url": "css\/bundle.min.css"
     },
     {
@@ -33,7 +33,7 @@
       "url": "eye-512.png"
     },
     {
-      "hash": "sha256-b\/QYan+yzmV16OdmNy5U0gPOIf\/UwhbrX2vQGyqJbK8=",
+      "hash": "sha256-eNVWtAXJVAMDEy7xPWzUoNLNW9kVtD\/oFvx+RIgyebE=",
       "url": "index.html"
     },
     {
@@ -221,7 +221,7 @@
       "url": "_framework\/EyE.Shared.dll"
     },
     {
-      "hash": "sha256-4dUGCPqS0++BQCGoFmApG9GKTpQLQEokPDSNAXY9lUk=",
+      "hash": "sha256-J4L64WNz5bmIr5Bzu\/qQEf1Rfe0\/Q946sdmrH4oUOiQ=",
       "url": "_framework\/EyE.Client.dll"
     },
     {
@@ -401,7 +401,7 @@
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
-      "hash": "sha256-xnRii4PdKTyAXWpTyRL2fFI42khIOKuqc1kBjtGnENw=",
+      "hash": "sha256-H4i\/wwBcKz44txE1txjNGj7ljRmCafj6JbRysLYcigQ=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -409,5 +409,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "aWwYdIqy"
+  "version": "VwNBLGsz"
 };

@@ -1600,12 +1600,30 @@ mark{
     background-color: transparent;
 }
 
-.yinyangSpinner__title {
-    text-align: center;
-    margin-bottom: 10px;
-    font-family: "Monotype Corsiva";
-    font-size: 3.5vh;
+.yinyangSpinner__textContainer {
+    width: 30vmin;
+    height: 30vmin;
+    top: 0%;
+    left: 0%;
+    margin: auto;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
+
+.yinyangSpinner__text {
+    color: white;
+    font-size: 3.5vh;
+    mix-blend-mode: difference;
+    font-family: "Monotype Corsiva";
+}
+
+    .yinyangSpinner__text span {
+        display: block;
+        text-align: center;
+    }
 
 .yinyangSpinner__symbol {
     position: relative;
@@ -1649,6 +1667,7 @@ mark{
         transform: rotate(1turn);
     }
 }
+
 .anime .scroll__container__box{
     width: 450px;
 }
