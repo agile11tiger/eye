@@ -1,8 +1,13 @@
 ﻿<div class="yinyangSpinner">
-    <div class="yinyangSpinner__title">@Title</div>
     <div class="yinyangSpinner__symbol"></div>
+    <div class="yinyangSpinner__textContainer">
+        <div class="yinyangSpinner__text">@((MarkupString)Text)</div>
+    </div>
 </div>
 
 @code{
-    [Parameter] public string Title { get; set; }
+    /// <summary>
+    /// Must contain one or more tags "span".
+    /// </summary>
+    [Parameter] public string Text { get; set; }
 }
