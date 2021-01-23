@@ -73,6 +73,9 @@
 
 .scroll__container__box figcaption h3 {
     margin: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .scroll__container__box figcaption h3 a {
@@ -1683,14 +1686,16 @@ mark{
     margin-right: 10px;
 }
 
-.linkCatalog .scroll__container__box {
-    width: 230px;
+.films .scroll__container__box{
+    width: 490px;
 }
 
-.linkCatalog .scroll__container__box h3 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.films .scroll__container__box img {
+    margin-right: 10px;
+}
+
+.linkCatalog .scroll__container__box {
+    width: 230px;
 }
 
 .linkCatalog .scroll__container__box figure a {
