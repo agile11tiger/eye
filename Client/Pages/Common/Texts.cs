@@ -28,12 +28,12 @@ namespace EyE.Client.Pages.Common
 
         public override async Task CreateItemAsync()
         {
-            if (!await CheckAdminRoleAsync())
+            if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
             if (string.IsNullOrWhiteSpace(NewTextModel.Text))
             {
-                await ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
+                await UserChecker.ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
                 return;
             }
 

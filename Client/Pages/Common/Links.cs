@@ -29,7 +29,7 @@ namespace EyE.Client.Pages.Common
 
         public override async Task CreateItemAsync()
         {
-            if (!await CheckAdminRoleAsync() || !await CheckItemAdderViewModelAsync())
+            if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
             var linkModel = new LinkModel()

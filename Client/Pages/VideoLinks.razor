@@ -41,7 +41,7 @@
                             allowfullscreen="true"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             srcdoc=@($"<link rel='stylesheet' href='css/youtube.css?v1'>" +
-                                     $"<a href=//www.youtube.com/embed/{LinkHelper.GetLinkParameter(item.Link, "v")}?disablekb=1&autoplay=1>" +
+                                     $"<a href=//www.youtube.com/embed/{YoutubeHelper.GetId(item.Link)}?disablekb=1&autoplay=1>" +
                                      $"<img src={item.ImageSource}>" +
                                      $"<span class='playerStartButton'></span></a>")>
                     </iframe>

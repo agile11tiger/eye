@@ -1,4 +1,5 @@
 ﻿using EyE.Client.Components;
+using EyE.Client.Services;
 using EyE.Shared.Enums;
 using EyE.Shared.Extensions;
 using EyE.Shared.Models.Common.Interfaces;
@@ -26,8 +27,7 @@ namespace EyE.Client.Pages.Common
         [Inject] public JsonSerializerOptions Options { get; set; }
         [Inject] public HttpClient Client { get; set; }
         [Inject] public PublicHttpClient PublicClient { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
-        [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        [Inject] public UserChecker UserChecker { get; set; }
 
         public string PageURI { get; set; }
         public LinkedList<T> DatabaseItems { get; set; }
@@ -35,12 +35,16 @@ namespace EyE.Client.Pages.Common
         public T RefEditableItem { get; set; }
         public bool IsShowItemEditorWrapper { get; set; }
 
-        public async Task InitializeAsync(string pageURI, bool needUpdateTempItems = true)
+        public virtual async Task InitializeAsync(string pageURI, bool needUpdateTempItems = true)
         {
             PageURI = pageURI;
+            var authState = await UserChecker.GetAuthenticationStateAsync();
 
             //Получаем список с базы данных ОДИН РАЗ
-            DatabaseItems = await PublicClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
+            if (authState.User.Identity.IsAuthenticated)
+                DatabaseItems = await Client.GetFromJsonAsync<LinkedList<T>>(PageURI);
+            else
+                DatabaseItems = await PublicClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
 
             if (needUpdateTempItems)
                 UpdateTempItems();
@@ -56,7 +60,7 @@ namespace EyE.Client.Pages.Common
 
         public virtual async Task CreateItemAsync()
         {
-            if (!await CheckAdminRoleAsync() || !await CheckItemAdderViewModelAsync())
+            if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
             var response = await Client.PutAsJsonAsync(PageURI + "/Put", ItemAdderViewModel);
@@ -65,7 +69,7 @@ namespace EyE.Client.Pages.Common
 
         public async Task PutItemAsync(T model)
         {
-            if (!await CheckAdminRoleAsync())
+            if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
             var response = await Client.PutAsJsonAsync(PageURI + "/Put", model);
@@ -74,7 +78,7 @@ namespace EyE.Client.Pages.Common
 
         public async Task<bool> TryAddItemAsync(T model)
         {
-            if (!await CheckAdminRoleAsync())
+            if (!await UserChecker.CheckAdminRoleAsync())
                 return false;
 
             var response = await Client.PostAsJsonAsync(PageURI, model);
@@ -96,14 +100,14 @@ namespace EyE.Client.Pages.Common
             else
             {
                 var responseMessage = await response.Content.ReadAsStringAsync();
-                await ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось добавить");
+                await UserChecker.ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось добавить");
                 return false;
             }
         }
 
         public async Task DeleteItemAsync(int id)
         {
-            if (!await CheckAdminRoleAsync())
+            if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
             var request = new HttpRequestMessage(HttpMethod.Delete, $"{PageURI}/{id}");
@@ -119,13 +123,13 @@ namespace EyE.Client.Pages.Common
             else
             {
                 var responseMessage = await response.Content.ReadAsStringAsync();
-                await ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось удалить");
+                await UserChecker.ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось удалить");
             }
         }
 
         public async Task<bool> TryUpdateItemAsync()
         {
-            if (!await CheckAdminRoleAsync())
+            if (!await UserChecker.CheckAdminRoleAsync())
                 return false;
 
             var response = await Client.PutAsJsonAsync(PageURI, ItemEditorModel);
@@ -139,7 +143,7 @@ namespace EyE.Client.Pages.Common
             }
 
             var responseMessage = await response.Content.ReadAsStringAsync();
-            await ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось редактировать");
+            await UserChecker.ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось редактировать");
             return false;
         }
 
@@ -163,49 +167,7 @@ namespace EyE.Client.Pages.Common
 
         public async Task OpenLinkInNewTabAsync(string link)
         {
-            await JSRuntime.InvokeVoidAsync("window.open", link, "_blank");
-        }
-
-        public async Task<bool> CheckItemAdderViewModelAsync()
-        {
-            if (!string.IsNullOrWhiteSpace(ItemAdderViewModel.Id))
-                return true;
-            else
-            {
-                await ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
-                return false;
-            }
-        }
-
-        public async Task<bool> CheckAdminRoleAsync()
-        {
-            if (AuthenticationStateTask.Result.User.IsInRole(Roles.Admin.ToString()))
-                return true;
-            else
-            {
-                await ShowErrorAlertAllowOnlyAdminAsync();
-                return false;
-            }
-        }
-
-        public async Task ShowSomethingHappenedAsync()
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Что-то пошло не так. Сообщение об ошибке отправлено на сервер");
-        }
-
-        public async Task ShowErrorAlertNotAllowNullOrWhiteSpaceAsync()
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Поле должно быть заполнено");
-        }
-
-        public async Task ShowErrorAlertAllowOnlyAdminAsync()
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Это действие разрешено только администратору");
-        }
-
-        private async Task ShowErrorAlertAsync(HttpStatusCode statusCode, string text)
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Упссс, ошибка {statusCode}! {text}");
+            await UserChecker.JS.InvokeVoidAsync("window.open", link, "_blank");
         }
     }
 }

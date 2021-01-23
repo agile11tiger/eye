@@ -1,4 +1,5 @@
 ﻿using EyE.Shared.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -17,27 +18,40 @@ namespace EyE.Shared.Helpers
         private const string videoInfoRequestPattern = "https://noembed.com/embed?url=";
         public const string BasePath = "https://youtube.com";
 
-        /// <param name="link">Например: https://www.youtube.com/watch?v=jNQXAC9IVRw </param>
+        /// <param name="link">Например: https://youtu.be/4HohFXTbVtI?list=WL </param>
         public static async Task<LinkModel> GetLinkModelAsync(string link, HttpClient client)
         {
+            var linkWithoutParameters = LinkHelper.RemoveRequestParameters(link);
+
             try
             {
-                var responseStream = await client.GetStreamAsync(videoInfoRequestPattern + link);
+                //некоторые ссылки без параметров блокируются
+                var timeParameter = "?t=0";
+                var responseStream = await client.GetStreamAsync(videoInfoRequestPattern + linkWithoutParameters + timeParameter);
                 var youtubeObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
 
                 return new LinkModel()
                 {
-                    Link = link,
+                    Link = linkWithoutParameters,
                     Name = youtubeObject["title"].ToString(),
-                    ImageSource = $"//img.youtube.com/vi/{LinkHelper.GetLinkParameter(link, "v")}/hqdefault.jpg"
+                    ImageSource = $"//img.youtube.com/vi/{GetId(link)}/hqdefault.jpg"
                 };
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(link, client, typeof(YoutubeHelper).Name);
+                await LoggingHelper.SendErrorAsync(
+                    $"{videoInfoRequestPattern + linkWithoutParameters}\r\nMessage:{e.Message}",
+                    client,
+                    typeof(YoutubeHelper).Name);
             }
 
             return default;
+        }
+
+        public static string GetId(string link)
+        {
+            link = LinkHelper.RemoveRequestParameters(link);
+            return link.Substring(link.LastIndexOf('/') + 1);
         }
     }
 }

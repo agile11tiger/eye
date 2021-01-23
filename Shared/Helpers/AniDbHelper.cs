@@ -47,9 +47,9 @@ namespace EyE.Shared.Helpers
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(AniDbHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(AniDbHelper).Name);
             }
 
             return false;

@@ -30,9 +30,9 @@ namespace EyE.Shared.Helpers
                 var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
                 return GetSummary(summaryObject, link, client);
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
             }
 
             return default;
@@ -48,9 +48,9 @@ namespace EyE.Shared.Helpers
                 var canonicalTitle = summaryObject["titles"].EnumerateObject().First(obj => obj.Name == "canonical").Value;
                 return GetSummary(summaryObject, $"{link}/wiki/{canonicalTitle}", client);
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
             }
 
             return default;
@@ -66,9 +66,9 @@ namespace EyE.Shared.Helpers
                 document.Load(responseStream);
                 return document;
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(link, client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
             }
 
             return default;

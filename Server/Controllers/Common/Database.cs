@@ -21,10 +21,10 @@ namespace EyE.Server.Controllers.Common
         protected readonly ApplicationDbContext Db;
         protected readonly IHttpClientFactory ClientFactory;
 
-        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
+        //[ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public virtual async Task<IActionResult> GetAsync()
         {
             var list = await GetItems().ToListAsync();
             list.Reverse();

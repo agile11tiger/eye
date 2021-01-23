@@ -27,15 +27,24 @@ namespace EyE.Server.Controllers
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.DiscogsId == model.DiscogsId) == null)
             {
-                var result = await DiscogsHelper.TrySetDiscogsImageAsync(model, ClientFactory.CreateClient("localClient"));
-
-                if (result == false)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
-
+                await DiscogsHelper.SetImageSourceAsync(model, ClientFactory.CreateClient("localClient"));
                 return await AddAsync(model);
             }
 
             return BadRequest("Объект уже существует");
+        }
+
+        [HttpPost("[action]")]
+        public virtual async Task<IActionResult> UpdateImageSourcesAsync()
+        {
+            foreach(var item in await GetItems().ToListAsync())
+            {
+                await DiscogsHelper.SetImageSourceAsync(item, ClientFactory.CreateClient("localClient"));
+                Db.Update(item);
+                await Db.SaveChangesAsync();
+            }
+
+            return NoContent();
         }
 
         public override DbSet<MusicModel> GetItems()

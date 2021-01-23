@@ -9,29 +9,52 @@ namespace EyE.Shared.Enums
 
 
         //Links
-        [Display(Name = "Аниме, которые я смотрел")] AnimeWatched = 100,
-        [Display(Name = "Аниме, которые я хочу посмотреть")] AnimeWillWatch,
+        [Display(Name = "Аниме, которые смотрел")] AnimeWatched = 100,
+        [Display(Name = "Аниме, которые хочу посмотреть")] AnimeWillWatch,
         [Display(Name = "Сайты для просмотра аниме")] AnimeSites,
+        [Display(Name = "Аниме клипы")] AnimeClips,
 
-        [Display(Name = "Музыка, которую я слушал")] MusicListened = 110,
-        [Display(Name = "Музыка, которую я хочу послушать")] MusicWillListen,
+        [Display(Name = "Русская музыка, которую слушал")] RussianMusicListened = 110,
+        [Display(Name = "Зарубежная музыка, которую слушал")] ForeignMusicListened,
+        [Display(Name = "Музыка, которую хочу послушать")] MusicWillListen,
+        [Display(Name = "Любимые песни")] FavoriteSongs,
         [Display(Name = "Сайты для прослушивания музыки")] MusicSites,
+        [Display(Name = "Cсылки музыки")] MusicLinks,
 
-        [Display(Name = "Фильмы, которые я смотрел")] FilmsWatched = 120,
-        [Display(Name = "Фильмы, которые я хочу посмотреть")] FilmsWillWatch,
+        [Display(Name = "Фильмы, которые смотрел")] FilmsWatched = 120,
+        [Display(Name = "Фильмы, которые хочу посмотреть")] FilmsWillWatch,
         [Display(Name = "Сайты для просмотра фильмов")] FilmSites,
         [Display(Name = "Фильмы, ломающие психику, которые смотрел")] FilmsBreakingPsycheWatched,
         [Display(Name = "Фильмы, ломающие психику, которые хочу посмотреть")] FilmsBreakingPsycheWillWatch,
 
-        [Display(Name = "Сериалы, которые я смотрел")] SerialsWatched = 130,
-        [Display(Name = "Сериалы, которые я хочу посмотреть")] SerialsWillWatch,
+        [Display(Name = "Сериалы, которые смотрел")] SerialsWatched = 130,
+        [Display(Name = "Сериалы, которые хочу посмотреть")] SerialsWillWatch,
         [Display(Name = "Сайты для просмотра сериалов")] SerialSites,
 
         [Display(Name = "Видео, которые цепляют")] BieutifulVideos = 140,
-        [Display(Name = "Nightcore")] Nightcore,
+        [Display(Name = "Nightcore")] NightcoreMusic,
+        [Display(Name = "Необычная музыка")] UnusualMusic,
+        [Display(Name = "Расслабляющая музыка")] RelaxingMusic,
+        [Display(Name = "Концентрирующая музыка")] ConcentratingMusic,
+        [Display(Name = "Ниточки")] Threads,
 
-        [Display(Name = "Рецепты еды")] FoodRecipes = 150,
+        [Display(Name = "Ссылки игр")] GameLinks = 160,
+        [Display(Name = "Игры, в которые играл")] GamesPlayed = 162,
+
+        [Display(Name = "Рецепты еды")] FoodRecipes = 170,
         [Display(Name = "Рецепты напитков")] DrinkRecipes,
+
+        [Display(Name = "Расписание")] Schedule = 180,
+        [Display(Name = "Текстовые заметки")] TextNotes,
+        [Display(Name = "Youtube заметки")] YoutubeNotes,
+        [Display(Name = "Ссылочные заметки")] LinkNotes,
+
+
+        [Display(Name = "Халява")] Freebie = 200,
+
+        [Display(Name = "Мультсериалы моего детства")] CartoonSeriesMyChildhood = 210,
+        [Display(Name = "Мультфильмы, которые смотрел")] CartoonFilmsWatched,
+        [Display(Name = "Мультсериалы, которые смотрел")] CartoonSeriesWatched,
 
 
         //Backend
@@ -39,13 +62,15 @@ namespace EyE.Shared.Enums
         [Display(Name = "Основа(C#)")] CSharpBase = 510,
         [Display(Name = "Статьи(C#)")] CSharpArticles = 511,
         [Display(Name = "Основа(SQL)")] SQLBase = 520,
-        [Display(Name = "Статьи(SQL)")] SQLArticles = 521,
         [Display(Name = "Основа(Blazor)")] BlazorBase = 530,
-        [Display(Name = "Статьи(Blazor)")] BlazorArticles = 531,
+        [Display(Name = "Основа(ASP.NET Core)")] AspNetCoreBase = 540,
+        [Display(Name = "Основа(Testing)")] TestingBase = 550,
+        [Display(Name = "Основа(VCS)")] VersionControlSystemBase = 560,
 
 
         //Frontend
         [Display(Name = "Полезные инструменты(frontend)")] FrontendUsefulTools = 700,
+        [Display(Name = "Готовые элементы")] FinishedElements = 701,
         [Display(Name = "Основа(HTML)")] HtmlBase = 710,
         [Display(Name = "Основа(CSS)")] CssBase = 720,
         [Display(Name = "Стили элементов(CSS)")] CssElementStyles = 721,
@@ -56,9 +81,5 @@ namespace EyE.Shared.Enums
         //Mobile
         [Display(Name = "Полезные инструменты(mobile)")] MobileUsefulTools = 900,
         [Display(Name = "Основа(Xamarin)")] XamarinBase = 910,
-
-
-        //Text
-        [Display(Name = "Любимые песни")] FavoriteSongs = 1100,
     }
 }

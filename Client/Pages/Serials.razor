@@ -1,5 +1,5 @@
 ﻿@using EyE.Shared.Models.Review
-@inherits Reviews<SerialModel>
+@inherits IMDbReviews<SerialModel>
 
 <div class="serials scroll">
     <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
@@ -57,6 +57,8 @@
                         <input type="checkbox" id="showComment@(itemNumber)" />
                         <label label for="showComment@(itemNumber)">п/с</label>
                         <dd>@item.Comment</dd>
+                        <dt>Страна</dt>
+                        <dd>@item.Country</dd>
                         <dt>Жанр</dt>
                         <dd>@item.Genre</dd>
                         <dt>Описание</dt>
@@ -85,8 +87,15 @@
             <p>
                 <label for="scroll__itemEditor__folder">Папка: </label>
                 <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
-                    <option value="@FolderNames.SerialsWatched">@(FolderNames.SerialsWatched.GetAttribute<DisplayAttribute>().Name)</option>
-                    <option value="@FolderNames.SerialsWillWatch">@(FolderNames.SerialsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                    @if (FolderName == FolderNames.SerialsWatched || FolderName == FolderNames.CartoonSeriesWatched)
+                    {
+                        <option value="@FolderNames.SerialsWillWatch">@(FolderNames.SerialsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                    }
+                    else if (FolderName == FolderNames.SerialsWillWatch)
+                    {
+                        <option value="@FolderNames.SerialsWatched">@(FolderNames.SerialsWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                        <option value="@FolderNames.CartoonSeriesWatched">@(FolderNames.CartoonSeriesWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                    }
                 </select>
             </p>
             <p>

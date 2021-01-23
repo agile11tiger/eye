@@ -1,11 +1,10 @@
 ﻿@using EyE.Shared.Models.Review
-@using System.Text.Json
-@inherits Reviews<MusicModel>
+@inherits IMDbReviews<FilmModel>
 
-<div class="music scroll">
-    <OneLineAdder Header=@($"<a href='{DiscogsHelper.BasePath}' target='_blank'>{Header}</a>")
+<div class="films scroll">
+    <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
-                  Placeholder="Введите ссылку Discogs"
+                  Placeholder="Введите ссылку IMDb"
                   Create="CreateItemAsync" />
 
     <div class="scroll__panel">
@@ -40,29 +39,28 @@
                 <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
-                        <img src="@item.ImageSource" alt="Изображение" onerror="this.style='height:250px;'">
+                        <img src=@item.ImageSource alt="Изображение" onerror="this.style='height:250px;'">
+                        @*TODO: когда добавляеться в начало новый элемент, на мгновение, происходит дублирование картинки*@
+                        @*Не получилось исправить(многое перепробывал)*@
+                        @*<img id=@($"filmImg{item.Id}") src='/999-200x300.png' alt="Изображение" @onload='() => { JSRuntime.InvokeVoidAsync($"filmImg{item.Id}.setAttribute", "src", item.ImageSource); }'>*@
+                        @*<img src="@item.ImageSource" alt="Изображение" decoding="sync" importance="high" loading="eager">*@
                     </figure>
 
                     <dl>
-                        <dt>Год начала</dt>
-                        <dd>@item.StartingDate.Year</dd>
-                        <dt>Сайты</dt>
-                        <input type="checkbox" id="showSites@(itemNumber)" />
-                        <label label for="showSites@(itemNumber)">п/с</label>
-                        <dd class="grid">
-                            @foreach (var link in JsonDocument.Parse(item.Sites).RootElement.EnumerateArray())
-                            {
-                                <a href="@link.ToString()" target="_blank">@LinkHelper.GetDomain(link.ToString())</a>
-                            }
-                        </dd>
-                        <dt>Плейлист</dt>
-                        <input type="checkbox" id="youtubePlaylist@(itemNumber)" />
-                        <label label for="youtubePlaylist@(itemNumber)">п/с</label>
-                        <dd><a href="@item.YoutubePlaylist" target="_blank">слушать</a></dd>
+                        <dt>Год выхода</dt>
+                        <dd>@item.StartingDate.ToShortDateString()</dd>
+                        <dt>IMDb рейтинг</dt>
+                        <dd>@item.IMDbRating</dd>
+                        <dt>IMDb голосов</dt>
+                        <dd>@item.IMDbVotes</dd>
                         <dt>Комментарий</dt>
                         <input type="checkbox" id="showComment@(itemNumber)" />
                         <label label for="showComment@(itemNumber)">п/с</label>
                         <dd>@item.Comment</dd>
+                        <dt>Страна</dt>
+                        <dd>@item.Country</dd>
+                        <dt>Жанр</dt>
+                        <dd>@item.Genre</dd>
                         <dt>Описание</dt>
                         <input type="checkbox" id="showDescription@(itemNumber)" />
                         <label label for="showDescription@(itemNumber)">п/с</label>
@@ -86,14 +84,6 @@
     <SemiTransparentWrapper @bind-isShowWrapper="@IsShowItemEditorWrapper">
         <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="UpdateItemAsync">
             <h4>Редактировать</h4>
-            <p>
-                <label for="scroll__itemEditor__folder">Папка: </label>
-                <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
-                    <option value="@FolderNames.RussianMusicListened">@(FolderNames.RussianMusicListened.GetAttribute<DisplayAttribute>().Name)</option>
-                    <option value="@FolderNames.ForeignMusicListened">@(FolderNames.ForeignMusicListened.GetAttribute<DisplayAttribute>().Name)</option>
-                    <option value="@FolderNames.MusicWillListen">@(FolderNames.MusicWillListen.GetAttribute<DisplayAttribute>().Name)</option>
-                </select>
-            </p>
             <p>
                 <label for="scroll__itemEditor__comment">Комментарий: </label>
                 <textarea type="text" id="scroll__itemEditor__comment" @bind="ItemEditorModel.Comment" />

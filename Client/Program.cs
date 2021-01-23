@@ -1,7 +1,9 @@
 using Blazored.LocalStorage;
 using EyE.Client.Handlers;
+using EyE.Client.Services;
 using EyE.Shared.Helpers;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -29,7 +31,17 @@ namespace EyE.Client
                 .AddHttpMessageHandler<BaseAuthorizationMessageHandler>();
             services
                 .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("EyE.ServerAPI"))
-                .AddScoped(sp => new PublicHttpClient { BaseAddress = new Uri(serverUri) })
+                .AddScoped(sp => 
+                    new PublicHttpClient(
+                        new DefaultBrowserOptionsMessageHandler(
+                            new HttpClientHandler())
+                        {
+                            DefaultBrowserRequestCache = BrowserRequestCache.NoCache,
+                            DefaultBrowserRequestMode = BrowserRequestMode.Cors,
+                        })
+                    { 
+                        BaseAddress = new Uri(serverUri) 
+                    })
                 //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
                 .AddApiAuthorization(options =>
                 {
@@ -39,6 +51,7 @@ namespace EyE.Client
             builder.Services
                 //https://github.com/Blazored/LocalStorage
                 .AddBlazoredLocalStorage()
+                .AddScoped<UserChecker>()
                 .AddSingleton(JsonHelper.SerializeOptions);
             //builder.Services.AddScoped<ServerAuthenticationStateProvider>();
             //builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
@@ -52,5 +65,8 @@ namespace EyE.Client
 
     public class PublicHttpClient : HttpClient
     {
+        public PublicHttpClient(HttpMessageHandler handler) : base(handler)
+        {
+        }
     }
 }

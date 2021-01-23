@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,12 +24,41 @@ namespace EyE.Server.Controllers
         {
         }
 
+        private readonly FolderNames[] adminFolders = new[] 
+        {
+            FolderNames.Schedule,
+            FolderNames.TextNotes,
+            FolderNames.YoutubeNotes,
+            FolderNames.LinkNotes,
+        };
+
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
+        [AllowAnonymous]
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync()
+        {
+            if (User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()))
+            {
+                var list = await GetItems().ToListAsync();
+                list.Reverse();
+                return Ok(list);
+            }
+            else
+            {
+                var list = await GetItems()
+                    .Where(i => !adminFolders.Contains(i.FolderName))
+                    .ToListAsync();
+                list.Reverse();
+                return Ok(list);
+            }
+        }
+
         [HttpPut("[action]")]
         public async Task<IActionResult> PutAsync(LinkModel model)
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
             {
-                var result = false;
+                var result = true;
                 var client = ClientFactory.CreateClient("localClient");
 
                 switch (model.FolderName)
@@ -38,7 +68,17 @@ namespace EyE.Server.Controllers
                     case FolderNames.FilmSites:
                     case FolderNames.SerialSites:
                         result = await LinkHelper.TrySetTitleAndImageAsync(model, client); break;
+                    case FolderNames.AnimeClips:
+                    case FolderNames.FavoriteSongs:
                     case FolderNames.BieutifulVideos:
+                    case FolderNames.NightcoreMusic:
+                    case FolderNames.UnusualMusic:
+                    case FolderNames.RelaxingMusic:
+                    case FolderNames.ConcentratingMusic:
+                    case FolderNames.Threads:
+                    case FolderNames.Schedule:
+                    case FolderNames.TextNotes:
+                    case FolderNames.YoutubeNotes:
                         break;
                     default:
                         result = await LinkHelper.TrySetNameAndFaviconAsync(model, client); break;

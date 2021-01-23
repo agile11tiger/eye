@@ -14,18 +14,18 @@ namespace EyE.Server.Controllers
 {
     [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
-    public class SerialsController : IMDbController<SerialModel>
+    public class GamesController : IMDbController<GameModel>
     {
-        public SerialsController(
+        public GamesController(
             ApplicationDbContext db,
             IHttpClientFactory clientFactory)
             : base(db, clientFactory)
         {
         }
 
-        public override DbSet<SerialModel> GetItems()
+        public override DbSet<GameModel> GetItems()
         {
-            return Db.Serials;
+            return Db.Games;
         }
     }
 }

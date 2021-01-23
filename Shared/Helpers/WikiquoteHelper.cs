@@ -1,6 +1,7 @@
 ﻿using EyE.Shared.Models.Common;
 using EyE.Shared.ViewModels;
 using HtmlAgilityPack;
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -60,10 +61,10 @@ namespace EyE.Shared.Helpers
                     AddingDate = wikiModel.AddingDate,
                 };
             }
-            catch
+            catch (Exception e)
             {
-                if(!string.IsNullOrWhiteSpace(link) && link.StartsWith("https://ru.wikiquote.org/wiki/"))
-                    await LoggingHelper.SendErrorAsync(link, client, typeof(WikiquoteHelper).Name);
+                if (!string.IsNullOrWhiteSpace(link) && link.StartsWith("https://ru.wikiquote.org/wiki/"))
+                    await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiquoteHelper).Name);
             }
 
             return default;

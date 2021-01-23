@@ -73,6 +73,9 @@
 
 .scroll__container__box figcaption h3 {
     margin: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .scroll__container__box figcaption h3 a {

@@ -30,6 +30,7 @@ namespace EyE.Server.Data
         public DbSet<MusicModel> Music { get; set; }
         public DbSet<FilmModel> Films { get; set; }
         public DbSet<SerialModel> Serials { get; set; }
+        public DbSet<GameModel> Games { get; set; }
         public DbSet<LinkModel> Links { get; set; }
         public DbSet<TextModel> Texts { get; set; }
     }

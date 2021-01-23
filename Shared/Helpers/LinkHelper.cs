@@ -1,5 +1,6 @@
 ﻿using EyE.Shared.Models.Common;
 using HtmlAgilityPack;
+using System;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,17 +21,17 @@ namespace EyE.Shared.Helpers
             {
                 var web = new HtmlWeb();
                 var htmlDoc = await web.LoadFromWebAsync(model.Link);
-                var name = htmlDoc.DocumentNode.SelectSingleNode("//h1")
-                    ?.InnerText.Trim(' ', '\n', '\r')
-                    .Replace("&nbsp;", "\u00A0")
-                    ?? htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText;
-                model.Name = string.IsNullOrWhiteSpace(name) ? model.Link : name;
+                var name = htmlDoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText 
+                    ?? htmlDoc.DocumentNode.SelectSingleNode("//h1")?.InnerText;
+                model.Name = string.IsNullOrWhiteSpace(name) 
+                    ? model.Link 
+                    : Regex.Replace(name, @"\s+", " ").Replace("&nbsp;", "\u00A0");
                 model.ImageSource = "https://s2.googleusercontent.com/s2/favicons?domain=" + GetDomain(model.Link);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(LinkHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(LinkHelper).Name);
             }
 
             return false;
@@ -50,12 +51,19 @@ namespace EyE.Shared.Helpers
                 model.ImageSource = string.Empty;
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(LinkHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(LinkHelper).Name);
             }
 
             return false;
+        }
+
+        public static string RemoveRequestParameters(string link)
+        {
+            var questionCharPosition = link.IndexOf('?');
+            questionCharPosition = questionCharPosition == -1 ? link.Length : questionCharPosition;
+            return link.Substring(0, questionCharPosition);
         }
 
         /// <param name="link">Например: https://www.youtube.com/watch?v=5hVfxEc6WyY&list=WL&index=76 </param>

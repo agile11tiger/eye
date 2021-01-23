@@ -9,14 +9,14 @@ namespace EyE.Client.Pages
     {
         public override async Task CreateItemAsync()
         {
-            if (!await CheckAdminRoleAsync() || !await CheckItemAdderViewModelAsync())
+            if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
             var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicClient);
 
             if (linkModel == default)
             {
-                await ShowSomethingHappenedAsync();
+                await UserChecker.ShowSomethingHappenedAsync();
                 return;
             }
 

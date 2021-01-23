@@ -39,13 +39,13 @@ namespace EyE.Shared.Helpers
                     Name = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(artistObject["name"].ToString())),
                     StartingDate = DateTime.Parse($"1/1/{dateFirstRealease}"),
                     AddingDate = DateTime.Now,
-                    Sites = artistObject["urls"].ToString(),
+                    Sites = artistObject.TryGetValue("urls", out var jsonElement) ? jsonElement.ToString() : "[]",
                     Information = artistObject["profile"].ToString().RemoveLinksAndSquareBrackets()
                 };
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(link, client, typeof(DiscogsHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(DiscogsHelper).Name);
             }
 
             return default;
@@ -54,7 +54,7 @@ namespace EyE.Shared.Helpers
         /// <summary>
         /// Парсит сайт и забирает ссылку на изображение
         /// </summary>
-        public static async Task<bool> TrySetDiscogsImageAsync(LinkModel model, HttpClient client)
+        public static async Task SetImageSourceAsync(LinkModel model, HttpClient client)
         {
             try
             {
@@ -65,15 +65,11 @@ namespace EyE.Shared.Helpers
                     .SelectSingleNode("//span[@class='thumbnail_center']/img")
                     .GetAttributeValue("src", string.Empty);
                 model.ImageSource = image;
-
-                return true;
             }
-            catch
+            catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync(model.Link, client, typeof(DiscogsHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(DiscogsHelper).Name);
             }
-
-            return false;
         }
 
         /// <param name="link">Например: https://discogs.com/artist/484423-Ария или https://www.discogs.com/artist/484423-Ария </param>
