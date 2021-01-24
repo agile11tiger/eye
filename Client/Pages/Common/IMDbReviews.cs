@@ -25,7 +25,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var model = await IMDbHelper.GetIMDbModelAsync<T>(ItemAdderViewModel.Id, PublicClient);
+            var model = await IMDbHelper<T>.GetIMDbModelAsync(ItemAdderViewModel.Id, PublicClient);
             model.FolderName = FolderName;
             await PutItemAsync((T)model);
         }

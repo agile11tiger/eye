@@ -55,14 +55,6 @@ namespace EyE.Shared.Helpers
             return false;
         }
 
-        /// <param name="link">Например: https://anidb.net/anime/8691 или https://www.anidb.net/anime/8691 </param>
-        /// <returns>Например: anidb.net/anime/8691 </returns>
-        public static string GetShortLink(string link)
-        {
-            link = LinkHelper.TrimProtocolName(link);
-            return LinkHelper.TrimStartLettersWWW(link);
-        }
-
         /// <param name="link">Например: https://anidb.net/anime/8691 </param>
         /// <returns>Например: 8691</returns>
         public static string GetId(string link)

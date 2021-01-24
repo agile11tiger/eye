@@ -47,7 +47,7 @@ namespace EyE.Server.Controllers.Common
         {
             foreach (var currentItem in await GetItems().AsNoTracking().ToListAsync())
             {
-                var newItem = await IMDbHelper.GetIMDbModelAsync<T>(currentItem.Link, ClientFactory.CreateClient("localClient"));
+                var newItem = await IMDbHelper<T>.GetIMDbModelAsync(currentItem.Link, ClientFactory.CreateClient("localClient"));
                 newItem.Id = currentItem.Id;
                 newItem.AddingDate = currentItem.AddingDate;
                 newItem.FolderName = currentItem.FolderName;

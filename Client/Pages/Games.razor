@@ -2,7 +2,7 @@
 @inherits IMDbReviews<FilmModel>
 
 <div class="films scroll">
-    <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{IMDbHelper<GameModel>.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку IMDb"
                   Create="CreateItemAsync" />

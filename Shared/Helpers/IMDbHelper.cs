@@ -1,6 +1,9 @@
-﻿using EyE.Shared.Extensions;
+﻿using EyE.Shared.Converters.OMDb;
+using EyE.Shared.Extensions;
 using EyE.Shared.Models.Common;
 using EyE.Shared.Models.Review;
+using EyE.Shared.ViewModels.Common.Interfaces;
+using EyE.Shared.ViewModels.Review;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -8,21 +11,42 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace EyE.Shared.Helpers
 {
     //https://rapidapi.com/blog/how-to-use-imdb-api/
     //http://www.omdbapi.com/
-    //Limit: 1000/day
-    public static class IMDbHelper
+    //https://imdb-api.com/
+    //Limit: 1000/day for omdb
+    //Limit: 100/day for imdb
+    public static class IMDbHelper<T> where T : IMDbModel, new()
     {
-        private const string itemRequestPattern = "https://www.omdbapi.com/?apikey=29d4de6c&i=";
+        private const string omdbItemRequestPattern = "https://www.omdbapi.com/?apikey=29d4de6c&i=";
+        private const string imdbItemRequestPattern = "https://imdb-api.com/en/API/Title/k_t2q0r4nq/";
+        private const string imdbRequestParametersPattern = "/Images,Ratings,";
         //private const string imageRequestPattern = "https://img.omdbapi.com/?apikey=29d4de6c&i=";
+        private static readonly JsonSerializerOptions omdbSerializerOptions = new JsonSerializerOptions()
+        {
+            NumberHandling = JsonNumberHandling.AllowReadingFromString,
+            Converters =
+            {
+                new OMDbBooleanConverter(),
+                new OMDbDateTimeConverter(),
+                new OMDbUInt16Converter(),
+                new OMDbInt32Converter(),
+            }
+        };
+        private static readonly JsonSerializerOptions imdbSerializerOptions = new JsonSerializerOptions()
+        {
+            NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        };
+
         public const string BasePath = "https://imdb.com";
 
         /// <param name="link">Например: https://www.imdb.com/title/tt0380510/?ref_=vp_back </param>
-        public static async Task<IMDbModel> GetIMDbModelAsync<T>(string link, HttpClient client) where T: IMDbModel, new()
+        public static async Task<IMDbModel> GetIMDbModelAsync(string link, HttpClient client)
         {
             try
             {
@@ -35,28 +59,10 @@ namespace EyE.Shared.Helpers
             }
             catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}\r\n{e.StackTrace}", client, typeof(IMDbHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}\r\n{e.StackTrace}", client, typeof(IMDbHelper<T>).Name);
             }
 
-            var imdbId = GetId(link);
-            return new T()
-            {
-                Link = link,
-                Name = imdbId,
-                IMDbId = imdbId,
-                AddingDate = DateTime.Now,
-                ImageSource = await GetImageSourceAsync(link, client)
-            };
-        }
-
-        /// <param name="link">Например: https://imdb.com/title/tt0380510/?ref_=vp_back 
-        /// или https://www.imdb.com/title/tt0380510/?ref_=vp_back </param>
-        /// <returns>Например: imdb.com/title/tt0380510 </returns>
-        public static string GetShortLink(string link)
-        {
-            link = LinkHelper.TrimProtocolName(link);
-            link = LinkHelper.TrimStartLettersWWW(link);
-            return link.Substring(0, link.LastIndexOf('/'));
+            return await GetDefaultIMDbModelAsync(link, client);
         }
 
         /// <summary>
@@ -76,17 +82,30 @@ namespace EyE.Shared.Helpers
             }
             catch (Exception e)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(IMDbHelper).Name);
-                return "N/A";
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(IMDbHelper<T>).Name);
+                return "";
             }
+        }
+
+        private static async Task<T> GetDefaultIMDbModelAsync(string link, HttpClient client)
+        {
+            var imdbId = GetId(link);
+            return new T()
+            {
+                Link = link,
+                Name = imdbId,
+                IMDbId = imdbId,
+                AddingDate = DateTime.Now,
+                ImageSource = await GetImageSourceAsync(link, client)
+            };
         }
 
         /// <param name="link">Например: https://www.imdb.com/title/tt0380510/?ref_=vp_back </param>
         private static async Task<FilmModel> GetFilmModelAsync(string link, HttpClient client)
         {
             var filmModel = new FilmModel();
-            var (imdbModel, _) = await GetModelAsync(link, client);
-            imdbModel.CopyProperties(filmModel);
+            var imdbViewModel = await GetIMDbViewModelAsync(link, client);
+            imdbViewModel.CopyProperties(filmModel);
             return filmModel;
         }
 
@@ -94,9 +113,8 @@ namespace EyE.Shared.Helpers
         private static async Task<SerialModel> GetSerialModelAsync(string link, HttpClient client)
         {
             var serialModel = new SerialModel();
-            var (imdbModel, imdbJObject) = await GetModelAsync(link, client);
-            imdbModel.CopyProperties(serialModel);
-            serialModel.TotalSeasons = ushort.Parse(imdbJObject["totalSeasons"].ToString());
+            var imdbViewModel = await GetIMDbViewModelAsync(link, client);
+            imdbViewModel.CopyProperties(serialModel);
             return serialModel;
         }
 
@@ -104,44 +122,37 @@ namespace EyE.Shared.Helpers
         private static async Task<GameModel> GetGameModelAsync(string link, HttpClient client)
         {
             var gameModel = new GameModel();
-            var (imdbModel, _) = await GetModelAsync(link, client);
-            imdbModel.CopyProperties(gameModel);
+            var imdbViewModel = await GetIMDbViewModelAsync(link, client);
+            imdbViewModel.CopyProperties(gameModel);
             return gameModel;
         }
 
-        private static async Task<(IMDbModel, Dictionary<string, JsonElement>)> GetModelAsync(string link, HttpClient client)
+        private static async Task<IIMDbViewModel> GetIMDbViewModelAsync(string link, HttpClient client)
         {
-            var responseStream = await client.GetStreamAsync(itemRequestPattern + GetId(link));
-            var imdbObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
+            IIMDbViewModel imdbViewModel;
 
-            if (imdbObject["Response"].ToString() == "False")
-                throw new HttpRequestException(imdbObject["Error"].ToString());
-
-            DateTime.TryParse(imdbObject["Released"].ToString(), out var startingDate);
-            ushort.TryParse(imdbObject["Runtime"].ToString().Split(' ').First(), out var runtime);
-            double.TryParse(imdbObject["imdbRating"].ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var imdbRating);
-            int.TryParse(imdbObject["imdbVotes"].ToString(), NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var imdbVotes);
-            var poster = imdbObject["Poster"].ToString();
-
-            if (poster == "N/A")
-                poster = await GetImageSourceAsync(link, client);
-
-            return (new IMDbModel()
+            try
             {
-                Link = link,
-                IMDbId = imdbObject["imdbID"].ToString(),
-                Name = imdbObject["Title"].ToString(),
-                Country = imdbObject["Country"].ToString(),
-                ImageSource = poster,
-                StartingDate = startingDate,
-                AddingDate = DateTime.Now,
+                using var omdbResponseStream = await client.GetStreamAsync(omdbItemRequestPattern + GetId(link));
+                imdbViewModel = await JsonSerializer.DeserializeAsync<OMDbViewModel>(omdbResponseStream, omdbSerializerOptions);
 
-                Runtime = runtime,
-                Genre = imdbObject["Genre"].ToString(),
-                Information = imdbObject["Plot"].ToString(),
-                IMDbRating = imdbRating,
-                IMDbVotes = imdbVotes,
-            }, imdbObject);
+                if (!imdbViewModel.IsError)
+                    return imdbViewModel;
+            }
+            catch (Exception e)
+            {
+                await LoggingHelper.SendErrorAsync(
+                    $"Allowed error.\r\n{link}\r\nMessage:{e.Message}\r\n{e.StackTrace}", client, typeof(IMDbHelper<T>).Name);
+            }
+
+            using var imdbResponseStream = await client.GetStreamAsync(imdbItemRequestPattern + GetId(link) + imdbRequestParametersPattern);
+            imdbViewModel = await JsonSerializer.DeserializeAsync<IMDbViewModel>(imdbResponseStream, imdbSerializerOptions);
+
+            if (imdbViewModel.IsError == false)
+                throw new HttpRequestException(imdbViewModel.Error);
+
+            imdbViewModel.Link = link;
+            return imdbViewModel;
         }
 
         /// <param name="link">Например: https://imdb.com/title/tt0380510/?ref_=vp_back </param>

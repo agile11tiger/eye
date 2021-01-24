@@ -89,13 +89,6 @@ namespace EyE.Shared.Helpers
             return Regex.Replace(link, "https?://", string.Empty);
         }
 
-        /// <param name="link">Например: www.imdb.com</param>
-        /// <returns>Например: imdb.com</returns>
-        public static string TrimStartLettersWWW(string link)
-        {
-            return link.TrimStart('w', '.');
-        }
-
         /// <param name="link">Например: https://www.imdb.com/title/tt1037705/?ref_=nv_sr_srsg_0 </param>
         /// <returns>Например: imdb.com</returns>
         public static string GetDomain(string link)

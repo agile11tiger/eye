@@ -72,15 +72,6 @@ namespace EyE.Shared.Helpers
             }
         }
 
-        /// <param name="link">Например: https://discogs.com/artist/484423-Ария или https://www.discogs.com/artist/484423-Ария </param>
-        /// <returns>Например: discogs.com/artist/484423 </returns>
-        public static string GetShortLink(string link)
-        {
-            link = LinkHelper.TrimProtocolName(link);
-            link = LinkHelper.TrimStartLettersWWW(link);
-            return link.Substring(0, link.IndexOf('-'));
-        }
-
         /// <param name="link">Например: https://discogs.com/artist/484423-Ария </param>
         /// <returns>Например: 484423</returns>
         private static string GetId(string link)

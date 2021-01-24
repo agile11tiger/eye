@@ -26,8 +26,8 @@ namespace EyE.Client.Components
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
-                await Client.PostAsync("api/Films/UpdateItems", null);
-                await Client.PostAsync("api/Serials/UpdateItems", null);
+                //await Client.PostAsync("api/Films/UpdateItems", null);
+                //await Client.PostAsync("api/Serials/UpdateItems", null);
                 await Client.PostAsync("api/Games/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление imdb пунктов завершено");
             }

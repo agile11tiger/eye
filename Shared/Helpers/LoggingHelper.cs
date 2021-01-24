@@ -1,4 +1,5 @@
 ﻿using EyE.Shared.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -12,7 +13,7 @@ namespace EyE.Shared.Helpers
     {
         public static async Task SendErrorAsync(string message, HttpClient client, string className, [CallerMemberName] string memberName = null)
         {
-            await client.PostAsJsonAsync("Logging/AddError", $"{className}.{memberName}: " + message);
+            await client.PostAsJsonAsync("Logging/AddError", $"{DateTime.Now}\r\n{className}.{memberName}: " + message);
         }
     }
 }
