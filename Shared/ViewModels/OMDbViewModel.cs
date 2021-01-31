@@ -13,7 +13,7 @@ namespace EyE.Shared.ViewModels.Review
         public ushort Runtime { get; set; }
         public string Genre { get; set; }
         public DateTime AddingDate { get => DateTime.Now; }
-        public DateTime StartingDate { get => ReleasedDatetime == default ? ReleasedDatetime.AddYears(Year) : ReleasedDatetime; }
+        public DateTime StartingDate { get => ReleasedDatetime == default ? ReleasedDatetime.AddYears(Year - 1) : ReleasedDatetime; }
         [JsonPropertyName("imdbID")] public string IMDbId { get; set; }
         [JsonPropertyName("Title")] public string Name { get; set; }
         [JsonPropertyName("Poster")] public string ImageSource { get; set; }
@@ -23,6 +23,9 @@ namespace EyE.Shared.ViewModels.Review
         [JsonPropertyName("imdbVotes")] public int IMDbVotes { get; set; }
         [JsonPropertyName("totalSeasons")] public ushort TotalSeasons { get; set; }
 
-        public string Error { get; set; }
+        /// <summary>
+        /// Ошибка говорит о том, что ВСЕ данные не получены
+        /// </summary>
+        public string Error { get; set; } = string.Empty;
     }
 }

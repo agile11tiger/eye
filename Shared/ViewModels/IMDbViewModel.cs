@@ -11,7 +11,7 @@ namespace EyE.Shared.ViewModels.Review
     {
         public string Link { get; set; }
         public DateTime AddingDate { get => DateTime.Now; }
-        public DateTime StartingDate { get => ReleasedDatetime == default ? ReleasedDatetime.AddYears(Year) : ReleasedDatetime; }
+        public DateTime StartingDate { get => ReleasedDatetime == default ? ReleasedDatetime.AddYears(Year - 1) : ReleasedDatetime; }
         public ushort TotalSeasons { get => (ushort)TvSeriesInfo.Seasons.FirstOrDefault(); set => Enumerable.Range(1, value - 1); }
         [JsonPropertyName("id")] public string IMDbId { get; set; }
         [JsonPropertyName("title")] public string Name { get; set; }
@@ -26,7 +26,10 @@ namespace EyE.Shared.ViewModels.Review
         [JsonPropertyName("imDbRatingVotes")] public int IMDbVotes { get; set; }
         [JsonPropertyName("tvSeriesInfo")] public TvSeriesInfo TvSeriesInfo { get; set; }
 
-        [JsonPropertyName("errorMessage")] public string Error { get; set; }
+        /// <summary>
+        /// Ошибка говорит о том, что НЕКОТОРЫЕ данные не получены
+        /// </summary>
+        [JsonPropertyName("errorMessage")] public string Error { get; set; } = string.Empty;
     }
 
     public class TvSeriesInfo

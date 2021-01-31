@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EyE.Shared.Converters.OMDb
+namespace EyE.Shared.Converters
 {
     /// <summary>
     /// Example: "17,489"
     /// </summary>
-    public class OMDbInt32Converter : JsonConverter<int>
+    public class Int32Converter : JsonConverter<int>
     {
         public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

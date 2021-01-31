@@ -21,7 +21,7 @@ namespace EyE.Server.Controllers.Common
         protected readonly ApplicationDbContext Db;
         protected readonly IHttpClientFactory ClientFactory;
 
-        //[ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
         [AllowAnonymous]
         [HttpGet]
         public virtual async Task<IActionResult> GetAsync()
@@ -32,7 +32,7 @@ namespace EyE.Server.Controllers.Common
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(T item)
+        public async Task<IActionResult> PostAsync(T item)
         {
             await GetItems().AddAsync(item);
             await Db.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace EyE.Server.Controllers.Common
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(T item)
+        public async Task<IActionResult> PutAsync(T item)
         {
             Db.Update(item);
             await Db.SaveChangesAsync();

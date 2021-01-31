@@ -6,6 +6,10 @@
         {
             <li @onmouseup="async () => await ShowItemEditor.InvokeAsync(Item)">Изменить</li>
         }
+        @if (UpdateItem.HasDelegate)
+        {
+            <li @onmouseup="async () => await UpdateItem.InvokeAsync(Item)">Обновить</li>
+        }
         @if (DeleteItem.HasDelegate)
         {
             <li @onmouseup="async () => await DeleteItem.InvokeAsync(ItemId)">Удалить</li>
@@ -18,5 +22,6 @@
     [Parameter] public int ItemId { get; set; }
     [Parameter] public int ItemNumber { get; set; }
     [Parameter] public EventCallback<object> ShowItemEditor { get; set; }
+    [Parameter] public EventCallback<object> UpdateItem { get; set; }
     [Parameter] public EventCallback<int> DeleteItem { get; set; }
 }

@@ -33,7 +33,7 @@
                     <td></td>
                     <td class="newItem">
                         <textarea type="text" @bind="@NewTextModel.Text" placeholder="Введите текст" />
-                        <button @onclick="CreateItemAsync">Сохранить</button>
+                        <button @onclick="AddItemIfNotExistAsync">Сохранить</button>
                     </td>
                     <td></td>
                 </tr>

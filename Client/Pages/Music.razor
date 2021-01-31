@@ -6,7 +6,7 @@
     <OneLineAdder Header=@($"<a href='{DiscogsHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку Discogs"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__panel">
         <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />

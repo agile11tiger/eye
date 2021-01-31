@@ -27,7 +27,7 @@ namespace EyE.Client.Pages.Common
             await InitializeAsync("api/Links", false);
         }
 
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
@@ -37,7 +37,7 @@ namespace EyE.Client.Pages.Common
                 Link = ItemAdderViewModel.Id,
                 FolderName = FolderName
             };
-            await PutItemAsync(linkModel);
+            await AddItemIfNotExistAsync(linkModel);
         }
     }
 }

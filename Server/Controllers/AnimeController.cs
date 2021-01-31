@@ -23,7 +23,7 @@ namespace EyE.Server.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> PutAsync(AnimeModel model)
+        public async Task<IActionResult> AddIfNotExistAsync(AnimeModel model)
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.AniDbId == model.AniDbId) == null)
             {
@@ -32,7 +32,7 @@ namespace EyE.Server.Controllers
                 if (result == false) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
 
-                return await AddAsync(model);
+                return await PostAsync(model);
             }
 
             return BadRequest("Объект уже существует");

@@ -7,7 +7,7 @@ namespace EyE.Client.Pages
     [Route("VideoLinks/{StrFolderName}")]
     public partial class VideoLinks
     {
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
@@ -21,7 +21,7 @@ namespace EyE.Client.Pages
             }
 
             linkModel.FolderName = FolderName;
-            await PutItemAsync(linkModel);
+            await AddItemIfNotExistAsync(linkModel);
         }
     }
 }

@@ -6,12 +6,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EyE.Shared.Converters.OMDb
+namespace EyE.Shared.Converters
 {
     /// <summary>
     /// Example: "True", "False"
     /// </summary>
-    public class OMDbBooleanConverter : JsonConverter<bool>
+    public class BooleanConverter : JsonConverter<bool>
     {
         public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

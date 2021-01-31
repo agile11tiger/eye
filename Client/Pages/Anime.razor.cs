@@ -25,7 +25,7 @@ namespace EyE.Client.Pages
             await InitializeAsync("api/Anime");
         }
 
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
@@ -36,7 +36,7 @@ namespace EyE.Client.Pages
                 AniDbId = AniDbHelper.GetId(ItemAdderViewModel.Id),
                 FolderName = FolderName,
             };
-            await PutItemAsync(animemodel);
+            await AddItemIfNotExistAsync(animemodel);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace EyE.Server.Controllers.Common
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> PutAsync(T model)
+        public async Task<IActionResult> AddIfNotExistAsync(T model)
         {
             IQueryable<T> items;
             //С папкой "CartoonSeriesMyChildhood" допустимы дубликаты
@@ -36,7 +36,7 @@ namespace EyE.Server.Controllers.Common
 
             if (await items.FirstOrDefaultAsync(i => i.IMDbId == model.IMDbId) == null)
             {
-                return await AddAsync(model);
+                return await PostAsync(model);
             }
 
             return BadRequest("Объект уже существует");
@@ -47,7 +47,12 @@ namespace EyE.Server.Controllers.Common
         {
             foreach (var currentItem in await GetItems().AsNoTracking().ToListAsync())
             {
-                var newItem = await IMDbHelper<T>.GetIMDbModelAsync(currentItem.Link, ClientFactory.CreateClient("localClient"));
+                var newItem = await IMDbHelper.GetIMDbModelAsync<T>(currentItem.Link, ClientFactory.CreateClient("localClient"));
+
+                //если по каким-то причинам не удалось получить новые данные
+                if (newItem.IMDbId == newItem.Name)
+                    continue;
+
                 newItem.Id = currentItem.Id;
                 newItem.AddingDate = currentItem.AddingDate;
                 newItem.FolderName = currentItem.FolderName;

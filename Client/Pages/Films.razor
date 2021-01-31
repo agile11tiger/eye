@@ -2,10 +2,10 @@
 @inherits IMDbReviews<FilmModel>
 
 <div class="films scroll">
-    <OneLineAdder Header=@($"<a href='{IMDbHelper<FilmModel>.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку IMDb"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__panel">
         <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
@@ -39,7 +39,7 @@
                 <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
-                        <img src=@item.ImageSource alt="Изображение" onerror="this.style='height:250px;'">
+                        <img src="@(IMDbHelper.ImageRequestPattern + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
                         @*TODO: когда добавляеться в начало новый элемент, на мгновение, происходит дублирование картинки*@
                         @*Не получилось исправить(многое перепробывал)*@
                         @*<img id=@($"filmImg{item.Id}") src='/999-200x300.png' alt="Изображение" @onload='() => { JSRuntime.InvokeVoidAsync($"filmImg{item.Id}.setAttribute", "src", item.ImageSource); }'>*@
@@ -73,6 +73,7 @@
                                  ItemId="item.Id"
                                  ItemNumber="itemNumber"
                                  ShowItemEditor="ShowItemEditor"
+                                 UpdateItem="async i => await UpdateItemAsync((FilmModel)i)"
                                  DeleteItem="DeleteItemAsync" />
                 </div>
 
@@ -89,12 +90,19 @@
             <p>
                 <label for="scroll__itemEditor__folder">Папка: </label>
                 <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
-                    @if (FolderName == FolderNames.FilmsWatched || FolderName == FolderNames.CartoonFilmsWatched)
+                    @if (FolderName == FolderNames.FilmsWatched)
                     {
+                        <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                    }
+                    else if (FolderName == FolderNames.CartoonFilmsWatched)
+                    {
+                        <option value="@FolderNames.CartoonFilmsWatched">@(FolderNames.CartoonFilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                     }
                     else if (FolderName == FolderNames.FilmsWillWatch)
                     {
+                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.CartoonFilmsWatched">@(FolderNames.CartoonFilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
                     }

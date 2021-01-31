@@ -17,7 +17,7 @@ namespace EyE.Shared.Enums
         [Display(Name = "Русская музыка, которую слушал")] RussianMusicListened = 110,
         [Display(Name = "Зарубежная музыка, которую слушал")] ForeignMusicListened,
         [Display(Name = "Музыка, которую хочу послушать")] MusicWillListen,
-        [Display(Name = "Любимые песни")] FavoriteSongs,
+        [Display(Name = "Красивые песни")] BieutifulSongs,
         [Display(Name = "Сайты для прослушивания музыки")] MusicSites,
         [Display(Name = "Cсылки музыки")] MusicLinks,
 
@@ -31,7 +31,7 @@ namespace EyE.Shared.Enums
         [Display(Name = "Сериалы, которые хочу посмотреть")] SerialsWillWatch,
         [Display(Name = "Сайты для просмотра сериалов")] SerialSites,
 
-        [Display(Name = "Видео, которые цепляют")] BieutifulVideos = 140,
+        [Display(Name = "Красивые видео")] BieutifulVideos = 140,
         [Display(Name = "Nightcore")] NightcoreMusic,
         [Display(Name = "Необычная музыка")] UnusualMusic,
         [Display(Name = "Расслабляющая музыка")] RelaxingMusic,

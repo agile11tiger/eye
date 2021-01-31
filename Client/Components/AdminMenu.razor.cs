@@ -22,14 +22,30 @@ namespace EyE.Client.Components
             }
         }
 
-        public async Task UpdateIMDbItemsAsync()
+        public async Task UpdateFilmsAsync()
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
-                //await Client.PostAsync("api/Films/UpdateItems", null);
-                //await Client.PostAsync("api/Serials/UpdateItems", null);
+                await Client.PostAsync("api/Films/UpdateItems", null);
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление фильмов завершено");
+            }
+        }
+
+        public async Task UpdateSerialssAsync()
+        {
+            if (await UserChecker.CheckAdminRoleAsync())
+            {
+                await Client.PostAsync("api/Serials/UpdateItems", null);
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление сериалов завершено");
+            }
+        }
+
+        public async Task UpdateGamesItemsAsync()
+        {
+            if (await UserChecker.CheckAdminRoleAsync())
+            {
                 await Client.PostAsync("api/Games/UpdateItems", null);
-                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление imdb пунктов завершено");
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление игр завершено");
             }
         }
     }

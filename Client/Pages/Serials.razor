@@ -2,10 +2,10 @@
 @inherits IMDbReviews<SerialModel>
 
 <div class="serials scroll">
-    <OneLineAdder Header=@($"<a href='{IMDbHelper<SerialModel>.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку IMDb"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__panel">
         <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
@@ -39,7 +39,7 @@
                 <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
-                        <img src="@item.ImageSource" alt="Изображение" onerror="this.style='height:250px;'">
+                        <img src="@(IMDbHelper.ImageRequestPattern + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
                     </figure>
 
                     <dl>
@@ -71,6 +71,7 @@
                                  ItemId="item.Id"
                                  ItemNumber="itemNumber"
                                  ShowItemEditor="ShowItemEditor"
+                                 UpdateItem="async i => await UpdateItemAsync((SerialModel)i)"
                                  DeleteItem="DeleteItemAsync" />
                 </div>
 
@@ -87,14 +88,25 @@
             <p>
                 <label for="scroll__itemEditor__folder">Папка: </label>
                 <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
-                    @if (FolderName == FolderNames.SerialsWatched || FolderName == FolderNames.CartoonSeriesWatched)
+                    @if (FolderName == FolderNames.SerialsWatched)
                     {
+                        <option value="@FolderNames.SerialsWatched">@(FolderNames.SerialsWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                        <option value="@FolderNames.SerialsWillWatch">@(FolderNames.SerialsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                    }
+                    else if (FolderName == FolderNames.CartoonSeriesWatched)
+                    {
+                        <option value="@FolderNames.CartoonSeriesWatched">@(FolderNames.CartoonSeriesWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.SerialsWillWatch">@(FolderNames.SerialsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                     }
                     else if (FolderName == FolderNames.SerialsWillWatch)
                     {
+                        <option value="@FolderNames.SerialsWillWatch">@(FolderNames.SerialsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.SerialsWatched">@(FolderNames.SerialsWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.CartoonSeriesWatched">@(FolderNames.CartoonSeriesWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                    }
+                    else if (FolderName == FolderNames.CartoonSeriesMyChildhood)
+                    {
+                        <option value="@FolderNames.CartoonSeriesMyChildhood">@(FolderNames.CartoonSeriesMyChildhood.GetAttribute<DisplayAttribute>().Name)</option>
                     }
                 </select>
             </p>

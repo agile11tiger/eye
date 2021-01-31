@@ -5,7 +5,7 @@
     <OneLineAdder Header=@($"<a href='{YoutubeHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку Youtube"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__panel">
         <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />

@@ -23,12 +23,12 @@ namespace EyE.Server.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> PutAsync(MusicModel model)
+        public async Task<IActionResult> AddIfNotExistAsync(MusicModel model)
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.DiscogsId == model.DiscogsId) == null)
             {
                 await DiscogsHelper.SetImageSourceAsync(model, ClientFactory.CreateClient("localClient"));
-                return await AddAsync(model);
+                return await PostAsync(model);
             }
 
             return BadRequest("Объект уже существует");

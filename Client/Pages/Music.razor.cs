@@ -12,7 +12,7 @@ namespace EyE.Client.Pages
             await InitializeAsync("api/Music");
         }
 
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
@@ -26,7 +26,7 @@ namespace EyE.Client.Pages
             }
 
             musicModel.FolderName = FolderName;
-            await PutItemAsync(musicModel);
+            await AddItemIfNotExistAsync(musicModel);
         }
     }
 }

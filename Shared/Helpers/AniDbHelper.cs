@@ -16,11 +16,11 @@ namespace EyE.Shared.Helpers
     //Limit: 1page/2seccond
     public static class AniDbHelper
     {
-        // http://api.anidb.net:9001/httpapi?protover=1&request=randomrecommendation&clientver=2&client=andrealcantara
+        //private const string pageInfoRequestPattern = "http://api.anidb.net:9001/httpapi?client=andrealcantara&clientver=1&protover=1&request=anime&aid=";
         private const string pageInfoRequestPattern = "http://api.anidb.net:9001/httpapi?client=haruhibot&clientver=1&protover=1&request=anime&aid=";
         //https://cdn-eu.anidb.net/images/main/  - can`t loading src
         //https://cdn-eu.anidb.net/images/50x65  - good
-        private const string imageRequestPattern = "https://cdn-eu.anidb.net/images/150/";
+        public const string ImageRequestPattern = "https://cdn-eu.anidb.net/images/150/";
         public const string BasePath = "https://anidb.net";
 
         //Нельзя использовать на клиенте ошибка: Mixed Content
@@ -39,11 +39,16 @@ namespace EyE.Shared.Helpers
                 model.Name = animeXml
                     .Element("titles")
                     .Elements()
-                    .First(e => e.Attribute("{http://www.w3.org/XML/1998/namespace}lang").Value == "x-jat")
+                    .First(e =>
+                    {
+                        var langValue = e.Attribute("{http://www.w3.org/XML/1998/namespace}lang").Value;
+                        return langValue == "x-jat" || langValue == "x-zht" || langValue == "en";
+                    })
                     .Value;
-                model.Information = TakeAnimeDescription(animeXml.Element("description").Value).RemoveLinksAndSquareBrackets();
+                model.Information = TakeAnimeDescription(animeXml.Element("description")?.Value).RemoveLinksAndSquareBrackets();
                 model.AniDbRating = double.Parse(animeXml.Element("ratings").Element("permanent").Value, CultureInfo.InvariantCulture);
-                model.ImageSource = imageRequestPattern + animeXml.Element("picture").Value;
+                model.AniDbVotes = int.Parse(animeXml.Element("ratings").Element("permanent").Attribute("count").Value);
+                model.ImageSource = animeXml.Element("picture").Value;
 
                 return true;
             }
@@ -67,6 +72,9 @@ namespace EyE.Shared.Helpers
         /// </summary>
         private static string TakeAnimeDescription(string description)
         {
+            if (description == default)
+                return default;
+
             foreach (var str in description.Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
                 var animeDescription = str.Trim();
@@ -82,6 +90,9 @@ namespace EyE.Shared.Helpers
         /// <returns>Например: ... Haruyuki ... </returns>
         private static string RemoveLinksAndSquareBrackets(this string str)
         {
+            if (str == default)
+                return default;
+
             var pattern = @"(http.*\[)|\]|\[";
             return Regex.Replace(str, pattern, "");
         }

@@ -54,7 +54,7 @@ namespace EyE.Server.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> PutAsync(LinkModel model)
+        public async Task<IActionResult> AddIfNotExistAsync(LinkModel model)
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
             {
@@ -69,7 +69,7 @@ namespace EyE.Server.Controllers
                     case FolderNames.SerialSites:
                         result = await LinkHelper.TrySetTitleAndImageAsync(model, client); break;
                     case FolderNames.AnimeClips:
-                    case FolderNames.FavoriteSongs:
+                    case FolderNames.BieutifulSongs:
                     case FolderNames.BieutifulVideos:
                     case FolderNames.NightcoreMusic:
                     case FolderNames.UnusualMusic:
@@ -87,7 +87,7 @@ namespace EyE.Server.Controllers
                 if (result == false)
                     return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
 
-                return await AddAsync(model);
+                return await PostAsync(model);
             }
 
             return BadRequest("Объект уже существует");

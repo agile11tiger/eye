@@ -26,7 +26,7 @@ namespace EyE.Client.Pages.Common
             await InitializeAsync("api/Texts", false);
         }
 
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync())
                 return;

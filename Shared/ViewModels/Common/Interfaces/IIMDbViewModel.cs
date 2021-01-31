@@ -21,6 +21,9 @@ namespace EyE.Shared.ViewModels.Common.Interfaces
         public int IMDbVotes { get; set; }
         public ushort TotalSeasons { get; set; }
 
+        /// <summary>
+        /// Для omdb(все), imdb(некоторые) данные не получены
+        /// </summary>
         public bool IsError { get => !string.IsNullOrEmpty(Error); }
         public string Error { get; set; }
     }

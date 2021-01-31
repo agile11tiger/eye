@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EyE.Shared.Converters.OMDb
+namespace EyE.Shared.Converters
 {
     /// <summary>
     /// Example: "09 Sep 2000"
     /// </summary>
-    public class OMDbDateTimeConverter : JsonConverter<DateTime>
+    public class DateTimeConverter : JsonConverter<DateTime>
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

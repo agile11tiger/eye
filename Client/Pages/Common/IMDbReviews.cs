@@ -20,14 +20,26 @@ namespace EyE.Client.Pages.Common
             await base.InitializeAsync(pageURI);
         }
 
-        public override async Task CreateItemAsync()
+        public override async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var model = await IMDbHelper<T>.GetIMDbModelAsync(ItemAdderViewModel.Id, PublicClient);
+            var model = await IMDbHelper.GetIMDbModelAsync<T>(ItemAdderViewModel.Id, PublicClient);
             model.FolderName = FolderName;
-            await PutItemAsync((T)model);
+            await AddItemIfNotExistAsync((T)model);
+        }
+
+        public async Task UpdateItemAsync(T oldItem)
+        {
+            if (!await UserChecker.CheckAdminRoleAsync())
+                return;
+
+            var newItem = await IMDbHelper.GetIMDbModelAsync<T>(oldItem.Link, PublicClient);
+            newItem.Id = oldItem.Id;
+            newItem.FolderName = oldItem.FolderName;
+            newItem.AddingDate = oldItem.AddingDate;
+            await UpdateItemAsync(oldItem, (T)newItem);
         }
     }
 }

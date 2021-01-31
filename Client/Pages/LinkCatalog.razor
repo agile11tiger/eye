@@ -4,7 +4,7 @@
     <OneLineAdder Header="@Header"
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку сайта"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__container">
         @if (TempItems != null && PaginationModel != null)

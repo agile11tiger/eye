@@ -58,21 +58,21 @@ namespace EyE.Client.Pages.Common
             TableHasChanged();
         }
 
-        public virtual async Task CreateItemAsync()
+        public virtual async Task AddItemIfNotExistAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var response = await Client.PutAsJsonAsync(PageURI + "/Put", ItemAdderViewModel);
+            var response = await Client.PutAsJsonAsync(PageURI + "/AddIfNotExist", ItemAdderViewModel);
             await TryHandleItemCreationResponseAsync(response);
         }
 
-        public async Task PutItemAsync(T model)
+        public async Task AddItemIfNotExistAsync(T model)
         {
             if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
-            var response = await Client.PutAsJsonAsync(PageURI + "/Put", model);
+            var response = await Client.PutAsJsonAsync(PageURI + "/AddIfNotExist", model);
             await TryHandleItemCreationResponseAsync(response);
         }
 
@@ -87,7 +87,7 @@ namespace EyE.Client.Pages.Common
 
         public async Task<bool> TryHandleItemCreationResponseAsync(HttpResponseMessage response)
         {
-            if (response.IsSuccessStatusCode == true)
+            if (response.IsSuccessStatusCode)
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var item = await JsonSerializer.DeserializeAsync<T>(stream, Options);
@@ -113,7 +113,7 @@ namespace EyE.Client.Pages.Common
             var request = new HttpRequestMessage(HttpMethod.Delete, $"{PageURI}/{id}");
             var response = await Client.SendAsync(request);
 
-            if (response.IsSuccessStatusCode == true)
+            if (response.IsSuccessStatusCode)
             {
                 var tempItem = new T() { Id = id };
                 DatabaseItems.Remove(tempItem);
@@ -127,6 +127,10 @@ namespace EyE.Client.Pages.Common
             }
         }
 
+        /// <summary>
+        /// Берёт данные из модели редактора и пытается обновиться
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> TryUpdateItemAsync()
         {
             if (!await UserChecker.CheckAdminRoleAsync())
@@ -134,7 +138,7 @@ namespace EyE.Client.Pages.Common
 
             var response = await Client.PutAsJsonAsync(PageURI, ItemEditorModel);
 
-            if (response.IsSuccessStatusCode == true)
+            if (response.IsSuccessStatusCode)
             {
                 //копируем свойства из редактора в ссылку на редактируемый объект
                 ItemEditorModel.CopyProperties(RefEditableItem);
@@ -145,6 +149,22 @@ namespace EyE.Client.Pages.Common
             var responseMessage = await response.Content.ReadAsStringAsync();
             await UserChecker.ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось редактировать");
             return false;
+        }
+
+        public virtual async Task UpdateItemAsync(T oldItem, T newItem)
+        {
+            if (!await UserChecker.CheckAdminRoleAsync())
+                return;
+
+            var response = await Client.PutAsJsonAsync(PageURI, newItem);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseMessage = await response.Content.ReadAsStringAsync();
+                await UserChecker.ShowErrorAlertAsync(response.StatusCode, responseMessage ?? "Не получилось обновить");
+            }
+            else
+                newItem.CopyProperties(oldItem);
         }
 
         public virtual void ShowItemEditor(object objItem)

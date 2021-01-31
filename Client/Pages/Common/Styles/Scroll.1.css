@@ -206,7 +206,6 @@
 
 .scroll__itemEditor > p > label {
     margin-right: 10px;
-    flex: 1;
 }
 
 .scroll__itemEditor > p > label + * {

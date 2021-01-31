@@ -5,7 +5,7 @@
     <OneLineAdder Header=@($"<a href='{AniDbHelper.BasePath}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку AniDb"
-                  Create="CreateItemAsync" />
+                  Create="AddItemIfNotExistAsync" />
 
     <div class="scroll__panel">
         <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
@@ -39,7 +39,7 @@
                 <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
-                        <img src="@item.ImageSource" alt="Изображение" onerror="this.style='height:250px;'">
+                        <img src="@(AniDbHelper.ImageRequestPattern + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
                     </figure>
 
                     <dl>
@@ -49,6 +49,8 @@
                         <dd>@item.Episodecount</dd>
                         <dt>AniDb рейтинг</dt>
                         <dd>@item.AniDbRating</dd>
+                        <dt>AniDb голосов</dt>
+                        <dd>@item.AniDbVotes</dd>
                         <dt>Мой рейтинг</dt>
                         <dd>@item.MyRating</dd>
                         <dt>Комментарий</dt>
