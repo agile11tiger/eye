@@ -14,14 +14,17 @@ namespace EyE.Server.Middlewares
     {
         private readonly RequestDelegate next;
         private readonly string ipAddressesFilePath;
+        private readonly string uniqueIpAddressesFilePath;
         private static readonly object locker = new object();
         private readonly HashSet<string> uniqueIpAddresses = new HashSet<string>();
-        private int counter;
+        private int ipAddressesCounter;
+        private int uniqueIpAddressesCounter;
 
         public IpLoggingMiddleware(RequestDelegate next)
         {
             this.next = next;
             ipAddressesFilePath = Environment.CurrentDirectory + @"\Logs\ipAddresses.log";
+            uniqueIpAddressesFilePath = Environment.CurrentDirectory + @"\Logs\uniqueIpAddresses.log";
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -33,9 +36,12 @@ namespace EyE.Server.Middlewares
                 if (!uniqueIpAddresses.Contains(remoteIpAddress))
                 {
                     uniqueIpAddresses.Add(remoteIpAddress);
-                    using var writer = new StreamWriter(ipAddressesFilePath, true, Encoding.UTF8);
-                    writer.WriteLine($"{counter++}. {DateTime.Now}. {remoteIpAddress}");
+                    using var uniqueWriter = new StreamWriter(uniqueIpAddressesFilePath, true, Encoding.UTF8);
+                    uniqueWriter.WriteLine($"{uniqueIpAddressesCounter++}. {DateTime.Now}. {remoteIpAddress}");
                 }
+
+                using var writer = new StreamWriter(ipAddressesFilePath, true, Encoding.UTF8);
+                writer.WriteLine($"{ipAddressesCounter++}. {DateTime.Now}. {remoteIpAddress}");
             }
 
             await next.Invoke(context);
