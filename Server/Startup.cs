@@ -50,12 +50,13 @@ namespace EyE.Server
                 .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
                 .AddDatabaseDeveloperPageExceptionFilter();
 
-            var allowedOrigins = new[] { Configuration.GetValue<string>("ClientUri") };
+            var allowedOrigins = new[] { Configuration.GetValue<string>("ClientUri"), Configuration.GetValue<string>("ServerUri") };
             services
                 //Cors для ASP.NET Core
                 .AddCors(options =>
                 {
                     options.AddPolicy("DefaultCorsPolicy", builder => builder
+                        .AllowAnyOrigin()
                         .WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
                         .AllowAnyHeader()

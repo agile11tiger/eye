@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Server.Controllers.Common
 {
-    public abstract class IMDbController<T> : Database<T> where T : IMDbModel, new()
+    public abstract class IMDbController<T> : AdminLinksController<T> where T : IMDbModel, new()
     {
         public IMDbController(
             ApplicationDbContext db,

@@ -1,5 +1,6 @@
 ﻿using EyE.Shared.Enums;
 using EyE.Shared.Extensions;
+using EyE.Shared.Helpers;
 using EyE.Shared.Models.Common.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -24,6 +25,22 @@ namespace EyE.Client.Pages.Common
             FolderName = folderName;
             Reset();
             await base.OnParametersSetAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (!firstRender && AdminHelper.AdminFolders.Contains(FolderName))
+            {
+                var authState = await UserChecker.GetAuthenticationStateAsync();
+
+                if (!authState.User.IsInRole(Roles.Admin.ToString()))
+                {
+                    await Task.Delay(100);
+                    await UserChecker.ShowErrorAdminPageAsync();
+                }
+            }
         }
 
         public void Reset()

@@ -21,7 +21,7 @@
 
 .yinyangSpinner__text {
     color: white;
-    font-size: 3.5vh;
+    font-size: 3.5vmin;
     mix-blend-mode: difference;
     font-family: "Monotype Corsiva";
 }

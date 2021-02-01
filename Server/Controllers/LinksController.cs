@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,42 +16,13 @@ namespace EyE.Server.Controllers
 {
     [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
-    public class LinksController : Database<LinkModel>
+    public class LinksController : AdminLinksController<LinkModel>
     {
         public LinksController(
             ApplicationDbContext db,
             IHttpClientFactory clientFactory)
             : base(db, clientFactory)
         {
-        }
-
-        private readonly FolderNames[] adminFolders = new[] 
-        {
-            FolderNames.Schedule,
-            FolderNames.TextNotes,
-            FolderNames.YoutubeNotes,
-            FolderNames.LinkNotes,
-        };
-
-        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
-        [AllowAnonymous]
-        [HttpGet]
-        public override async Task<IActionResult> GetAsync()
-        {
-            if (User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()))
-            {
-                var list = await GetItems().ToListAsync();
-                list.Reverse();
-                return Ok(list);
-            }
-            else
-            {
-                var list = await GetItems()
-                    .Where(i => !adminFolders.Contains(i.FolderName))
-                    .ToListAsync();
-                list.Reverse();
-                return Ok(list);
-            }
         }
 
         [HttpPut("[action]")]

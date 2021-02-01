@@ -17,6 +17,7 @@ namespace EyE.Client.Components
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление изображений запущено");
                 await Client.PostAsync("api/Music/UpdateImageSources", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление изображений завершено");
             }
@@ -26,15 +27,17 @@ namespace EyE.Client.Components
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление фильмов запущено");
                 await Client.PostAsync("api/Films/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление фильмов завершено");
             }
         }
 
-        public async Task UpdateSerialssAsync()
+        public async Task UpdateSerialsAsync()
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление сериалов запущено");
                 await Client.PostAsync("api/Serials/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление сериалов завершено");
             }
@@ -44,6 +47,7 @@ namespace EyE.Client.Components
         {
             if (await UserChecker.CheckAdminRoleAsync())
             {
+                await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление игр запущено");
                 await Client.PostAsync("api/Games/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление игр завершено");
             }

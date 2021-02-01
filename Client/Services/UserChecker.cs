@@ -48,6 +48,11 @@ namespace EyE.Client.Services
             }
         }
 
+        public async Task ShowErrorAdminPageAsync()
+        {
+            await JS.InvokeVoidAsync("alert", $"Данные текущей страницы доступны только администратору!");
+        }
+
         public async Task ShowSomethingHappenedAsync()
         {
             await JS.InvokeVoidAsync("alert", $"Что-то пошло не так. Сообщение об ошибке отправлено на сервер");

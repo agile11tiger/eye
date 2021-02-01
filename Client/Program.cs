@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace EyE.Client
@@ -30,13 +31,17 @@ namespace EyE.Client
                 // Supply HttpClient instances that include access tokens when making requests to the server project
                 .AddHttpMessageHandler<BaseAuthorizationMessageHandler>();
             services
-                .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("EyE.ServerAPI"))
+                .AddScoped(sp => 
+                {
+                    var client = sp.GetRequiredService<IHttpClientFactory>().CreateClient("EyE.ServerAPI");
+                    client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
+                    return client;
+                })
                 .AddScoped(sp => 
                     new PublicHttpClient(
                         new DefaultBrowserOptionsMessageHandler(
                             new HttpClientHandler())
                         {
-                            DefaultBrowserRequestCache = BrowserRequestCache.NoCache,
                             DefaultBrowserRequestMode = BrowserRequestMode.Cors,
                         })
                     { 
