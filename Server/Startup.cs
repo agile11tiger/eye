@@ -1,4 +1,5 @@
 using EyE.Server.Data;
+using EyE.Server.Middlewares;
 using EyE.Server.Services;
 using EyE.Shared.Helpers;
 using EyE.Shared.ViewModels.Identity;
@@ -7,6 +8,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -120,6 +122,12 @@ namespace EyE.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            app.UseIpLogging();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

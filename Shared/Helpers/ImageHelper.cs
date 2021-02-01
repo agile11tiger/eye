@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace EyE.Shared.Helpers
 {
+    //https://stackoverflow.com/questions/111345/getting-image-dimensions-without-reading-the-entire-file
     public static class ImageHelper
     {
         private static readonly Dictionary<byte[], Func<BinaryReader, ImageInfo>> imageFormatDecoders = 
