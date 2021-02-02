@@ -13,11 +13,11 @@
       "url": "appsettings.Production.json"
     },
     {
-      "hash": "sha256-zVN0ihDvh9Rf+kDTyQu38TvcMjFD68pduwWRCrxXSOI=",
+      "hash": "sha256-8HbEjS3q+M+ANE803bL3U9Qd2XL80RHiRutisYhi6xQ=",
       "url": "css\/bundle.css"
     },
     {
-      "hash": "sha256-SX870ATMWPiOFHnT8aodUO5z1u5FJCUetK0A3rWZEA4=",
+      "hash": "sha256-E6aVzfW2UQAS3cBF6VMPMI6XIcnn0RUVk+oVfB+lgBU=",
       "url": "css\/bundle.min.css"
     },
     {
@@ -413,5 +413,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "twPqPDYq"
+  "version": "HdXjtTpJ"
 };
