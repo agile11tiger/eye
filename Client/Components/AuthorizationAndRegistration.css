@@ -30,6 +30,7 @@
 .auth-reg-form {
     background-color: #888;
     font-family: Roboto, sans-serif;
+    font-size: 1rem;
     line-height: normal;
     padding: 10px;
     max-width: 500px;
