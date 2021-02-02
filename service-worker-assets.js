@@ -13,11 +13,11 @@
       "url": "appsettings.Production.json"
     },
     {
-      "hash": "sha256-J1U6Z49gV\/moMgXtR7\/o98dOxHU3H9s6hCqX44YLM+0=",
+      "hash": "sha256-zVN0ihDvh9Rf+kDTyQu38TvcMjFD68pduwWRCrxXSOI=",
       "url": "css\/bundle.css"
     },
     {
-      "hash": "sha256-7F9ZZj53YHL7stcyZCUmwYU3B5m6UnuhaRxISEJmkH4=",
+      "hash": "sha256-SX870ATMWPiOFHnT8aodUO5z1u5FJCUetK0A3rWZEA4=",
       "url": "css\/bundle.min.css"
     },
     {
@@ -31,6 +31,10 @@
     {
       "hash": "sha256-el1zdrDA08I6JXALOi1XnSIkI8Ja\/lT8WjFoknZS8To=",
       "url": "eye-512.png"
+    },
+    {
+      "hash": "sha256-zADFF5O4oRF\/8X9Kfqy3LgmgOgek+05A1NGVc43c01E=",
+      "url": "fonts\/Monotype_Corsiva.ttf"
     },
     {
       "hash": "sha256-eNVWtAXJVAMDEy7xPWzUoNLNW9kVtD\/oFvx+RIgyebE=",
@@ -409,5 +413,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "X0tr15Yc"
+  "version": "twPqPDYq"
 };
