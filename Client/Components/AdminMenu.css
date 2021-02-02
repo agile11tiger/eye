@@ -96,3 +96,9 @@
 .adminMenu > ul > li:hover {
 	background: #ddd;
 }
+
+@media (max-width: 400px) {
+    .adminMenu {
+        width: 100%;
+    }
+}
