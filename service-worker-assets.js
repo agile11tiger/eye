@@ -49,6 +49,10 @@
       "url": "manifest.json"
     },
     {
+      "hash": "sha256-IUkTxO3f7h4Vy9jfeHMQRUzUd\/a6LPEB7XRrVvRbxEo=",
+      "url": "oidc.json"
+    },
+    {
       "hash": "sha256-ANR8Uz\/oygdzx4\/nNn1mI7kw+zN0LI+o7iNQ18+fas4=",
       "url": "_framework\/bundleconfig.json"
     },
@@ -225,7 +229,7 @@
       "url": "_framework\/EyE.Shared.dll"
     },
     {
-      "hash": "sha256-2589TBiDxfoNRIdiuFKlTrf6b5HgnYRbgATHw1AbHy8=",
+      "hash": "sha256-LIo+4IvNaDM6BFgtrtoQuFqB9ML7d9gW8N2lhDm3l5I=",
       "url": "_framework\/EyE.Client.dll"
     },
     {
@@ -405,7 +409,7 @@
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
-      "hash": "sha256-e5\/ZvmEdO\/pErUgedHGZsr0\/N+ITzU7pnztQ9+5+3yA=",
+      "hash": "sha256-F12AqTZCvSFUJbI67RbYFXG3GQpZRQAutzTD96rHaLw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -413,5 +417,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "HdXjtTpJ"
+  "version": "uAOvdJoX"
 };
