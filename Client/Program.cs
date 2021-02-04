@@ -50,7 +50,8 @@ namespace EyE.Client
                 //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
                 .AddApiAuthorization(options =>
                 {
-                    options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
+                    options.ProviderOptions.ConfigurationEndpoint = serverUri + "oidc.json";
+                    //options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
                 });
 
             builder.Services
