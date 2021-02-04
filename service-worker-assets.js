@@ -9,7 +9,7 @@
       "url": "appsettings.json"
     },
     {
-      "hash": "sha256-PysrhgkGf\/IXiBt+Z7vImMaV9ERLMExlbTpBygNg5Vc=",
+      "hash": "sha256-BnnDuAePlRGRWLTlf23sbtAG2iycyufeaQZ\/hfpXqXE=",
       "url": "appsettings.Production.json"
     },
     {
@@ -413,5 +413,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "HdXjtTpJ"
+  "version": "4nfcMxFJ"
 };
