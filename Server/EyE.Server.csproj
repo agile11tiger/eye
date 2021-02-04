@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\EyE.Client.csproj" />
     <ProjectReference Include="..\Shared\EyE.Shared.csproj" />
   </ItemGroup>
 
