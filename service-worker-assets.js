@@ -21,10 +21,6 @@
       "url": "css\/bundle.min.css"
     },
     {
-      "hash": "sha256-zADFF5O4oRF\/8X9Kfqy3LgmgOgek+05A1NGVc43c01E=",
-      "url": "css\/Monotype_Corsiva.ttf"
-    },
-    {
       "hash": "sha256-9B5lXddt2RtNfIxgirdVE10DeHh3a9exohbpiInEQIs=",
       "url": "css\/youtube.css"
     },
@@ -37,7 +33,11 @@
       "url": "eye-512.png"
     },
     {
-      "hash": "sha256-XzM5rRTKCbMNi95opP2mnQyFxbfYmRgOq8Bqn3JAc78=",
+      "hash": "sha256-zADFF5O4oRF\/8X9Kfqy3LgmgOgek+05A1NGVc43c01E=",
+      "url": "fonts\/MonotypeCorsiva.ttf"
+    },
+    {
+      "hash": "sha256-NUIi4V7ocPFao0nbhQlZd5rV8Hoj03fARs01QU1qBN8=",
       "url": "index.html"
     },
     {
@@ -413,5 +413,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "qqiqWVj0"
+  "version": "HDGiIVqj"
 };
