@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Server.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
