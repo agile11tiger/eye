@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "Open Sans";
+    src: local("Monotype Corsiva"), 
+         url("https://github.com/agile7tiger/eye/blob/gh-pages/fonts/MonotypeCorsiva.ttf?raw=true")
+}
+
 * {
     cursor: default;
 }

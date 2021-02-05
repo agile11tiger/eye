@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.JSInterop;
+using System;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace EyE.Client.Components
 
         private void SecretLoginToAccount()
         {
-            Navigation.NavigateTo("authentication/" + RemoteAuthenticationActions.LogIn);
+            Navigation.NavigateTo($"authentication/{RemoteAuthenticationActions.LogIn}?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
         }
 
         private async Task LoginToAccount()

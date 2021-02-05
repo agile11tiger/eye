@@ -147,9 +147,7 @@ namespace EyE.Server
             });
 
             app.UseHttpsRedirection();
-
-            if (!env.IsProduction())
-                app.UseBlazorFrameworkFiles();
+            app.UseBlazorFrameworkFiles();
 
             app.UseStaticFiles();
             app.UseRouting();
@@ -162,11 +160,7 @@ namespace EyE.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-
-                if (!env.IsProduction())
-                    endpoints.MapFallbackToFile("index.html");
-                else
-                    endpoints.MapFallbackToController("Index", "Home");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }

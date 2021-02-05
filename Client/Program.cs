@@ -56,7 +56,7 @@ namespace EyE.Client
                 {
                     options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
                 });
-
+            
             builder.Services
                 //https://github.com/Blazored/LocalStorage
                 .AddBlazoredLocalStorage()
