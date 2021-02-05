@@ -1,8 +1,0 @@
-{
-  "authority": "https://www.eye.somee.com/", // Uri to your IDP server
-  "client_id": "EyE.Client", // Your client id
-  "redirect_uri": "https://agile7tiger.github.io/eye", // Uri to the application login callback
-  "post_logout_redirect_uri": "https://agile7tiger.github.io/eye", // Uri to the application logout callback
-  "response_type": "code", // OAuth flow response type. For `authorization_code` flow the response type is 'code'. For `implicit` flow, the response type is 'id_token token'
-  "scope": "EyE.ServerAPI openid profile" // list of scope your application wants
-}
