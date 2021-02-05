@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -37,21 +38,23 @@ namespace EyE.Client
                     client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
                     return client;
                 })
-                .AddScoped(sp => 
-                    new PublicHttpClient(
+                .AddScoped(sp =>
+                {
+                    var client = new PublicHttpClient(
                         new DefaultBrowserOptionsMessageHandler(
                             new HttpClientHandler())
                         {
                             DefaultBrowserRequestMode = BrowserRequestMode.Cors,
                         })
-                    { 
-                        BaseAddress = new Uri(serverUri) 
-                    })
+                    {
+                        BaseAddress = new Uri(serverUri),
+                    };
+                    return client;
+                })
                 //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
                 .AddApiAuthorization(options =>
                 {
-                    options.ProviderOptions.ConfigurationEndpoint = serverUri + "oidc.json";
-                    //options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
+                    options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
                 });
 
             builder.Services

@@ -685,11 +685,6 @@ main:after {
     top: 0.5rem;
 }
 
-@font-face {
-    font-family: "Monotype Corsiva";
-    src: url("../../../../../../../fonts/Monotype_Corsiva.ttf");
-}
-
 * {
     cursor: default;
 }

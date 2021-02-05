@@ -22,6 +22,7 @@ using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 
 [assembly: ApiController]
@@ -92,9 +93,6 @@ namespace EyE.Server
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseSuccessEvents = true;
-                    //options.UserInteraction.LogoutUrl = "/Identity/account/logout";
-                    //options.UserInteraction.LoginUrl = "/Identity/account/login";
-                    //options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                 })
                //.AddSigningCredential(new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256)), IdentityServerConstants.ECDsaSigningAlgorithm.ES256)
                //.AddSigningCredential(new RsaSecurityKey(RSA.Create()), IdentityServerConstants.RsaSigningAlgorithm.RS256)
@@ -125,7 +123,7 @@ namespace EyE.Server
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseIpLogging();
+            app.UseIpLogger();
 
             if (env.IsDevelopment())
             {

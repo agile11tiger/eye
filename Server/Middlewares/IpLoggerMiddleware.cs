@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EyE.Server.Middlewares
 {
-    public class IpLoggingMiddleware
+    public class IpLoggerMiddleware
     {
         private readonly RequestDelegate next;
         private readonly string ipAddressesFilePath;
@@ -20,7 +20,7 @@ namespace EyE.Server.Middlewares
         private int ipAddressesCounter;
         private int uniqueIpAddressesCounter;
 
-        public IpLoggingMiddleware(RequestDelegate next)
+        public IpLoggerMiddleware(RequestDelegate next)
         {
             this.next = next;
             ipAddressesFilePath = Environment.CurrentDirectory + @"\Logs\ipAddresses.log";
@@ -48,11 +48,11 @@ namespace EyE.Server.Middlewares
         }
     }
 
-    public static class IpLoggingExtension
+    public static class IpLoggerExtension
     {
-        public static IApplicationBuilder UseIpLogging(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseIpLogger(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<IpLoggingMiddleware>();
+            return builder.UseMiddleware<IpLoggerMiddleware>();
         }
     }
 }
