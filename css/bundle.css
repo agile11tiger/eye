@@ -685,6 +685,12 @@ main:after {
     top: 0.5rem;
 }
 
+@font-face {
+    font-family: "Open Sans";
+    src: local("Monotype Corsiva"), 
+         url("https://github.com/agile7tiger/eye/blob/gh-pages/fonts/MonotypeCorsiva.ttf?raw=true")
+}
+
 * {
     cursor: default;
 }
@@ -1432,6 +1438,12 @@ pre {
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
     margin-right: 1rem;
+}
+
+@media (max-width: 500px) {
+    .advertisingLink {
+        display: none;
+    }
 }
 
 .oneLineAdder__header {
