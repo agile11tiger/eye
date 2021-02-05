@@ -37,7 +37,7 @@
       "url": "fonts\/MonotypeCorsiva.ttf"
     },
     {
-      "hash": "sha256-oqR92C\/waED2i1oN6euWoGmOgaSomsUoahG2I8NVNQE=",
+      "hash": "sha256-R7H+ocvxCZeRPcNL4le1SHn\/6xVV1xyRVajGu7unJkg=",
       "url": "index.html"
     },
     {
@@ -413,5 +413,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "SMHbCred"
+  "version": "vAkz3dr2"
 };
