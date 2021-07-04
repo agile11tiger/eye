@@ -64,6 +64,10 @@
         <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="TryUpdateItemAsync">
             <h4>Редактировать</h4>
             <p>
+                <label for="scroll__itemEditor__link">Название: </label>
+                <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Name">
+            </p>
+            <p>
                 <label for="scroll__itemEditor__link">Ссылка: </label>
                 <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Link">
             </p>
