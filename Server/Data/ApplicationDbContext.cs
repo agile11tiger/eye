@@ -1,8 +1,8 @@
-﻿using EyE.Server.Data.Configurations;
+﻿using Duende.IdentityServer.EntityFramework.Options;
+using EyE.Server.Data.Configurations;
 using EyE.Shared.Models.Common;
 using EyE.Shared.Models.Review;
 using EyE.Shared.ViewModels.Identity;
-using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

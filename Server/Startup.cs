@@ -1,10 +1,9 @@
+using Duende.IdentityServer.Services;
 using EyE.Server.Data;
 using EyE.Server.Middlewares;
 using EyE.Server.Services;
 using EyE.Shared.Helpers;
 using EyE.Shared.ViewModels.Identity;
-using IdentityServer4;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
