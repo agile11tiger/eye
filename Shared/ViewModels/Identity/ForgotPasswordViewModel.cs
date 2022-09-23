@@ -7,6 +7,6 @@ namespace EyE.Shared.ViewModels.Identity
     {
         [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(IdentityResource))]
         [EmailAddress(ErrorMessageResourceName = "EmailIncorrect", ErrorMessageResourceType = typeof(IdentityResource))]
-        public string Email { get; set; }
+        public string? Email { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace EyE.Shared.ViewModels.Identity
     {
         [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(IdentityResource))]
         [EmailAddress(ErrorMessageResourceName = "EmailIncorrect", ErrorMessageResourceType = typeof(IdentityResource))]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required(ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(IdentityResource))]
         [StringLength(15, ErrorMessageResourceName = "PasswordLength", ErrorMessageResourceType = typeof(IdentityResource), MinimumLength = 6)]
@@ -16,14 +16,14 @@ namespace EyE.Shared.ViewModels.Identity
             ErrorMessageResourceName = "PasswordOneUppercaseAndOneLowercaseAndOneNumeric",
             ErrorMessageResourceType = typeof(IdentityResource))]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Required(ErrorMessageResourceName = "PasswordConfirmRequired", ErrorMessageResourceType = typeof(IdentityResource))]
         [Compare("Password", ErrorMessageResourceName = "PasswordsNotMatch", ErrorMessageResourceType = typeof(IdentityResource))]
         [DataType(DataType.Password)]
-        public string PasswordConfirm { get; set; }
+        public string? PasswordConfirm { get; set; }
 
         [Required(ErrorMessageResourceName = "CodeRequired", ErrorMessageResourceType = typeof(IdentityResource))]
-        public string Code { get; set; }
+        public string? Code { get; set; }
     }
 }

@@ -15,11 +15,11 @@ namespace EyE.Shared.Helpers
     //Limit: none
     public static class YoutubeHelper
     {
-        private const string videoInfoRequestPattern = "https://noembed.com/embed?url=";
-        public const string BasePath = "https://youtube.com";
+        private const string VIDEO_INFO_REQUEST_PATTERN = "https://noembed.com/embed?url=";
+        public const string BASE_PATH = "https://youtube.com";
 
         /// <param name="link">Например: https://youtu.be/4HohFXTbVtI?list=WL </param>
-        public static async Task<LinkModel> GetLinkModelAsync(string link, HttpClient client)
+        public static async Task<LinkModel>? GetLinkModelAsync(string link, HttpClient client)
         {
             var linkWithoutParameters = LinkHelper.RemoveRequestParameters(link);
 
@@ -27,31 +27,31 @@ namespace EyE.Shared.Helpers
             {
                 //некоторые ссылки без параметров блокируются
                 var timeParameter = "?t=0";
-                var responseStream = await client.GetStreamAsync(videoInfoRequestPattern + linkWithoutParameters + timeParameter);
+                var responseStream = await client.GetStreamAsync(VIDEO_INFO_REQUEST_PATTERN + linkWithoutParameters + timeParameter);
                 var youtubeObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
 
                 return new LinkModel()
                 {
                     Link = linkWithoutParameters,
-                    Name = youtubeObject["title"].ToString(),
+                    Name = youtubeObject!["title"].ToString(),
                     ImageSource = $"//img.youtube.com/vi/{GetId(link)}/hqdefault.jpg"
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 await LoggingHelper.SendErrorAsync(
-                    $"{videoInfoRequestPattern + linkWithoutParameters}\r\nMessage:{e.Message}",
+                    $"{VIDEO_INFO_REQUEST_PATTERN + linkWithoutParameters}\r\nMessage:{ex.Message}",
                     client,
                     typeof(YoutubeHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
         public static string GetId(string link)
         {
             link = LinkHelper.RemoveRequestParameters(link);
-            return link.Substring(link.LastIndexOf('/') + 1);
+            return link[(link.LastIndexOf('/') + 1)..];
         }
     }
 }

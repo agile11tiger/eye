@@ -13,11 +13,8 @@ namespace EyE.Server.Controllers
     [Route("api/[controller]/[action]")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            this.logger = logger;
         }
 
         public IActionResult Index()

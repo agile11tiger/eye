@@ -14,10 +14,9 @@ namespace EyE.Shared.Converters
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.String && DateTime.TryParse(reader.GetString(), out var value))
-                return value;
-
-            return default;
+            return reader.TokenType == JsonTokenType.String && DateTime.TryParse(reader.GetString(), out var value)
+                ? value
+                : default;
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)

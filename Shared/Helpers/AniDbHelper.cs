@@ -17,44 +17,44 @@ namespace EyE.Shared.Helpers
     public static class AniDbHelper
     {
         //private const string pageInfoRequestPattern = "http://api.anidb.net:9001/httpapi?client=andrealcantara&clientver=1&protover=1&request=anime&aid=";
-        private const string pageInfoRequestPattern = "http://api.anidb.net:9001/httpapi?client=haruhibot&clientver=1&protover=1&request=anime&aid=";
+        private const string PAGE_INFO_REQUEST_PATTERN = "http://api.anidb.net:9001/httpapi?client=haruhibot&clientver=1&protover=1&request=anime&aid=";
         //https://cdn-eu.anidb.net/images/main/  - can`t loading src
         //https://cdn-eu.anidb.net/images/50x65  - good
-        public const string ImageRequestPattern = "https://cdn-eu.anidb.net/images/150/";
-        public const string BasePath = "https://anidb.net";
+        public const string IMAGE_REQUEST_PATTERN = "https://cdn-eu.anidb.net/images/150/";
+        public const string BASE_PATH = "https://anidb.net";
 
         //Нельзя использовать на клиенте ошибка: Mixed Content
         public static async Task<bool> TrySetValuesAsync(AnimeModel model, HttpClient client, bool isGzip = true)
         {
             try
             {
-                using var responseStream = await client.GetStreamAsync(pageInfoRequestPattern + model.AniDbId);
+                using var responseStream = await client.GetStreamAsync(PAGE_INFO_REQUEST_PATTERN + model.AniDbId);
                 using var decompressionStream = new GZipStream(responseStream, CompressionMode.Decompress);
                 var animeXml = XDocument.Load(isGzip ? decompressionStream : responseStream).Element("anime");
 
-                model.Type = animeXml.Element("type").Value;
-                model.Episodecount = ushort.Parse(animeXml.Element("episodecount").Value);
-                model.StartingDate = DateTime.Parse(animeXml.Element("startdate").Value);
+                model.Type = animeXml!.Element("type")!.Value;
+                model.Episodecount = ushort.Parse(animeXml.Element("episodecount")!.Value);
+                model.StartingDate = DateTime.Parse(animeXml.Element("startdate")!.Value);
                 model.AddingDate = DateTime.Now;
                 model.Name = animeXml
-                    .Element("titles")
+                    .Element("titles")!
                     .Elements()
                     .First(e =>
                     {
-                        var langValue = e.Attribute("{http://www.w3.org/XML/1998/namespace}lang").Value;
+                        var langValue = e.Attribute("{http://www.w3.org/XML/1998/namespace}lang")!.Value;
                         return langValue == "x-jat" || langValue == "x-zht" || langValue == "en";
                     })
                     .Value;
-                model.Information = TakeAnimeDescription(animeXml.Element("description")?.Value).RemoveLinksAndSquareBrackets();
-                model.AniDbRating = double.Parse(animeXml.Element("ratings").Element("permanent").Value, CultureInfo.InvariantCulture);
-                model.AniDbVotes = int.Parse(animeXml.Element("ratings").Element("permanent").Attribute("count").Value);
-                model.ImageSource = animeXml.Element("picture").Value;
+                model.Information = TakeAnimeDescription(animeXml.Element("description")?.Value!)!.RemoveLinksAndSquareBrackets();
+                model.AniDbRating = double.Parse(animeXml.Element("ratings")!.Element("permanent")!.Value, CultureInfo.InvariantCulture);
+                model.AniDbVotes = int.Parse(animeXml.Element("ratings")!.Element("permanent")!.Attribute("count")!.Value);
+                model.ImageSource = animeXml.Element("picture")!.Value;
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(AniDbHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{ex.Message}", client, typeof(AniDbHelper).Name);
             }
 
             return false;
@@ -70,7 +70,7 @@ namespace EyE.Shared.Helpers
         /// <summary>
         /// Берёт основную часть описания.
         /// </summary>
-        private static string TakeAnimeDescription(string description)
+        private static string? TakeAnimeDescription(string description)
         {
             if (description == default)
                 return default;
@@ -88,7 +88,7 @@ namespace EyE.Shared.Helpers
 
         /// <param name="str">Например: ... http://anidb.net/ch39512 [Haruyuki] ... </param>
         /// <returns>Например: ... Haruyuki ... </returns>
-        private static string RemoveLinksAndSquareBrackets(this string str)
+        private static string? RemoveLinksAndSquareBrackets(this string str)
         {
             if (str == default)
                 return default;

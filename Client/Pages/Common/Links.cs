@@ -9,14 +9,12 @@ namespace EyE.Client.Pages.Common
 {
     public class Links : Folders<LinkModel>
     {
-        public readonly IDictionary<SortingKeys, string> SortingParameters =
-            new Dictionary<SortingKeys, string>()
+        public readonly Dictionary<SortingKeys, string> SortingParameters = new()
         {
             { SortingKeys.Name, SortingKeys.Name.GetAttribute<DisplayAttribute>().Name },
         };
 
-        public readonly IDictionary<FilterKeys, string> FilterParameters =
-            new Dictionary<FilterKeys, string>()
+        public readonly Dictionary<FilterKeys, string> FilterParameters = new()
         {
             { FilterKeys.StartWith, FilterKeys.StartWith.GetAttribute<DisplayAttribute>().Name },
             { FilterKeys.Contains, FilterKeys.Contains.GetAttribute<DisplayAttribute>().Name },

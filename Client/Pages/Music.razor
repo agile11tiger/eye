@@ -3,7 +3,7 @@
 @inherits Reviews<MusicModel>
 
 <div class="music scroll">
-    <OneLineAdder Header=@($"<a href='{DiscogsHelper.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{DiscogsHelper.BASE_PATH}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку Discogs"
                   Create="AddItemIfNotExistAsync" />

@@ -25,8 +25,8 @@ namespace EyE.Shared.Extensions
                           let targetProperty = typeDest.GetProperty(srcProp.Name)
                           where srcProp.CanRead
                           && targetProperty != null
-                          && (targetProperty.GetSetMethod(true) != null && !targetProperty.GetSetMethod(true).IsPrivate)
-                          && (targetProperty.GetSetMethod().Attributes & MethodAttributes.Static) == 0
+                          && (targetProperty.GetSetMethod(true) != null && !targetProperty.GetSetMethod(true)!.IsPrivate)
+                          && (targetProperty.GetSetMethod()!.Attributes & MethodAttributes.Static) == 0
                           && targetProperty.PropertyType.IsAssignableFrom(srcProp.PropertyType)
                           select new { sourceProperty = srcProp, targetProperty };
 

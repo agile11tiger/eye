@@ -18,15 +18,15 @@ namespace EyE.Server
 
         public static async Task AddUserAsync(UserManager<User> userManager)
         {
-            if (await userManager.FindByNameAsync(RoleInitializerData.EmailUser) == null)
+            if (await userManager.FindByNameAsync(RoleInitializerData.EMAIL_USER) == null)
             {
                 var user = new User
                 {
-                    Email = RoleInitializerData.EmailUser,
-                    UserName = RoleInitializerData.EmailUser,
+                    Email = RoleInitializerData.EMAIL_USER,
+                    UserName = RoleInitializerData.EMAIL_USER,
                     EmailConfirmed = true
                 };
-                var result = await userManager.CreateAsync(user, RoleInitializerData.PasswordUser);
+                var result = await userManager.CreateAsync(user, RoleInitializerData.PASSWORD_USER);
 
                 if (result.Succeeded)
                     await userManager.AddToRoleAsync(user, Roles.User.ToString());
@@ -35,15 +35,15 @@ namespace EyE.Server
 
         public static async Task AddAdminAsync(UserManager<User> userManager)
         {
-            if (await userManager.FindByNameAsync(RoleInitializerData.EmailAdmin) == null)
+            if (await userManager.FindByNameAsync(RoleInitializerData.EMAIL_ADMIN) == null)
             {
                 var admin = new User
                 {
-                    Email = RoleInitializerData.EmailAdmin,
-                    UserName = RoleInitializerData.EmailAdmin,
+                    Email = RoleInitializerData.EMAIL_ADMIN,
+                    UserName = RoleInitializerData.EMAIL_ADMIN,
                     EmailConfirmed = true
                 };
-                var result = await userManager.CreateAsync(admin, RoleInitializerData.PasswordAdmin);
+                var result = await userManager.CreateAsync(admin, RoleInitializerData.PASSWORD_ADMIN);
 
                 if (result.Succeeded)
                     await userManager.AddToRolesAsync(admin, new[] { Roles.Admin.ToString() });

@@ -1,4 +1,5 @@
-﻿using EyE.Server.Controllers.Common;
+﻿using EyE.Server.Constants;
+using EyE.Server.Controllers.Common;
 using EyE.Server.Data;
 using EyE.Shared.Helpers;
 using EyE.Shared.Models.Review;
@@ -39,7 +40,7 @@ namespace EyE.Server.Controllers
         {
             foreach(var item in await GetItems().ToListAsync())
             {
-                await DiscogsHelper.SetImageSourceAsync(item, ClientFactory.CreateClient("localClient"));
+                await DiscogsHelper.SetImageSourceAsync(item, ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
                 Db.Update(item);
                 await Db.SaveChangesAsync();
             }

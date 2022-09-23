@@ -2,7 +2,7 @@
 @inherits Links
 
 <div class="videoLinks scroll">
-    <OneLineAdder Header=@($"<a href='{YoutubeHelper.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{YoutubeHelper.BASE_PATH}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку Youtube"
                   Create="AddItemIfNotExistAsync" />

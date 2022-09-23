@@ -15,8 +15,8 @@ namespace EyE.Server.Middlewares
         private readonly RequestDelegate next;
         private readonly string ipAddressesFilePath;
         private readonly string uniqueIpAddressesFilePath;
-        private static readonly object locker = new object();
-        private readonly HashSet<string> uniqueIpAddresses = new HashSet<string>();
+        private static readonly object locker = new();
+        private readonly HashSet<string> uniqueIpAddresses = new();
         private int ipAddressesCounter;
         private int uniqueIpAddressesCounter;
 

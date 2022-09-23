@@ -12,14 +12,14 @@ namespace EyE.Client.Components
     public partial class AuthorizationAndRegistration
     {
         private bool isShowWrapper;
-        private LoginViewModel loginModel = new LoginViewModel();
-        private RegisterViewModel registerModel = new RegisterViewModel();
-        private ForgotPasswordViewModel forgotPasswordModel = new ForgotPasswordViewModel();
-        private ResetPasswordViewModel resetPasswordModel = new ResetPasswordViewModel();
-        private ServerSideValidator serverSideAuthorizationValidator = new ServerSideValidator();
-        private ServerSideValidator serverSideRegistrationValidator = new ServerSideValidator();
-        private ServerSideValidator serverSideForgotPasswordValidator = new ServerSideValidator();
-        private ServerSideValidator serverSideResetPasswordValidator = new ServerSideValidator();
+        private LoginViewModel loginModel = new();
+        private RegisterViewModel registerModel = new();
+        private ForgotPasswordViewModel forgotPasswordModel = new();
+        private ResetPasswordViewModel resetPasswordModel = new();
+        private ServerSideValidator serverSideAuthorizationValidator = new();
+        private ServerSideValidator serverSideRegistrationValidator = new();
+        private ServerSideValidator serverSideForgotPasswordValidator = new();
+        private ServerSideValidator serverSideResetPasswordValidator = new();
         [Inject] public PublicHttpClient PublicClient { get; set; }
         [Inject] public AuthenticationStateProvider StateProvider { get; set; }
         [Inject] public IJSRuntime JS { get; set; }
@@ -73,7 +73,7 @@ namespace EyE.Client.Components
                 resetPasswordModel.Email = forgotPasswordModel.Email;
                 forgotPasswordModel = new ForgotPasswordViewModel();
                 StateHasChanged();
-
+                //TODO сделать в один вызов метода
                 await serverSideForgotPasswordValidator.DisplayMessageAsync(response.Content);
             }
             else

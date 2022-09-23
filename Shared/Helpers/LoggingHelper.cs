@@ -11,7 +11,7 @@ namespace EyE.Shared.Helpers
 {
     public static class LoggingHelper
     {
-        public static async Task SendErrorAsync(string message, HttpClient client, string className, [CallerMemberName] string memberName = null)
+        public static async Task SendErrorAsync(string message, HttpClient client, string className, [CallerMemberName] string? memberName = null)
         {
             await client.PostAsJsonAsync("Logging/AddError", $"{DateTime.Now}\r\n{className}.{memberName}: " + message);
         }

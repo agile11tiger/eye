@@ -14,13 +14,12 @@ namespace EyE.Shared.Converters
     {
         public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.String
-                && double.TryParse(reader.GetString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var value))
-                return value;
-            else if (reader.TokenType == JsonTokenType.Number)
-                return reader.GetDouble();
-
-            return default;
+            return reader.TokenType == JsonTokenType.String
+                && double.TryParse(reader.GetString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var value)
+                ? value
+                : reader.TokenType == JsonTokenType.Number
+                ? reader.GetDouble()
+                : default;
         }
 
         public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)

@@ -14,7 +14,9 @@ namespace EyE.Client.Pages.Common
     {
         [Parameter] public string StrFolderName { get; set; }
         public FolderNames FolderName { get; set; }
-        public string Header { get => string.IsNullOrEmpty(StrFolderName) 
+        public string Header 
+        { 
+            get => string.IsNullOrEmpty(StrFolderName) 
                 ? string.Empty 
                 : FolderName.GetAttribute<DisplayAttribute>().Name; 
         }

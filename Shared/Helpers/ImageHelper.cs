@@ -8,8 +8,8 @@ namespace EyE.Shared.Helpers
     //https://stackoverflow.com/questions/111345/getting-image-dimensions-without-reading-the-entire-file
     public static class ImageHelper
     {
-        private static readonly Dictionary<byte[], Func<BinaryReader, ImageInfo>> imageFormatDecoders = 
-            new Dictionary<byte[], Func<BinaryReader, ImageInfo>>()
+        private static readonly Dictionary<byte[], Func<BinaryReader, ImageInfo?>> imageFormatDecoders = 
+            new Dictionary<byte[], Func<BinaryReader, ImageInfo?>>()
         {
             { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, DecodePng },
             { new byte[] { 0xff, 0xd8 }, DecodeJfif },
@@ -18,14 +18,10 @@ namespace EyE.Shared.Helpers
         public static bool IsHorizontalImage(Stream stream)
         {
             var imageInfo = GetImageInfo(stream);
-
-            if (imageInfo.Width / imageInfo.Height > 1)
-                return true;
-
-            return false;
+            return imageInfo!.Width / imageInfo.Height > 1;
         }
 
-        private static ImageInfo GetImageInfo(Stream stream)
+        private static ImageInfo? GetImageInfo(Stream stream)
         {
             using (var reader = new BinaryReader(stream))
             {
@@ -58,7 +54,7 @@ namespace EyE.Shared.Helpers
             return true;
         }
 
-        private static ImageInfo DecodeJfif(BinaryReader binaryReader)
+        private static ImageInfo? DecodeJfif(BinaryReader binaryReader)
         {
             while (binaryReader.ReadByte() == 0xff)
             {

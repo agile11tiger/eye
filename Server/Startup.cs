@@ -1,4 +1,5 @@
 using Duende.IdentityServer.Services;
+using EyE.Server.Constants;
 using EyE.Server.Data;
 using EyE.Server.Middlewares;
 using EyE.Server.Services;
@@ -112,7 +113,7 @@ namespace EyE.Server
                 .AddSingleton(new EmailService())
                 .AddSingleton(JsonHelper.SerializeOptions)
                 .AddLocalization(options => options.ResourcesPath = "Resources")
-                .AddHttpClient("localClient", config => config.BaseAddress = new Uri(Configuration.GetValue<string>("ServerUri")));
+                .AddHttpClient(HttpClientNames.LOCAL_CLIENT, config => config.BaseAddress = new Uri(Configuration.GetValue<string>("ServerUri")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

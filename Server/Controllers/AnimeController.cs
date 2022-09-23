@@ -1,4 +1,5 @@
-﻿using EyE.Server.Controllers.Common;
+﻿using EyE.Server.Constants;
+using EyE.Server.Controllers.Common;
 using EyE.Server.Data;
 using EyE.Shared.Helpers;
 using EyE.Shared.Models.Review;
@@ -27,7 +28,7 @@ namespace EyE.Server.Controllers
         {
             if (await GetItems().FirstOrDefaultAsync(i => i.AniDbId == model.AniDbId) == null)
             {
-                var result = await AniDbHelper.TrySetValuesAsync(model, ClientFactory.CreateClient("localClient"));
+                var result = await AniDbHelper.TrySetValuesAsync(model, ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
 
                 if (result == false) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");

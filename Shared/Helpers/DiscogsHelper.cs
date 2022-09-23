@@ -17,25 +17,25 @@ namespace EyE.Shared.Helpers
     //Limit: 25/minute
     public static class DiscogsHelper
     {
-        private const string artistsRequestPattern = "https://api.discogs.com/artists/";
-        public const string BasePath = "https://discogs.com";
+        private const string ARTISTS_REQUEST_PATTERN = "https://api.discogs.com/artists/";
+        public const string BASE_PATH = "https://discogs.com";
 
         /// <param name="link">Например: https://www.discogs.com/artist/484423-Ария </param>
-        public static async Task<MusicModel> GetMusicModelAsync(string link, HttpClient client)
+        public static async Task<MusicModel>? GetMusicModelAsync(string link, HttpClient client)
         {
             try
             {
                 var id = GetId(link);
-                using var responseStream = await client.GetStreamAsync(artistsRequestPattern + id);
+                using var responseStream = await client.GetStreamAsync(ARTISTS_REQUEST_PATTERN + id);
                 var artistObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
                 using var stream = await client.GetStreamAsync($"https://api.discogs.com/artists/{id}/releases?page=1&per_page=1");
                 var artistFirstReleaseObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(stream);
-                var dateFirstRealease = artistFirstReleaseObject["releases"][0].EnumerateObject().First(obj => obj.Name == "year").Value;
+                var dateFirstRealease = artistFirstReleaseObject!["releases"][0].EnumerateObject().First(obj => obj.Name == "year").Value;
 
                 return new MusicModel()
                 {
                     Link = link,
-                    DiscogsId = artistObject["id"].ToString(),
+                    DiscogsId = artistObject!["id"].ToString(),
                     Name = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(artistObject["name"].ToString())),
                     StartingDate = DateTime.Parse($"1/1/{dateFirstRealease}"),
                     AddingDate = DateTime.Now,
@@ -43,12 +43,12 @@ namespace EyE.Shared.Helpers
                     Information = artistObject["profile"].ToString().RemoveLinksAndSquareBrackets()
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(DiscogsHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{ex.Message}", client, typeof(DiscogsHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace EyE.Shared.Helpers
                     .GetAttributeValue("src", string.Empty);
                 model.ImageSource = image;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(DiscogsHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{ex.Message}", client, typeof(DiscogsHelper).Name);
             }
         }
 

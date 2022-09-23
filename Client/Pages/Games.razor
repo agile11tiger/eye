@@ -2,7 +2,7 @@
 @inherits IMDbReviews<GameModel>
 
 <div class="games scroll">
-    <OneLineAdder Header=@($"<a href='{IMDbHelper.BasePath}' target='_blank'>{Header}</a>")
+    <OneLineAdder Header=@($"<a href='{IMDbHelper.BASE_PATH}' target='_blank'>{Header}</a>")
                   Model="ItemAdderViewModel"
                   Placeholder="Введите ссылку IMDb"
                   Create="AddItemIfNotExistAsync" />
@@ -39,7 +39,7 @@
                 <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
-                        <img src="@(IMDbHelper.ImageRequestPattern + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
+                        <img src="@(IMDbHelper.IMAGE_REQUEST_PATTERN + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
                         @*TODO: когда добавляеться в начало новый элемент, на мгновение, происходит дублирование картинки*@
                         @*Не получилось исправить(многое перепробывал)*@
                         @*<img id=@($"filmImg{item.Id}") src='/999-200x300.png' alt="Изображение" @onload='() => { JSRuntime.InvokeVoidAsync($"filmImg{item.Id}.setAttribute", "src", item.ImageSource); }'>*@

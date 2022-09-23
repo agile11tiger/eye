@@ -25,7 +25,7 @@ namespace EyE.Shared.Helpers
             //например в конце https://ru.wikiquote.org/api/rest_v1/page/html/Льеж
             "social_bookmarks",
         };
-        private const string quotesFrameStyle =
+        private const string QUOTES_FRAME_STYLE =
             "<style>" +
                 "*{color:black !important; cursor:text !important; text-decoration:none !important; background:transparent !important;}" +
                 "body {padding:5px !important; margin:0px !important; height:95%}" +
@@ -36,38 +36,35 @@ namespace EyE.Shared.Helpers
                 "body::-webkit-scrollbar-thumb {border-radius:3px; background-color: #aaa;}" +
             "</style>";
 
-        public const string BasePath = "https://ru.wikiquote.org";
+        public const string BASE_PATH = "https://ru.wikiquote.org";
 
         /// <param name="link">Например: https://ru.wikiquote.org/wiki/Конфуций или null </param>
-        public static async Task<WikiquoteViewModel> GetWikiquoteModelAsync(string link, HttpClient client)
+        public static async Task<WikiquoteViewModel>? GetWikiquoteModelAsync(string link, HttpClient client)
         {
-            WikiModel wikiModel;
-
             try
             {
-                if (string.IsNullOrWhiteSpace(link))
-                    wikiModel = await WikiHelper.GetRandomPageSummaryAsync(BasePath, client);
-                else
-                    wikiModel = await WikiHelper.GetPageSummaryAsync(link, client);
+                var wikiModel = string.IsNullOrWhiteSpace(link)
+                    ? await WikiHelper.GetRandomPageSummaryAsync(BASE_PATH, client)!
+                    : await WikiHelper.GetPageSummaryAsync(link, client)!;
 
-                var htmlDoc = await WikiHelper.GetPageHtmlAsync(BasePath + "/wiki/" + wikiModel.WikiId, client);
+                var htmlDoc = await WikiHelper.GetPageHtmlAsync(BASE_PATH + "/wiki/" + wikiModel!.WikiId, client)!;
 
                 return new WikiquoteViewModel()
                 {
-                    Name = InsertWikipediaLink(wikiModel.Name, htmlDoc),
+                    Name = InsertWikipediaLink(wikiModel.Name!, htmlDoc),
                     ImageSource = wikiModel.ImageSource,
                     Information = wikiModel.Information,
                     Quotes = GetQuotesText(htmlDoc),
                     AddingDate = wikiModel.AddingDate,
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 if (!string.IsNullOrWhiteSpace(link) && link.StartsWith("https://ru.wikiquote.org/wiki/"))
-                    await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiquoteHelper).Name);
+                    await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{ex.Message}", client, typeof(WikiquoteHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
         private static string InsertWikipediaLink(string name, HtmlDocument htmlDoc)
@@ -144,7 +141,7 @@ namespace EyE.Shared.Helpers
             foreach (var navbox in htmlDoc.DocumentNode.SelectNodes("//li[contains(@class, 'mw-empty-elt')]") ?? empty)
                 navbox.Remove();
 
-            var style = HtmlNode.CreateNode(quotesFrameStyle);
+            var style = HtmlNode.CreateNode(QUOTES_FRAME_STYLE);
             htmlDoc.DocumentNode.SelectSingleNode("//head").AppendChild(style);
 
             return htmlDoc.DocumentNode.OuterHtml;

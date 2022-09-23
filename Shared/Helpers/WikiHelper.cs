@@ -17,64 +17,64 @@ namespace EyE.Shared.Helpers
     //Limit: none
     public static class WikiHelper
     {
-        private const string pageSummaryRequestPattern = "/api/rest_v1/page/summary/";
-        private const string randomPageSummaryRequestPattern = "/api/rest_v1/page/random/summary";
-        private const string pageHtmlRequestPattern = "/api/rest_v1/page/html/";
+        private const string PAGE_SUMMARY_REQUEST_PATTERN = "/api/rest_v1/page/summary/";
+        private const string RANDOM_PAGE_SUMMARY_REQUEST_PATTERN = "/api/rest_v1/page/random/summary";
+        private const string PAGE_HTML_REQUEST_PATTERN = "/api/rest_v1/page/html/";
 
         /// <param name="link">Например: https://ru.wikipedia.org/wiki/Ария_(группа) </param>
-        public static async Task<WikiModel> GetPageSummaryAsync(string link, HttpClient client)
+        public static async Task<WikiModel>? GetPageSummaryAsync(string link, HttpClient client)
         {
             try
             {
-                using var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageSummaryRequestPattern + GetId(link));
+                using var responseStream = await client.GetStreamAsync(GetBasePath(link) + PAGE_SUMMARY_REQUEST_PATTERN + GetId(link));
                 var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-                return GetSummary(summaryObject, link, client);
+                return GetSummary(summaryObject!, link);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{ex.Message}", client, typeof(WikiHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
         /// <param name="link">Например: https://ru.wikipedia.org </param>
-        public static async Task<WikiModel> GetRandomPageSummaryAsync(string link, HttpClient client)
+        public static async Task<WikiModel>? GetRandomPageSummaryAsync(string link, HttpClient client)
         {
             try
             {
-                using var responseStream = await client.GetStreamAsync(link + randomPageSummaryRequestPattern);
+                using var responseStream = await client.GetStreamAsync(link + RANDOM_PAGE_SUMMARY_REQUEST_PATTERN);
                 var summaryObject = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream);
-                var canonicalTitle = summaryObject["titles"].EnumerateObject().First(obj => obj.Name == "canonical").Value;
-                return GetSummary(summaryObject, $"{link}/wiki/{canonicalTitle}", client);
+                var canonicalTitle = summaryObject!["titles"].EnumerateObject().First(obj => obj.Name == "canonical").Value;
+                return GetSummary(summaryObject, $"{link}/wiki/{canonicalTitle}");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{ex.Message}", client, typeof(WikiHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
         /// <param name="link">Например: https://ru.wikipedia.org/wiki/Ария_(группа) </param>
-        public static async Task<HtmlDocument> GetPageHtmlAsync(string link, HttpClient client)
+        public static async Task<HtmlDocument>? GetPageHtmlAsync(string link, HttpClient client)
         {
             try
             {
-                var responseStream = await client.GetStreamAsync(GetBasePath(link) + pageHtmlRequestPattern + GetId(link));
+                var responseStream = await client.GetStreamAsync(GetBasePath(link) + PAGE_HTML_REQUEST_PATTERN + GetId(link));
                 var document = new HtmlDocument();
                 document.Load(responseStream);
                 return document;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{e.Message}", client, typeof(WikiHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{link}\r\nMessage:{ex.Message}", client, typeof(WikiHelper).Name);
             }
 
-            return default;
+            return default!;
         }
 
-        private static WikiModel GetSummary(Dictionary<string, JsonElement> summaryObject, string link, HttpClient client)
+        private static WikiModel GetSummary(Dictionary<string, JsonElement> summaryObject, string link)
         {
             return new WikiModel()
             {
@@ -99,7 +99,7 @@ namespace EyE.Shared.Helpers
         /// <returns>Например: https://ru.wikipedia.org</returns>
         private static string GetBasePath(string link)
         {
-            return link.Substring(0, link.IndexOf('/', 8));
+            return link[..link.IndexOf('/', 8)];
         }
     }
 }

@@ -31,6 +31,7 @@ namespace EyE.Client.Pages
         public async Task GetQuotesAsync()
         {
             var counter = 0;
+
             while (counter < 3)
             {
                 WikiquoteViewModel = await WikiquoteHelper.GetWikiquoteModelAsync(ItemAdderViewModel?.Id, PublicClient);

@@ -21,7 +21,7 @@ namespace EyE.Server.Controllers.Identity
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailService = emailService;
-            this.localizer = localizer;
+            this.localizer = localizer; // TODO хз как используется
         }
 
         private readonly UserManager<User> userManager;
@@ -108,6 +108,7 @@ namespace EyE.Server.Controllers.Identity
                 ModelState.AddModelError("", localizer["UserNotExists", model.Email]);
                 return BadRequest(ModelState);
             }
+
             if (!await userManager.IsEmailConfirmedAsync(user))
             {
                 ModelState.AddModelError("", localizer["EmailNotConfirmed"]);

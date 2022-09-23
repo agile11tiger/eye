@@ -6,7 +6,7 @@ namespace EyE.Shared.Extensions
 {
     public static class AttributeExtensions
     {
-        public static TAttribute GetAttribute<TAttribute>(this Enum enumValue)
+        public static TAttribute? GetAttribute<TAttribute>(this Enum enumValue)
                where TAttribute : Attribute
         {
             return enumValue.GetType()

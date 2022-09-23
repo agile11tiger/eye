@@ -15,12 +15,9 @@ namespace EyE.Shared.Converters
     {
         public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.String && bool.TryParse(reader.GetString(), out var value))
-                return value;
-            else if (reader.TokenType == JsonTokenType.True || reader.TokenType == JsonTokenType.False)
-                return reader.GetBoolean();
-
-            return default;
+            return reader.TokenType == JsonTokenType.String && bool.TryParse(reader.GetString(), out var value)
+                ? value
+                : (reader.TokenType == JsonTokenType.True || reader.TokenType == JsonTokenType.False) && reader.GetBoolean();
         }
 
         public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options)

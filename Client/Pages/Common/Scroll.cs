@@ -19,11 +19,11 @@ namespace EyE.Client.Pages.Common
 {
     public class Scroll<T> : ComponentBase where T : class, IDatabaseItem, new()
     {
-        public readonly T ItemEditorModel = new T();
-        public readonly ItemAdderViewModel ItemAdderViewModel = new ItemAdderViewModel();
-        public readonly SortingViewModel SortingModel = new SortingViewModel();
-        public readonly FilterViewModel FilterModel = new FilterViewModel();
-        public readonly PaginationViewModel PaginationModel = new PaginationViewModel();
+        public readonly T ItemEditorModel = new();
+        public readonly ItemAdderViewModel ItemAdderViewModel = new();
+        public readonly SortingViewModel SortingModel = new();
+        public readonly FilterViewModel FilterModel = new();
+        public readonly PaginationViewModel PaginationModel = new();
         [Inject] public JsonSerializerOptions Options { get; set; }
         [Inject] public HttpClient Client { get; set; }
         [Inject] public PublicHttpClient PublicClient { get; set; }
@@ -41,10 +41,9 @@ namespace EyE.Client.Pages.Common
             var authState = await UserChecker.GetAuthenticationStateAsync();
 
             //Получаем список с базы данных ОДИН РАЗ
-            if (authState.User.Identity.IsAuthenticated)
-                DatabaseItems = await Client.GetFromJsonAsync<LinkedList<T>>(PageURI);
-            else
-                DatabaseItems = await PublicClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
+            DatabaseItems = authState.User.Identity.IsAuthenticated
+                ? await Client.GetFromJsonAsync<LinkedList<T>>(PageURI)
+                : await PublicClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
 
             if (needUpdateTempItems)
                 UpdateTempItems();

@@ -27,12 +27,9 @@ namespace EyE.Server.Controllers.Common
         [HttpGet]
         public override async Task<IActionResult> GetAsync()
         {
-            List<T> list;
-
-            if (User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()))
-                list = await GetItems().ToListAsync();
-            else
-                list = await GetItems()
+            List<T> list = User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()) 
+                ? list = await GetItems().ToListAsync()
+                : list = await GetItems()
                     .Where(i => !AdminHelper.AdminFolders.Contains(i.FolderName))
                     .ToListAsync();
 

@@ -1,4 +1,5 @@
-﻿using EyE.Server.Controllers.Common;
+﻿using EyE.Server.Constants;
+using EyE.Server.Controllers.Common;
 using EyE.Server.Data;
 using EyE.Shared.Enums;
 using EyE.Shared.Helpers;
@@ -27,17 +28,13 @@ namespace EyE.Server.Controllers.Common
         [HttpPut("[action]")]
         public async Task<IActionResult> AddIfNotExistAsync(T model)
         {
-            IQueryable<T> items;
             //С папкой "CartoonSeriesMyChildhood" допустимы дубликаты
-            if (model.FolderName == FolderNames.CartoonSeriesMyChildhood)
-                items = GetItems().Where(i => i.FolderName == FolderNames.CartoonSeriesMyChildhood);
-            else
-                items = GetItems().Where(i => i.FolderName != FolderNames.CartoonSeriesMyChildhood);
-
+            var items = model.FolderName == FolderNames.CartoonSeriesMyChildhood
+                ? GetItems().Where(i => i.FolderName == FolderNames.CartoonSeriesMyChildhood)
+                : GetItems().Where(i => i.FolderName != FolderNames.CartoonSeriesMyChildhood);
+            
             if (await items.FirstOrDefaultAsync(i => i.IMDbId == model.IMDbId) == null)
-            {
                 return await PostAsync(model);
-            }
 
             return BadRequest("Объект уже существует");
         }
@@ -47,7 +44,7 @@ namespace EyE.Server.Controllers.Common
         {
             foreach (var currentItem in await GetItems().AsNoTracking().ToListAsync())
             {
-                var newItem = await IMDbHelper.GetIMDbModelAsync<T>(currentItem.Link, ClientFactory.CreateClient("localClient"));
+                var newItem = await IMDbHelper.GetIMDbModelAsync<T>(currentItem.Link, ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
 
                 //если по каким-то причинам не удалось получить новые данные
                 if (newItem.IMDbId == newItem.Name)

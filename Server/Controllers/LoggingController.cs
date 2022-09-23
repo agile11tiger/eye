@@ -14,14 +14,12 @@ namespace EyE.Server.Controllers
     [Route("[controller]/[action]")]
     public class LoggingController : ControllerBase
     {
-        private readonly ILogger<LoggingController> logger;
         private readonly string errorsFilePath;
-        private static readonly object locker = new object();
+        private static readonly object locker = new();
         private static int counter;
 
-        public LoggingController(ILogger<LoggingController> logger)
+        public LoggingController()
         {
-            this.logger = logger;
             errorsFilePath = Environment.CurrentDirectory + @"\Logs\errors.log";
         }
 

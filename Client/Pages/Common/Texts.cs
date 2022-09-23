@@ -7,18 +7,16 @@ namespace EyE.Client.Pages.Common
 {
     public class Texts : Folders<TextModel>
     {
-        public readonly IDictionary<SortingKeys, string> SortingParametersDictionary =
-            new Dictionary<SortingKeys, string>()
+        public readonly Dictionary<SortingKeys, string> SortingParametersDictionary = new()
         {
             { SortingKeys.Text, "Текста" },
         };
-        public readonly IDictionary<FilterKeys, string> FilterParametersDictionary =
-            new Dictionary<FilterKeys, string>()
+        public readonly Dictionary<FilterKeys, string> FilterParametersDictionary = new()
         {
             { FilterKeys.StartWith, "Начинаеться с" },
             { FilterKeys.Contains, "Содержит" },
         };
-        public TextModel NewTextModel = new TextModel();
+        public TextModel NewTextModel = new();
 
         protected override async Task OnInitializedAsync()
         {

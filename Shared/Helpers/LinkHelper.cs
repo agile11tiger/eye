@@ -10,7 +10,7 @@ namespace EyE.Shared.Helpers
     //https://github.com/zzzprojects/html-agility-pack - HAP
     public static class LinkHelper
     {
-        private const string domainPattern = @"https?://(?:www\.|)([\w.-]+).*";
+        private const string DOMAIN_PATTERN = @"https?://(?:www\.|)([\w.-]+).*";
 
         /// <summary>
         /// Парсит сайт и забирает необходимые данные
@@ -26,12 +26,12 @@ namespace EyE.Shared.Helpers
                 model.Name = string.IsNullOrWhiteSpace(name) 
                     ? model.Link 
                     : Regex.Replace(name, @"\s+", " ").Replace("&nbsp;", "\u00A0");
-                model.ImageSource = "https://s2.googleusercontent.com/s2/favicons?domain=" + GetDomain(model.Link);
+                model.ImageSource = "https://s2.googleusercontent.com/s2/favicons?domain=" + GetDomain(model.Link!);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(LinkHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{ex.Message}", client, typeof(LinkHelper).Name);
             }
 
             return false;
@@ -51,9 +51,9 @@ namespace EyE.Shared.Helpers
                 model.ImageSource = string.Empty;
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{e.Message}", client, typeof(LinkHelper).Name);
+                await LoggingHelper.SendErrorAsync($"{model.Link}\r\nMessage:{ex.Message}", client, typeof(LinkHelper).Name);
             }
 
             return false;
@@ -63,7 +63,7 @@ namespace EyE.Shared.Helpers
         {
             var questionCharPosition = link.IndexOf('?');
             questionCharPosition = questionCharPosition == -1 ? link.Length : questionCharPosition;
-            return link.Substring(0, questionCharPosition);
+            return link[..questionCharPosition];
         }
 
         /// <param name="link">Например: https://www.youtube.com/watch?v=5hVfxEc6WyY&list=WL&index=76 </param>
@@ -71,7 +71,7 @@ namespace EyE.Shared.Helpers
         /// <returns>Например: 5hVfxEc6WyY</returns>
         public static string GetLinkParameter(string link, string key)
         {
-            var array = link.Substring(link.IndexOf('?') + 1).Split('=', '&');
+            var array = link[(link.IndexOf('?') + 1)..].Split('=', '&');
 
             for (var i = 0; i < array.Length; i++)
             {
@@ -93,7 +93,7 @@ namespace EyE.Shared.Helpers
         /// <returns>Например: imdb.com</returns>
         public static string GetDomain(string link)
         {
-            return Regex.Match(link, domainPattern).Groups[1].Value;
+            return Regex.Match(link, DOMAIN_PATTERN).Groups[1].Value;
         }
     }
 }

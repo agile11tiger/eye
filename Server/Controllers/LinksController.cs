@@ -1,4 +1,5 @@
-﻿using EyE.Server.Controllers.Common;
+﻿using EyE.Server.Constants;
+using EyE.Server.Controllers.Common;
 using EyE.Server.Data;
 using EyE.Shared.Enums;
 using EyE.Shared.Helpers;
@@ -31,7 +32,7 @@ namespace EyE.Server.Controllers
             if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
             {
                 var result = true;
-                var client = ClientFactory.CreateClient("localClient");
+                var client = ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT);
 
                 switch (model.FolderName)
                 {
