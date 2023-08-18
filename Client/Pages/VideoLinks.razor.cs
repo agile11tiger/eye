@@ -12,7 +12,7 @@ namespace EyE.Client.Pages
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicClient);
+            var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicHttpClient);
 
             if (linkModel == default)
             {

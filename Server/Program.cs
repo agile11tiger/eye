@@ -1,4 +1,4 @@
-﻿using EyE.Shared.ViewModels.Identity;
+﻿using EyE.Shared.Models.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +22,8 @@ namespace EyE.Server
                 try
                 {
                     RoleInitializer.InitializeAsync(services.GetRequiredService<RoleManager<IdentityRole>>()).Wait();
-                    RoleInitializer.AddAdminAsync(services.GetRequiredService<UserManager<User>>()).Wait();
-                    RoleInitializer.AddUserAsync(services.GetRequiredService<UserManager<User>>()).Wait();
+                    RoleInitializer.AddAdminAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
+                    RoleInitializer.AddUserAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
                 }
                 catch (Exception ex)
                 {

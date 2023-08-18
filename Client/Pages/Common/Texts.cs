@@ -13,7 +13,7 @@ namespace EyE.Client.Pages.Common
         };
         public readonly Dictionary<FilterKeys, string> FilterParametersDictionary = new()
         {
-            { FilterKeys.StartWith, "Начинаеться с" },
+            { FilterKeys.StartWith, "Начинается с" },
             { FilterKeys.Contains, "Содержит" },
         };
         public TextModel NewTextModel = new();

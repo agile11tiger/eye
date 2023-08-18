@@ -1,5 +1,5 @@
 ﻿using EyE.Shared.Enums;
-using EyE.Shared.ViewModels.Identity;
+using EyE.Shared.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -16,11 +16,11 @@ namespace EyE.Server
                 await roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
         }
 
-        public static async Task AddUserAsync(UserManager<User> userManager)
+        public static async Task AddUserAsync(UserManager<UserModel> userManager)
         {
             if (await userManager.FindByNameAsync(RoleInitializerData.EMAIL_USER) == null)
             {
-                var user = new User
+                var user = new UserModel
                 {
                     Email = RoleInitializerData.EMAIL_USER,
                     UserName = RoleInitializerData.EMAIL_USER,
@@ -33,11 +33,11 @@ namespace EyE.Server
             }
         }
 
-        public static async Task AddAdminAsync(UserManager<User> userManager)
+        public static async Task AddAdminAsync(UserManager<UserModel> userManager)
         {
             if (await userManager.FindByNameAsync(RoleInitializerData.EMAIL_ADMIN) == null)
             {
-                var admin = new User
+                var admin = new UserModel
                 {
                     Email = RoleInitializerData.EMAIL_ADMIN,
                     UserName = RoleInitializerData.EMAIL_ADMIN,

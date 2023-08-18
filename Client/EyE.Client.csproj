@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.0-rc.1.22427.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0-rc.1.22426.10" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
     <PackageReference Include="System.Net.Http.Json" Version="7.0.0-rc.1.22426.10" />
   </ItemGroup>
 

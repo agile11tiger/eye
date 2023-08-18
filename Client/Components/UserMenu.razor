@@ -2,7 +2,7 @@
     <AuthorizeView>
         <Authorized>
             <a>Hello, @context.User.Identity.Name</a>
-            <a @onclick="BeginSignOut">Выход</a>
+            <a @onclick="Logout">Выход</a>
         </Authorized>
         <NotAuthorized>
             <AuthorizationAndRegistration />

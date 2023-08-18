@@ -17,7 +17,7 @@ namespace EyE.Client.Pages
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var musicModel = await DiscogsHelper.GetMusicModelAsync(ItemAdderViewModel.Id, PublicClient);
+            var musicModel = await DiscogsHelper.GetMusicModelAsync(ItemAdderViewModel.Id, PublicHttpClient);
 
             if (musicModel == default)
             {

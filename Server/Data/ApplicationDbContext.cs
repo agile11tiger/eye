@@ -1,15 +1,15 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
 using EyE.Server.Data.Configurations;
 using EyE.Shared.Models.Common;
+using EyE.Shared.Models.Identity;
 using EyE.Shared.Models.Review;
-using EyE.Shared.ViewModels.Identity;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace EyE.Server.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<User>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<UserModel>
     {
         public ApplicationDbContext(
                DbContextOptions options,

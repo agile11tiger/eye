@@ -1,51 +1,56 @@
-﻿namespace EyE.Client.Services
+﻿using EyE.Shared.Models.Common;
+using Microsoft.AspNetCore.Components.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using EyE.Client.Extensions;
+using System.IdentityModel.Tokens.Jwt;
+
+namespace EyE.Client.Services
 {
-    //https://www.codewithmukesh.com/blog/authentication-in-blazor-webassembly/                           ---Индус
-    //https://guidnew.com/en/blog/secure-a-blazor-webassembly-application-with-cookie-authentication/     ---Сеньор
-    //https://jasonwatmore.com/post/2020/08/13/blazor-webassembly-jwt-authentication-example-tutorial     ---JWT Authentication
-    //public class ServerAuthenticationStateProvider : AuthenticationStateProvider
-    //{
-    //    //как реализован в блазоре
-    //    //https://github.com/dotnet/aspnetcore/blob/057ec9cfae1831f91f1a0e01397059b20431db7b/src/Components/Server/src/Circuits/ServerAuthenticationStateProvider.cs
-    //    public ServerAuthenticationStateProvider(PublicHttpClient client)
-    //    {
-    //        this.client = client;
-    //    }
+    public class ServerAuthenticationStateProvider : AuthenticationStateProvider
+    {
+        public ServerAuthenticationStateProvider(ServerHttpClient serverHttpClient, ILocalStorageService localStorage)
+        {
+            this.serverHttpClient = serverHttpClient;
+            this.localStorage = localStorage;
+        }
 
-    //    private readonly PublicHttpClient client;
-    //    private UserInfo userInfo;
+        private readonly ServerHttpClient serverHttpClient;
+        private readonly ILocalStorageService localStorage;
 
-    //    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-    //    {
-    //        ClaimsIdentity identity = null;
-    //        await RefreshUserInfo();
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            var userInfo = await localStorage.GetItemAsync<UserInfo>();
+            ClaimsIdentity claimsIdentity = null;
 
-    //        if (userInfo.IsAuthenticated)
-    //        {
-    //            var claims = new[]
-    //                { new Claim(ClaimTypes.Name, userInfo.UserName) }
-    //                .Concat(userInfo.Claims.Select(c => new Claim(c.Key, c.Value)));
+            if (!string.IsNullOrWhiteSpace(userInfo?.Token))
+            {
+                serverHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", userInfo.Token);
+                var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(userInfo.Token);
+                claimsIdentity = new ClaimsIdentity(jwtToken.Claims, "jwtAuth");
+            }
 
-    //            identity = new ClaimsIdentity(claims, "Server authentication");
-    //        }
+            return new AuthenticationState(new ClaimsPrincipal(claimsIdentity ?? new ClaimsIdentity()));
+        }
 
-    //        return new AuthenticationState(new ClaimsPrincipal(identity ?? new ClaimsIdentity()));
-    //    }
+        public void NotifyUserAuthentication(string token)
+        {
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims, "jwtAuth"));
+            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            NotifyAuthenticationStateChanged(authState);
+        }
 
-    //    public void StateChanged(bool needDeleteCacheUserInfo = false)
-    //    {
-    //        if (needDeleteCacheUserInfo)
-    //            userInfo = null;
-
-    //        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-    //    }
-
-    //    private async Task RefreshUserInfo(bool useCache = true)
-    //    {
-    //        if (useCache && userInfo != null && userInfo.IsAuthenticated)
-    //            return;
-
-    //        userInfo = await Client.GetFromJsonAsync<UserInfo>("account/getUserInfo");
-    //    }
-    //}
+        public void NotifyUserLogout()
+        {
+            serverHttpClient.DefaultRequestHeaders.Authorization = null;
+            var authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+            NotifyAuthenticationStateChanged(authState);
+        }
+    }
 }

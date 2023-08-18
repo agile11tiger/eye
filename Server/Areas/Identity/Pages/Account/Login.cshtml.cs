@@ -1,4 +1,4 @@
-﻿using EyE.Shared.ViewModels.Identity;
+﻿using EyE.Shared.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,13 +15,13 @@ namespace EyE.Server.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, 
+        public LoginModel(SignInManager<UserModel> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<User> userManager)
+            UserManager<UserModel> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

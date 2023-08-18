@@ -39,7 +39,7 @@ namespace EyE.Client.Components
 
                 CurrentEditContext.NotifyValidationStateChanged();
             }
-            catch (Exception ex)
+            catch
             {
                 await DisplayMessageAsync(content);
             }

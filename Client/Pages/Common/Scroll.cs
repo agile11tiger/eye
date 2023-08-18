@@ -24,10 +24,11 @@ namespace EyE.Client.Pages.Common
         public readonly SortingViewModel SortingModel = new();
         public readonly FilterViewModel FilterModel = new();
         public readonly PaginationViewModel PaginationModel = new();
-        [Inject] public JsonSerializerOptions Options { get; set; }
-        [Inject] public HttpClient Client { get; set; }
-        [Inject] public PublicHttpClient PublicClient { get; set; }
+        [Inject] public JsonSerializerOptions JsonSerializerOptions { get; set; }
+        [Inject] public ServerHttpClient ServerHttpClient { get; set; }
+        [Inject] public PublicHttpClient PublicHttpClient { get; set; }
         [Inject] public UserChecker UserChecker { get; set; }
+        [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
         public string PageURI { get; set; }
         public LinkedList<T> DatabaseItems { get; set; }
@@ -38,13 +39,13 @@ namespace EyE.Client.Pages.Common
         public virtual async Task InitializeAsync(string pageURI, bool needUpdateTempItems = true)
         {
             PageURI = pageURI;
-            var authState = await UserChecker.GetAuthenticationStateAsync();
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             //Получаем список с базы данных ОДИН РАЗ
-            DatabaseItems = authState.User.Identity.IsAuthenticated
-                ? await Client.GetFromJsonAsync<LinkedList<T>>(PageURI)
-                : await PublicClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
-
+            //DatabaseItems = authState.User.Identity.IsAuthenticated
+            //    ? await ServerHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI)
+            //    : await PublicHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
+            DatabaseItems = await ServerHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
             if (needUpdateTempItems)
                 UpdateTempItems();
         }
@@ -62,7 +63,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var response = await Client.PutAsJsonAsync(PageURI + "/AddIfNotExist", ItemAdderViewModel);
+            var response = await ServerHttpClient.PutAsJsonAsync(PageURI + "/AddIfNotExist", ItemAdderViewModel);
             await TryHandleItemCreationResponseAsync(response);
         }
 
@@ -71,7 +72,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
-            var response = await Client.PutAsJsonAsync(PageURI + "/AddIfNotExist", model);
+            var response = await ServerHttpClient.PutAsJsonAsync(PageURI + "/AddIfNotExist", model);
             await TryHandleItemCreationResponseAsync(response);
         }
 
@@ -80,7 +81,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync())
                 return false;
 
-            var response = await Client.PostAsJsonAsync(PageURI, model);
+            var response = await ServerHttpClient.PostAsJsonAsync(PageURI, model);
             return await TryHandleItemCreationResponseAsync(response);
         }
 
@@ -89,7 +90,7 @@ namespace EyE.Client.Pages.Common
             if (response.IsSuccessStatusCode)
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
-                var item = await JsonSerializer.DeserializeAsync<T>(stream, Options);
+                var item = await JsonSerializer.DeserializeAsync<T>(stream, JsonSerializerOptions);
                 DatabaseItems.AddFirst(item);
                 TempItems.AddFirst(item);
                 TableHasChanged();
@@ -110,7 +111,7 @@ namespace EyE.Client.Pages.Common
                 return;
 
             var request = new HttpRequestMessage(HttpMethod.Delete, $"{PageURI}/{id}");
-            var response = await Client.SendAsync(request);
+            var response = await ServerHttpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -135,7 +136,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync())
                 return false;
 
-            var response = await Client.PutAsJsonAsync(PageURI, ItemEditorModel);
+            var response = await ServerHttpClient.PutAsJsonAsync(PageURI, ItemEditorModel);
 
             if (response.IsSuccessStatusCode)
             {
@@ -155,7 +156,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
-            var response = await Client.PutAsJsonAsync(PageURI, newItem);
+            var response = await ServerHttpClient.PutAsJsonAsync(PageURI, newItem);
 
             if (!response.IsSuccessStatusCode)
             {

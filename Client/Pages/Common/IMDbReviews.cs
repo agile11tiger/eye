@@ -25,7 +25,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
                 return;
 
-            var model = await IMDbHelper.GetIMDbModelAsync<T>(ItemAdderViewModel.Id, PublicClient);
+            var model = await IMDbHelper.GetIMDbModelAsync<T>(ItemAdderViewModel.Id, PublicHttpClient);
             model.FolderName = FolderName;
             await AddItemIfNotExistAsync((T)model);
         }
@@ -35,7 +35,7 @@ namespace EyE.Client.Pages.Common
             if (!await UserChecker.CheckAdminRoleAsync())
                 return;
 
-            var newItem = await IMDbHelper.GetIMDbModelAsync<T>(oldItem.Link, PublicClient);
+            var newItem = await IMDbHelper.GetIMDbModelAsync<T>(oldItem.Link, PublicHttpClient);
             newItem.Id = oldItem.Id;
             newItem.FolderName = oldItem.FolderName;
             newItem.AddingDate = oldItem.AddingDate;

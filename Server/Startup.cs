@@ -4,8 +4,9 @@ using EyE.Server.Data;
 using EyE.Server.Middlewares;
 using EyE.Server.Services;
 using EyE.Shared.Helpers;
-using EyE.Shared.ViewModels.Identity;
+using EyE.Shared.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -24,6 +25,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 
 [assembly: ApiController]
 namespace EyE.Server
@@ -52,6 +54,7 @@ namespace EyE.Server
             services
                 .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
                 .AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<TokenService, TokenService>();
 
             var allowedOrigins = new[] { Configuration.GetValue<string>("ClientUri"), Configuration.GetValue<string>("ServerUri") };
             services
@@ -63,50 +66,84 @@ namespace EyE.Server
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
-                })
-                // Cors для IdentityServer
-                .AddSingleton<ICorsPolicyService>((container) => {
-                    var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
-                    return new DefaultCorsPolicyService(logger) { AllowedOrigins = allowedOrigins };
-                })
-                .AddDefaultIdentity<User>(options =>
+                });
+
+
+            services.AddDefaultIdentity<UserModel>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 0;
+                options.Password.RequiredUniqueChars = 0;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var jwtSettings = Configuration.GetSection("JwtSettings");
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredLength = 0;
-                    options.Password.RequiredUniqueChars = 0;
-                })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
+                };
+            });
+
+            //// Cors для IdentityServer
+            //.AddSingleton<ICorsPolicyService>((container) => {
+            //    var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+            //    return new DefaultCorsPolicyService(logger) { AllowedOrigins = allowedOrigins };
+            //})
+            //.AddDefaultIdentity<User>(options =>
+            //{
+            //    options.SignIn.RequireConfirmedAccount = true;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredLength = 0;
+            //    options.Password.RequiredUniqueChars = 0;
+            //})
+            //.AddRoles<IdentityRole>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
 
             //https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
             //https://habr.com/ru/post/461433/
             //https://www.scottbrady91.com/Identity-Server/Using-ECDSA-in-IdentityServer4
-            services
-                .AddIdentityServer(options =>
-                {
-                    options.Endpoints.EnableJwtRequestUri = true;
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-                })
-               //.AddSigningCredential(new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256)), IdentityServerConstants.ECDsaSigningAlgorithm.ES256)
-               //.AddSigningCredential(new RsaSecurityKey(RSA.Create()), IdentityServerConstants.RsaSigningAlgorithm.RS256)
-               .AddApiAuthorization<User, ApplicationDbContext>(options => {
-                   options.IdentityResources["openid"].UserClaims.Add("role");
-                   options.ApiResources.Single().UserClaims.Add("role");
-               });
+            //services
+            //    .AddIdentityServer(options =>
+            //    {
+            //        options.Endpoints.EnableJwtRequestUri = true;
+            //        options.Events.RaiseErrorEvents = true;
+            //        options.Events.RaiseFailureEvents = true;
+            //        options.Events.RaiseInformationEvents = true;
+            //        options.Events.RaiseSuccessEvents = true;
+            //    })
+            //   //.AddSigningCredential(new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP256)), IdentityServerConstants.ECDsaSigningAlgorithm.ES256)
+            //   //.AddSigningCredential(new RsaSecurityKey(RSA.Create()), IdentityServerConstants.RsaSigningAlgorithm.RS256)
+            //   .AddApiAuthorization<User, ApplicationDbContext>(options => {
+            //       options.IdentityResources["openid"].UserClaims.Add("role");
+            //       options.ApiResources.Single().UserClaims.Add("role");
+            //   });
 
             // Need to do this as it maps "role" to ClaimTypes.Role and causes issues
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-            services
-                .AddAuthentication()
-                .AddIdentityServerJwt();
-
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+            //services
+            //    .AddAuthentication()
+            //    .AddIdentityServerJwt();
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
             services
@@ -152,7 +189,7 @@ namespace EyE.Server
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCors("DefaultCorsPolicy");
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
 

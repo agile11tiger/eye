@@ -35,7 +35,7 @@ namespace EyE.Client.Pages.Common
 
             if (!firstRender && AdminHelper.AdminFolders.Contains(FolderName))
             {
-                var authState = await UserChecker.GetAuthenticationStateAsync();
+                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
                 if (!authState.User.IsInRole(Roles.Admin.ToString()))
                 {

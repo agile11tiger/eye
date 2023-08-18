@@ -12,11 +12,10 @@ namespace EyE.Client.Pages
     [Route("Quotes")]
     public partial class Quotes
     {
-        [Inject] public HttpClient Client { get; set; }
-        [Inject] public PublicHttpClient PublicClient { get; set; }
+        [Inject] public PublicHttpClient PublicHttpClient { get; set; }
         [Inject] public ILocalStorageService  LocalStorage { get; set; }
         private WikiquoteViewModel WikiquoteViewModel;
-        private readonly ItemAdderViewModel ItemAdderViewModel = new ItemAdderViewModel();
+        private readonly ItemAdderViewModel ItemAdderViewModel = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -34,7 +33,7 @@ namespace EyE.Client.Pages
 
             while (counter < 3)
             {
-                WikiquoteViewModel = await WikiquoteHelper.GetWikiquoteModelAsync(ItemAdderViewModel?.Id, PublicClient);
+                WikiquoteViewModel = await WikiquoteHelper.GetWikiquoteModelAsync(ItemAdderViewModel?.Id, PublicHttpClient);
 
                 if (WikiquoteViewModel != default)
                     break;

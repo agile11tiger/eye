@@ -1,0 +1,6 @@
+----------
+authentication
+https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
+https://code-maze.com/blazor-webassembly-role-based-authorization/
+https://code-maze.com/refresh-token-with-blazor-webassembly-and-asp-net-core-web-api/
+----------

@@ -11,41 +11,33 @@ namespace EyE.Client.Services
 {
     public class UserChecker
     {
-        public UserChecker(IJSRuntime js, AuthenticationStateProvider authenticationStateProvider)
+        public UserChecker(IJSRuntime js, ServerAuthenticationStateProvider authenticationStateProvider)
         {
             JS = js;
-            this.authStateProvider = authenticationStateProvider;
+            this.authenticationStateProvider = authenticationStateProvider;
         }
 
-        private readonly AuthenticationStateProvider authStateProvider;
+        private readonly ServerAuthenticationStateProvider authenticationStateProvider;
         public IJSRuntime JS { get; set; }
-        public async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            return await authStateProvider.GetAuthenticationStateAsync();
-        }
 
         public async Task<bool> CheckNullOrWhiteSpaceAsync(string str)
         {
             if (!string.IsNullOrWhiteSpace(str))
                 return true;
-            else
-            {
-                await ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
-                return false;
-            }
+
+            await ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
+            return false;
         }
 
         public async Task<bool> CheckAdminRoleAsync()
         {
-            var authState = await GetAuthenticationStateAsync();
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
 
             if (authState.User.IsInRole(Roles.Admin.ToString()))
                 return true;
-            else
-            {
-                await ShowErrorAlertAllowOnlyAdminAsync();
-                return false;
-            }
+
+            await ShowErrorAlertAllowOnlyAdminAsync();
+            return false;
         }
 
         public async Task ShowErrorAdminPageAsync()

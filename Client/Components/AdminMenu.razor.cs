@@ -10,7 +10,7 @@ namespace EyE.Client.Components
 {
     public partial class AdminMenu
     {
-        [Inject] public HttpClient Client { get; set; }
+        [Inject] public ServerHttpClient ServerHttpClient { get; set; }
         [Inject] public UserChecker UserChecker { get; set; }
 
         public async Task UpdateDiscogsImageSourcesAsync()
@@ -18,7 +18,7 @@ namespace EyE.Client.Components
             if (await UserChecker.CheckAdminRoleAsync())
             {
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление изображений запущено");
-                await Client.PostAsync("api/Music/UpdateImageSources", null);
+                await ServerHttpClient.PostAsync("api/Music/UpdateImageSources", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление изображений завершено");
             }
         }
@@ -28,7 +28,7 @@ namespace EyE.Client.Components
             if (await UserChecker.CheckAdminRoleAsync())
             {
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление фильмов запущено");
-                await Client.PostAsync("api/Films/UpdateItems", null);
+                await ServerHttpClient.PostAsync("api/Films/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление фильмов завершено");
             }
         }
@@ -38,7 +38,7 @@ namespace EyE.Client.Components
             if (await UserChecker.CheckAdminRoleAsync())
             {
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление сериалов запущено");
-                await Client.PostAsync("api/Serials/UpdateItems", null);
+                await ServerHttpClient.PostAsync("api/Serials/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление сериалов завершено");
             }
         }
@@ -48,7 +48,7 @@ namespace EyE.Client.Components
             if (await UserChecker.CheckAdminRoleAsync())
             {
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление игр запущено");
-                await Client.PostAsync("api/Games/UpdateItems", null);
+                await ServerHttpClient.PostAsync("api/Games/UpdateItems", null);
                 await UserChecker.JS.InvokeVoidAsync("alert", $"Обновление игр завершено");
             }
         }
