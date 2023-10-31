@@ -1,20 +1,20 @@
 ﻿<div class="toolbar">
     @if (Add.HasDelegate)
-    {
-        <button @onclick="async() => await Add.InvokeAsync()"><i class="fa fa-home"></i>Добавить</button>
-    }
+{
+    <button @onclick="async() => await Add.InvokeAsync()"><i class="fa fa-home"></i>Добавить</button>
+}
     @if (Save.HasDelegate)
-    {
-        <button @onclick="async() => await Save.InvokeAsync()"><i class="fa fa-home"></i>Сохранить</button>
-    }
+{
+    <button @onclick="async() => await Save.InvokeAsync()"><i class="fa fa-home"></i>Сохранить</button>
+}
     @if (Cancel.HasDelegate)
-    {
-        <button @onclick="async() => await Cancel.InvokeAsync()"><i class="fa fa-home"></i>Отмена</button>
-    }
+{
+    <button @onclick="async() => await Cancel.InvokeAsync()"><i class="fa fa-home"></i>Отмена</button>
+}
 </div>
 
 @code {
-    [Parameter] public EventCallback Add { get; set; }
-    [Parameter] public EventCallback Save { get; set; }
-    [Parameter] public EventCallback Cancel { get; set; }
+[Parameter] public EventCallback Add { get; set; }
+[Parameter] public EventCallback Save { get; set; }
+[Parameter] public EventCallback Cancel { get; set; }
 }

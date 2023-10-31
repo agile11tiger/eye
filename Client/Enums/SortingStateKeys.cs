@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
+namespace EyE.Client.Enums;
 
-namespace EyE.Client.Enums
+public enum SortingStateKeys
 {
-    public enum SortingStateKeys
-    {
-        Ascend,
-        Descend,
-    }
+    Ascend,
+    Descend,
+}
 
-    public static class SortingStates
+public static class SortingStates
+{
+    public static readonly Dictionary<SortingStateKeys, string> Default = new Dictionary<SortingStateKeys, string>()
     {
-        public static readonly Dictionary<SortingStateKeys, string> Default = new Dictionary<SortingStateKeys, string>()
-        {
-            { SortingStateKeys.Ascend, "По увеличению" },
-            { SortingStateKeys.Descend, "По уменьшению" }
-        };
-    }
+        { SortingStateKeys.Ascend, "По увеличению" },
+        { SortingStateKeys.Descend, "По уменьшению" }
+    };
 }

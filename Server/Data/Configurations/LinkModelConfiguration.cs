@@ -1,13 +1,11 @@
-﻿using EyE.Shared.Models.Common;
+﻿using Memory.Models.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+namespace EyEServer.Data.Configurations;
 
-namespace EyE.Server.Data.Configurations
+public class LinkModelConfiguration : IEntityTypeConfiguration<LinkModel>
 {
-    public class LinkModelConfiguration : IEntityTypeConfiguration<LinkModel>
+    public void Configure(EntityTypeBuilder<LinkModel> builder)
     {
-        public void Configure(EntityTypeBuilder<LinkModel> builder)
-        {
-        }
     }
 }

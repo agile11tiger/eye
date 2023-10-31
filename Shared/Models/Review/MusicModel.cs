@@ -1,11 +1,8 @@
-﻿using EyE.Shared.Models.Common;
+﻿namespace Memory.Models.Review;
 
-namespace EyE.Shared.Models.Review
+public class MusicModel : ReviewModel
 {
-    public class MusicModel : ReviewModel
-    {
-        public string? DiscogsId { get; set; }
-        public string? Sites { get; set; }
-        public string? YoutubePlaylist { get; set; }
-    }
+    public string? DiscogsId { get; set; }
+    public string? Sites { get; set; }
+    public string? YoutubePlaylist { get; set; }
 }

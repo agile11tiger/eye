@@ -1,31 +1,16 @@
-﻿using EyE.Server.Controllers.Common;
-using EyE.Server.Data;
-using EyE.Shared.Enums;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Review;
+﻿using EyEServer.Controllers.Common;
+using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Authorize(Roles = "Admin")]
+[Route("api/[controller]")]
+public class GamesController : IMDbController<GameModel>
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
-    public class GamesController : IMDbController<GameModel>
+    public override DbSet<GameModel> GetItems()
     {
-        public GamesController(
-            ApplicationDbContext db,
-            IHttpClientFactory clientFactory)
-            : base(db, clientFactory)
-        {
-        }
-
-        public override DbSet<GameModel> GetItems()
-        {
-            return Db.Games;
-        }
+        return _database.Games;
     }
 }

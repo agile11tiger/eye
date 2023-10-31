@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace EyEServer.Services;
 
-namespace EyE.Server.Services
+public static class EmailServiceData
 {
-    public static class EmailServiceData
-    {
-        
-    }
+    public const string GMAIL_ADDRESS = "9eye999@gmail.com";
+    public const string GMAIL_PASSWORD = "K`drf999";
 }

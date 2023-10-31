@@ -1,74 +1,61 @@
-﻿using EyE.Server.Constants;
-using EyE.Server.Controllers.Common;
-using EyE.Server.Data;
-using EyE.Shared.Enums;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Common;
+﻿using EyEServer.Constants;
+using EyEServer.Controllers.Common;
+using Memory.Enums;
+using Memory.Helpers;
+using Memory.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Authorize(Roles = "Admin")]
+[Route("api/[controller]")]
+public class LinksController : AdminLinksController<LinkModel>
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
-    public class LinksController : AdminLinksController<LinkModel>
+    [HttpPut("[action]")]
+    public async Task<IActionResult> AddIfNotExistAsync(LinkModel model)
     {
-        public LinksController(
-            ApplicationDbContext db,
-            IHttpClientFactory clientFactory)
-            : base(db, clientFactory)
+        if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
         {
-        }
+            var result = true;
+            var client = _clientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT);
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> AddIfNotExistAsync(LinkModel model)
-        {
-            if (await GetItems().FirstOrDefaultAsync(i => i.Link == model.Link && i.FolderName == model.FolderName) == null)
+            switch (model.FolderName)
             {
-                var result = true;
-                var client = ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT);
-
-                switch (model.FolderName)
-                {
-                    case FolderNames.AnimeSites:
-                    case FolderNames.MusicSites:
-                    case FolderNames.FilmSites:
-                    case FolderNames.SerialSites:
-                        result = await LinkHelper.TrySetTitleAndImageAsync(model, client); break;
-                    case FolderNames.AnimeClips:
-                    case FolderNames.BieutifulSongs:
-                    case FolderNames.BieutifulVideos:
-                    case FolderNames.NightcoreMusic:
-                    case FolderNames.UnusualMusic:
-                    case FolderNames.RelaxingMusic:
-                    case FolderNames.ConcentratingMusic:
-                    case FolderNames.Threads:
-                    case FolderNames.Schedule:
-                    case FolderNames.TextNotes:
-                    case FolderNames.YoutubeNotes:
-                        break;
-                    default:
-                        result = await LinkHelper.TrySetNameAndFaviconAsync(model, client); break;
-                }
-
-                if (result == false)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
-
-                return await PostAsync(model);
+                case FolderNames.AnimeSites:
+                case FolderNames.MusicSites:
+                case FolderNames.FilmSites:
+                case FolderNames.SerialSites:
+                    result = await LinkHelper.TrySetTitleAndImageAsync(model, client); break;
+                case FolderNames.AnimeClips:
+                case FolderNames.BieutifulSongs:
+                case FolderNames.BieutifulVideos:
+                case FolderNames.NightcoreMusic:
+                case FolderNames.UnusualMusic:
+                case FolderNames.RelaxingMusic:
+                case FolderNames.ConcentratingMusic:
+                case FolderNames.Threads:
+                case FolderNames.Schedule:
+                case FolderNames.TextNotes:
+                case FolderNames.YoutubeNotes:
+                    break;
+                default:
+                    result = await LinkHelper.TrySetNameAndFaviconAsync(model, client); break;
             }
 
-            return BadRequest("Объект уже существует");
+            if (result == false)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
+
+            return await PostAsync(model);
         }
 
-        public override DbSet<LinkModel> GetItems()
-        {
-            return Db.Links;
-        }
+        return BadRequest(_localizer["ObjectExist"]);
+    }
+
+    public override DbSet<LinkModel> GetItems()
+    {
+        return _database.Links;
     }
 }

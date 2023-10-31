@@ -3,25 +3,25 @@
     <label for="contextMenu__toggle@(ItemNumber)" class="contextMenu__btn"><span></span><i></i></label>
     <ul>
         @if (ShowItemEditor.HasDelegate)
-        {
-            <li @onmouseup="async () => await ShowItemEditor.InvokeAsync(Item)">Изменить</li>
-        }
+    {
+        <li @onmouseup="async () => await ShowItemEditor.InvokeAsync(Item)">Изменить</li>
+    }
         @if (UpdateItem.HasDelegate)
-        {
-            <li @onmouseup="async () => await UpdateItem.InvokeAsync(Item)">Обновить</li>
-        }
+    {
+        <li @onmouseup="async () => await UpdateItem.InvokeAsync(Item)">Обновить</li>
+    }
         @if (DeleteItem.HasDelegate)
-        {
-            <li @onmouseup="async () => await DeleteItem.InvokeAsync(ItemId)">Удалить</li>
-        }
+    {
+        <li @onmouseup="async () => await DeleteItem.InvokeAsync(ItemId)">Удалить</li>
+    }
     </ul>
 </div>
 
 @code {
-    [Parameter] public object Item { get; set; }
-    [Parameter] public int ItemId { get; set; }
-    [Parameter] public int ItemNumber { get; set; }
-    [Parameter] public EventCallback<object> ShowItemEditor { get; set; }
-    [Parameter] public EventCallback<object> UpdateItem { get; set; }
-    [Parameter] public EventCallback<int> DeleteItem { get; set; }
+[Parameter] public object Item { get; set; }
+[Parameter] public int ItemId { get; set; }
+[Parameter] public int ItemNumber { get; set; }
+[Parameter] public EventCallback<object> ShowItemEditor { get; set; }
+[Parameter] public EventCallback<object> UpdateItem { get; set; }
+[Parameter] public EventCallback<int> DeleteItem { get; set; }
 }

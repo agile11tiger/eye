@@ -1,9 +1,8 @@
-﻿using EyE.Shared.Enums;
+﻿using Identity.Models;
+using Memory.Enums;
+namespace Memory.Models.Common.Interfaces;
 
-namespace EyE.Shared.Models.Common.Interfaces
+public interface IDbFolderItem : IDatabaseItem
 {
-    public interface IDbFolderItem: IDatabaseItem
-    {
-        public FolderNames FolderName { get; set; }
-    }
+    public FolderNames FolderName { get; set; }
 }

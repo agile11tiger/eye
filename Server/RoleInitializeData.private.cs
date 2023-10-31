@@ -1,12 +1,9 @@
-﻿using EyE.Shared.Enums;
-using EyE.Shared.ViewModels.Identity;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
+﻿namespace EyEServer;
 
-namespace EyE.Server
+public static class RoleInitializerData
 {
-    public static class RoleInitializerData
-    {
-        
-    }
+    public const string EMAIL_ADMIN = "admin@gmail.com";
+    public const string PASSWORD_ADMIN = "Admin789";
+    public const string EMAIL_USER = "user@gmail.com";
+    public const string PASSWORD_USER = "User789";
 }

@@ -1,31 +1,25 @@
 ﻿using Blazored.LocalStorage;
 using EyE.Client.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Net.Http;
-using System.Threading.Tasks;
+namespace EyE.Client.Components;
 
-namespace EyE.Client.Components
+public partial class UserMenu
 {
-    public partial class UserMenu
+    [Inject] public NavigationManager Navigation { get; set; }
+    [Inject] public ILocalStorageService LocalStorage { get; set; }
+    [Inject] public ServerHttpClient ServerHttpClient { get; set; }
+    [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    private async Task Logout(MouseEventArgs args)
     {
-        [Inject] public ServerHttpClient ServerHttpClient { get; set; }
-        [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public NavigationManager Navigation { get; set; }
-        [Inject] public ILocalStorageService LocalStorage { get; set; }
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/account/logout");
+        var response = await ServerHttpClient.SendAsync(request);
 
-        private async Task Logout(MouseEventArgs args)
+        if (response.IsSuccessStatusCode)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/account/logout");
-            var response = await ServerHttpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                await LocalStorage.RemoveItemAsync(nameof(UserInfo));
-                AuthenticationStateProvider.NotifyUserLogout();
-            }
+            await LocalStorage.RemoveItemAsync(nameof(UserInfo));
+            AuthenticationStateProvider.NotifyUserLogout();
         }
     }
 }

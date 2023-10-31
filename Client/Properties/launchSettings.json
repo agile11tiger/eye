@@ -21,7 +21,7 @@
       "launchBrowser": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       //SPATEST: change port 9001 ---> 8001
-      "applicationUrl": "https://localhost:9001",
+      "applicationUrl": "https://localhost:8001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,20 +1,15 @@
-﻿using EyE.Shared.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Memory.Enums;
+namespace Memory.Helpers;
 
-namespace EyE.Shared.Helpers
+public static class AdminHelper
 {
-    public static class AdminHelper
+    public readonly static FolderNames[] AdminFolders = new[]
     {
-        public readonly static FolderNames[] AdminFolders = new[]
-        {
-            FolderNames.Schedule,
-            FolderNames.TextNotes,
-            FolderNames.YoutubeNotes,
-            FolderNames.LinkNotes,
-            FolderNames.FilmsBreakingPsycheWatched,
-            FolderNames.FilmsBreakingPsycheWillWatch,
-        };
-    }
+        FolderNames.Schedule,
+        FolderNames.TextNotes,
+        FolderNames.YoutubeNotes,
+        FolderNames.LinkNotes,
+        FolderNames.FilmsBreakingPsycheWatched,
+        FolderNames.FilmsBreakingPsycheWillWatch,
+    };
 }

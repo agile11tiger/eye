@@ -5,31 +5,31 @@
 </div>
 
 @code{
-    private string wrapperStyle = "visibility:hidden;";
-    [Parameter] public bool IsShowWrapper
+private string wrapperStyle = "visibility:hidden;";
+[Parameter] public bool IsShowWrapper
+{
+    get
     {
-        get
-        {
-            if (wrapperStyle == "visibility:visible;")
-                return true;
-            else
-                return false;
-        }
-        set
-        {
-            if (value == true)
-                wrapperStyle = "visibility:visible;";
-            else
-                wrapperStyle = "visibility:hidden;";
-
-        }
+        if (wrapperStyle == "visibility:visible;")
+            return true;
+        else
+            return false;
     }
-    [Parameter] public EventCallback<bool> IsShowWrapperChanged { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
-
-    private void HideWrapper()
+    set
     {
-        IsShowWrapper = false;
-        IsShowWrapperChanged.InvokeAsync(IsShowWrapper);
+        if (value == true)
+            wrapperStyle = "visibility:visible;";
+        else
+            wrapperStyle = "visibility:hidden;";
+
     }
+}
+[Parameter] public EventCallback<bool> IsShowWrapperChanged { get; set; }
+[Parameter] public RenderFragment ChildContent { get; set; }
+
+private void HideWrapper()
+{
+    IsShowWrapper = false;
+    IsShowWrapperChanged.InvokeAsync(IsShowWrapper);
+}
 }

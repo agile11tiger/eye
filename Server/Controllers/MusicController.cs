@@ -1,56 +1,44 @@
-﻿using EyE.Server.Constants;
-using EyE.Server.Controllers.Common;
-using EyE.Server.Data;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Review;
+﻿using EyEServer.Constants;
+using EyEServer.Controllers.Common;
+using Memory.Helpers;
+using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Authorize(Roles = "Admin")]
+[Route("api/[controller]")]
+public class MusicController : Database<MusicModel>
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
-    public class MusicController : Database<MusicModel>
+    [HttpPut("[action]")]
+    public async Task<IActionResult> AddIfNotExistAsync(MusicModel model)
     {
-        public MusicController(
-            ApplicationDbContext db,
-            IHttpClientFactory clientFactory)
-            : base(db, clientFactory)
+        if (await GetItems().FirstOrDefaultAsync(i => i.DiscogsId == model.DiscogsId) == null)
         {
+            await DiscogsHelper.SetImageSourceAsync(model, _clientFactory.CreateClient("localClient"));
+            return await PostAsync(model);
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> AddIfNotExistAsync(MusicModel model)
-        {
-            if (await GetItems().FirstOrDefaultAsync(i => i.DiscogsId == model.DiscogsId) == null)
-            {
-                await DiscogsHelper.SetImageSourceAsync(model, ClientFactory.CreateClient("localClient"));
-                return await PostAsync(model);
-            }
+        return BadRequest(_localizer["ObjectExist"]);
+    }
 
-            return BadRequest("Объект уже существует");
+    [HttpPost("[action]")]
+    public virtual async Task<IActionResult> UpdateImageSourcesAsync()
+    {
+        foreach (var item in await GetItems().ToListAsync())
+        {
+            await DiscogsHelper.SetImageSourceAsync(item, _clientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
+            _database.Update(item);
+            await _database.SaveChangesAsync();
         }
 
-        [HttpPost("[action]")]
-        public virtual async Task<IActionResult> UpdateImageSourcesAsync()
-        {
-            foreach(var item in await GetItems().ToListAsync())
-            {
-                await DiscogsHelper.SetImageSourceAsync(item, ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
-                Db.Update(item);
-                await Db.SaveChangesAsync();
-            }
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        public override DbSet<MusicModel> GetItems()
-        {
-            return Db.Music;
-        }
+    public override DbSet<MusicModel> GetItems()
+    {
+        return _database.Music;
     }
 }

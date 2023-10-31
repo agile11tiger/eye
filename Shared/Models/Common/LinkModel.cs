@@ -1,19 +1,16 @@
-﻿using EyE.Shared.Enums;
-using EyE.Shared.Models.Common.Interfaces;
-using System;
+﻿using Memory.Enums;
+using Memory.Models.Common.Interfaces;
+namespace Memory.Models.Common;
 
-namespace EyE.Shared.Models.Common
+public class LinkModel : IDbFolderItem, IEquatable<LinkModel>
 {
-    public class LinkModel : IDbFolderItem, IEquatable<LinkModel>
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Link { get; set; }
-        public string? ImageSource { get; set; }
-        public FolderNames FolderName { get; set; }
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public string? Link { get; set; }
+    public string? ImageSource { get; set; }
+    public FolderNames FolderName { get; set; }
 
-        public bool Equals(LinkModel? other) => Id == other?.Id;
-        public override bool Equals(object? obj) => Equals(obj as LinkModel);
-        public override int GetHashCode() => Id;
-    }
+    public bool Equals(LinkModel? other) => Id == other?.Id;
+    public override bool Equals(object? obj) => Equals(obj as LinkModel);
+    public override int GetHashCode() => Id;
 }

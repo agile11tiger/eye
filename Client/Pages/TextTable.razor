@@ -27,9 +27,9 @@
 
     <tbody>
         @{
-            if (TempItems != null && PaginationModel != null)
-            {
-                <tr>
+        if (TempItems != null && PaginationModel != null)
+        {
+            <tr>
                     <td></td>
                     <td class="newItem">
                         <textarea type="text" @bind="@NewTextModel.Text" placeholder="Введите текст" />
@@ -38,23 +38,23 @@
                     <td></td>
                 </tr>
 
-                var itemsSkipCounter = 1;
-                var itemNumber = PaginationModel.PageFirstElementNumber;
+            var itemsSkipCounter = 1;
+            var itemNumber = PaginationModel.PageFirstElementNumber;
 
-                foreach (var item in TempItems)
+            foreach (var item in TempItems)
+            {
+                //пропускает элементы до нужного элемента
+                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
                 {
-                    //пропускает элементы до нужного элемента
-                    if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
-                    {
-                        itemsSkipCounter++;
-                        continue;
-                    }
-                    if (itemNumber > PaginationModel.PageLastElementNumber)
-                        break;
+                    itemsSkipCounter++;
+                    continue;
+                }
+                if (itemNumber > PaginationModel.PageLastElementNumber)
+                    break;
 
-                    if (!item.IsEditing)
-                    {
-                        <tr @ondblclick="() => ShowItemEditor(item)">
+                if (!item.IsEditing)
+                {
+                    <tr @ondblclick="() => ShowItemEditor(item)">
                             <td>@itemNumber</td>
                             <td>@item.Text</td>
                             <td>
@@ -64,20 +64,20 @@
                                                 DeleteItem="DeleteItemAsync" />
                             </td>
                         </tr>
-                    }
-                    else
-                    {
-                        <tr @onclick:stopPropagation>
+                }
+                else
+                {
+                    <tr @onclick:stopPropagation>
                             <td>@itemNumber</td>
                             <td><textarea type="text" @bind="@ItemEditorModel.Text" /></td>
                             <td></td>
                         </tr>
-                    }
-
-                    itemNumber++;
                 }
+
+                itemNumber++;
             }
         }
+    }
     </tbody>
 </table>
 <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />

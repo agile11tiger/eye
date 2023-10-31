@@ -1,40 +1,27 @@
-﻿using EyE.Server.Data;
-using EyE.Shared.Enums;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Common;
-using EyE.Shared.Models.Common.Interfaces;
+﻿using Memory.Helpers;
+using Memory.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
+namespace EyEServer.Controllers.Common;
 
-namespace EyE.Server.Controllers.Common
+public abstract class AdminLinksController<T> : Database<T> where T : LinkModel, new()
 {
-    public abstract class AdminLinksController<T> : Database<T> where T : LinkModel, new()
+    [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
+    [AllowAnonymous]
+    [HttpGet]
+    public override async Task<IActionResult> GetAsync()
     {
-        protected AdminLinksController(
-            ApplicationDbContext db, 
-            IHttpClientFactory clientFactory)
-            :base(db, clientFactory)
-        {
-        }
+        List<T> list = User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString())
+            ? list = await GetItems().ToListAsync()
+            : list = await GetItems()
+                .Where(i => !AdminHelper.AdminFolders.Contains(i.FolderName))
+                .ToListAsync();
 
-        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
-        [AllowAnonymous]
-        [HttpGet]
-        public override async Task<IActionResult> GetAsync()
-        {
-            List<T> list = User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()) 
-                ? list = await GetItems().ToListAsync()
-                : list = await GetItems()
-                    .Where(i => !AdminHelper.AdminFolders.Contains(i.FolderName))
-                    .ToListAsync();
-
-            list.Reverse();
-            return Ok(list);
-        }
+        list.Reverse();
+        return Ok(list);
     }
 }

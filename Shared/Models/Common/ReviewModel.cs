@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace Memory.Models.Common;
 
-namespace EyE.Shared.Models.Common
+public class ReviewModel : LinkModel
 {
-    public class ReviewModel : LinkModel
-    {
-        public string? Information { get; set; }
-        public DateTime AddingDate { get; set; }
-        public DateTime StartingDate { get; set; }
-        public string? Comment { get; set; }
-    }
+    public string? Information { get; set; }
+    public DateTime AddingDate { get; set; }
+    public DateTime StartingDate { get; set; }
+    public string? Comment { get; set; }
 }

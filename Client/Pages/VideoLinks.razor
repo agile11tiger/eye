@@ -1,4 +1,4 @@
-﻿@using EyE.Shared.Helpers
+﻿@using Memory.Helpers
 @inherits Links
 
 <div class="videoLinks scroll">
@@ -21,29 +21,29 @@
 
     <div class="scroll__container">
         @if (TempItems != null && PaginationModel != null)
+    {
+        var itemsSkipCounter = 1;
+        var itemNumber = PaginationModel.PageFirstElementNumber;
+
+        foreach (var item in TempItems)
         {
-            var itemsSkipCounter = 1;
-            var itemNumber = PaginationModel.PageFirstElementNumber;
-
-            foreach (var item in TempItems)
+            //пропускает элементы до нужного элемента
+            if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
             {
-                //пропускает элементы до нужного элемента
-                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
-                {
-                    itemsSkipCounter++;
-                    continue;
-                }
-                if (itemNumber > PaginationModel.PageLastElementNumber)
-                    break;
+                itemsSkipCounter++;
+                continue;
+            }
+            if (itemNumber > PaginationModel.PageLastElementNumber)
+                break;
 
-                <div class="videoLinks__videoBox">
+            <div class="videoLinks__videoBox">
                     <iframe frameborder="0"
                             allowfullscreen="true"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             srcdoc=@($"<link rel='stylesheet' href='css/youtube.css?v1'>" +
-                                     $"<a href=//www.youtube.com/embed/{YoutubeHelper.GetId(item.Link)}?disablekb=1&autoplay=1>" +
-                                     $"<img src={item.ImageSource}>" +
-                                     $"<span class='playerStartButton'></span></a>")>
+                                 $"<a href=//www.youtube.com/embed/{YoutubeHelper.GetId(item.Link)}?disablekb=1&autoplay=1>" +
+                                 $"<img src={item.ImageSource}>" +
+                                 $"<span class='playerStartButton'></span></a>")>
                     </iframe>
 
                     <ContextMenu Item="item"
@@ -53,9 +53,9 @@
                                  DeleteItem="DeleteItemAsync" />
                 </div>
 
-                itemNumber++;
-            }
+            itemNumber++;
         }
+    }
     </div>
 
     <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />

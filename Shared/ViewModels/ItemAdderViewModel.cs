@@ -1,7 +1,6 @@
-﻿namespace EyE.Shared.ViewModels
+﻿namespace Memory.ViewModels;
+
+public class ItemAdderViewModel
 {
-    public class ItemAdderViewModel
-    {
-        public string? Id { get; set; }
-    }
+    public string? Id { get; set; }
 }

@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿namespace EyE.Client.Pages;
 
-namespace EyE.Client.Pages
+[Route("LinkCatalog/{StrFolderName}")]
+public partial class LinkCatalog
 {
-    [Route("LinkCatalog/{StrFolderName}")]
-    public partial class LinkCatalog
-    {
-    }
 }

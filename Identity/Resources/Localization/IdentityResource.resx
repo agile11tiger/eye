@@ -117,34 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CodeSentToEmail" xml:space="preserve">
-    <value>Код сброса пароля был отправлен на электронную почту</value>
+  <data name="CodeRequired" xml:space="preserve">
+    <value>Поле "Код подтвержения" не заполнено</value>
   </data>
-  <data name="EmailNotConfirmed" xml:space="preserve">
-    <value>У вас не подтверждена электронная почта</value>
+  <data name="EmailIncorrect" xml:space="preserve">
+    <value>Поле "E-mail" некорректно</value>
   </data>
-  <data name="PasswordResetMessage" xml:space="preserve">
-    <value>Код сброса пароля: {0}</value>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Поле "E-mail" не заполнено</value>
   </data>
-  <data name="PasswordResetMessageHeader" xml:space="preserve">
-    <value>Сброс пароля</value>
+  <data name="PasswordConfirmRequired" xml:space="preserve">
+    <value>Поле "Потверждение Пароля" не заполнено</value>
   </data>
-  <data name="RegisterConfirmHeader" xml:space="preserve">
-    <value>Подтверждение электронной почты</value>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>Пароль должен содержать {2}-{1} символов</value>
   </data>
-  <data name="RegisterConfirmMessage" xml:space="preserve">
-    <value>Подтвердите регистрацию, перейдя по ссылке: &lt;a href={0}&gt;ссылка&lt;/a&gt;</value>
+  <data name="PasswordOneUppercaseAndOneLowercaseAndOneNumeric" xml:space="preserve">
+    <value>Пароль должен содержать миниум одну: 
+1) прописную букву
+2) срочную букву
+3) цифру</value>
   </data>
-  <data name="RegistrationCompletionMessage" xml:space="preserve">
-    <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме</value>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Поле "Пароль" не заполнено</value>
   </data>
-  <data name="UserExists" xml:space="preserve">
-    <value>Пользователь {0} уже существует</value>
+  <data name="PasswordsNotMatch" xml:space="preserve">
+    <value>Пароли не совпадают</value>
   </data>
-  <data name="UserNotExists" xml:space="preserve">
-    <value>Пользователя {0} не существует</value>
+  <data name="RegistrationConditions" xml:space="preserve">
+    <value>Условия регистрации не приняты</value>
   </data>
-  <data name="WrongLoginOrPassword" xml:space="preserve">
-    <value>Неправильный логин и(или) пароль</value>
+  <data name="SupportedMailDomains" xml:space="preserve">
+    <value>Поддерживаемые домены почт</value>
   </data>
 </root>

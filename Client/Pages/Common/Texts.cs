@@ -1,59 +1,56 @@
 ﻿using EyE.Client.Enums;
-using EyE.Shared.Models.Common;
+using Memory.Models.Common;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+namespace EyE.Client.Pages.Common;
 
-namespace EyE.Client.Pages.Common
+public class Texts : Folders<TextModel>
 {
-    public class Texts : Folders<TextModel>
+    public TextModel NewTextModel { get; private set; } = new();
+    public readonly Dictionary<SortingKeys, string> SortingParametersDictionary = new()
     {
-        public readonly Dictionary<SortingKeys, string> SortingParametersDictionary = new()
-        {
-            { SortingKeys.Text, "Текста" },
-        };
-        public readonly Dictionary<FilterKeys, string> FilterParametersDictionary = new()
-        {
-            { FilterKeys.StartWith, "Начинается с" },
-            { FilterKeys.Contains, "Содержит" },
-        };
-        public TextModel NewTextModel = new();
+        { SortingKeys.Text, "Текста" },
+    };
+    public readonly Dictionary<FilterKeys, string> FilterParametersDictionary = new()
+    {
+        { FilterKeys.StartWith, "Начинается с" },
+        { FilterKeys.Contains, "Содержит" },
+    };
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        SortingModel.CurrentSortingParameter = SortingKeys.Text;
+        await InitializeAsync("api/Texts", false);
+    }
+
+    public override async Task AddItemIfNotExistAsync()
+    {
+        if (!await UserChecker.CheckAdminRoleAsync())
+            return;
+
+        if (string.IsNullOrWhiteSpace(NewTextModel.Text))
         {
-            SortingModel.CurrentSortingParameter = SortingKeys.Text;
-            await InitializeAsync("api/Texts", false);
+            await UserChecker.ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
+            return;
         }
 
-        public override async Task AddItemIfNotExistAsync()
+        NewTextModel.FolderName = FolderName;
+
+        if (await TryAddItemAsync(NewTextModel))
+            NewTextModel = new TextModel();
+    }
+
+    public override void ShowItemEditor(object objItem)
+    {
+        if (RefEditableItem == default || (RefEditableItem != default && !RefEditableItem.IsEditing))
         {
-            if (!await UserChecker.CheckAdminRoleAsync())
-                return;
-
-            if (string.IsNullOrWhiteSpace(NewTextModel.Text))
-            {
-                await UserChecker.ShowErrorAlertNotAllowNullOrWhiteSpaceAsync();
-                return;
-            }
-
-            NewTextModel.FolderName = FolderName;
-
-            if (await TryAddItemAsync(NewTextModel))
-                NewTextModel = new TextModel();
+            base.ShowItemEditor(objItem);
+            RefEditableItem.IsEditing = true;
         }
+    }
 
-        public override void ShowItemEditor(object objItem)
-        {
-            if (RefEditableItem == default || (RefEditableItem != default && !RefEditableItem.IsEditing))
-            {
-                base.ShowItemEditor(objItem);
-                RefEditableItem.IsEditing = true;
-            }
-        }
-
-        public async Task CloseItemEditorAsync()
-        {
-            if (RefEditableItem != default && RefEditableItem.IsEditing && await TryUpdateItemAsync())
-                RefEditableItem.IsEditing = false;
-        }
+    public async Task CloseItemEditorAsync()
+    {
+        if (RefEditableItem != default && RefEditableItem.IsEditing && await TryUpdateItemAsync())
+            RefEditableItem.IsEditing = false;
     }
 }

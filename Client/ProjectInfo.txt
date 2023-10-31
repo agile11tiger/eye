@@ -1,3 +1,4 @@
-﻿1.В данном проекте используется расширения:
+﻿0. Откройте и настройте себе filesCombiner.filenesting.json
+1.В данном проекте используется расширения:
 1.1) WebPack Task Runner.
 1.2) Bundler&Minifier.

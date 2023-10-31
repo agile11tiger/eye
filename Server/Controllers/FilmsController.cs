@@ -1,31 +1,16 @@
-﻿using EyE.Server.Controllers.Common;
-using EyE.Server.Data;
-using EyE.Shared.Enums;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Review;
+﻿using EyEServer.Controllers.Common;
+using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Authorize(Roles = "Admin")]
+[Route("api/[controller]")]
+public class FilmsController : IMDbController<FilmModel>
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
-    public class FilmsController : IMDbController<FilmModel>
+    public override DbSet<FilmModel> GetItems()
     {
-        public FilmsController(
-            ApplicationDbContext db,
-            IHttpClientFactory clientFactory)
-            : base(db, clientFactory)
-        {
-        }
-
-        public override DbSet<FilmModel> GetItems()
-        {
-            return Db.Films;
-        }
+        return _database.Films;
     }
 }

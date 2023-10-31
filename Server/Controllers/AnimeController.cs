@@ -1,47 +1,36 @@
-﻿using EyE.Server.Constants;
-using EyE.Server.Controllers.Common;
-using EyE.Server.Data;
-using EyE.Shared.Helpers;
-using EyE.Shared.Models.Review;
+﻿using EyEServer.Constants;
+using EyEServer.Controllers.Common;
+using Memory.Helpers;
+using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Authorize(Roles = "Admin")]
+[Route("api/[controller]")]
+public class AnimeController : Database<AnimeModel>
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
-    public class AnimeController : Database<AnimeModel>
+    [HttpPut("[action]")]
+    public async Task<IActionResult> AddIfNotExistAsync(AnimeModel model)
     {
-        public AnimeController(
-            ApplicationDbContext db,
-            IHttpClientFactory clientFactory)
-            : base(db, clientFactory)
+        if (await GetItems().FirstOrDefaultAsync(i => i.AniDbId == model.AniDbId) == null)
         {
+            var result = await AniDbHelper.TrySetValuesAsync(model, _clientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
+
+            if (result == false)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
+
+            return await PostAsync(model);
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> AddIfNotExistAsync(AnimeModel model)
-        {
-            if (await GetItems().FirstOrDefaultAsync(i => i.AniDbId == model.AniDbId) == null)
-            {
-                var result = await AniDbHelper.TrySetValuesAsync(model, ClientFactory.CreateClient(HttpClientNames.LOCAL_CLIENT));
+        return BadRequest(_localizer["ObjectExist"]);
+    }
 
-                if (result == false) 
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Что-то пошло не так");
-
-                return await PostAsync(model);
-            }
-
-            return BadRequest("Объект уже существует");
-        }
-
-        public override DbSet<AnimeModel> GetItems()
-        {
-            return Db.Anime;
-        }
+    public override DbSet<AnimeModel> GetItems()
+    {
+        return _database.Anime;
     }
 }

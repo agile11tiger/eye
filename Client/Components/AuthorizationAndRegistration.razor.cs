@@ -1,104 +1,96 @@
 ﻿using Blazored.LocalStorage;
 using EyE.Client.Extensions;
 using EyE.Client.Services;
-using EyE.Shared.Models.Common;
-using EyE.Shared.Models.Identity;
-using EyE.Shared.ViewModels.Identity;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
+using Identity.Models;
+using Identity.ViewModels;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.JSInterop;
-using System;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+namespace EyE.Client.Components;
 
-namespace EyE.Client.Components
+public partial class AuthorizationAndRegistration
 {
-    public partial class AuthorizationAndRegistration
+    private bool _isShowWrapper;
+    private LoginViewModel _loginModel = new();
+    private RegisterViewModel _registerModel = new();
+    private ResetPasswordViewModel _resetPasswordModel = new();
+    private ForgotPasswordViewModel _forgotPasswordModel = new();
+    private ServerSideValidator _serverSideRegistrationValidator = new();
+    private ServerSideValidator _serverSideResetPasswordValidator = new();
+    private ServerSideValidator _serverSideAuthorizationValidator = new();
+    private ServerSideValidator _serverSideForgotPasswordValidator = new();
+    [Inject] public IJSRuntime JS { get; set; }
+    [Inject] public NavigationManager Navigation { get; set; }
+    [Inject] public ILocalStorageService LocalStorage { get; set; }
+    [Inject] public ServerHttpClient ServerHttpClient { get; set; }
+    [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    private void SecretLoginToAccount()
     {
-        private bool isShowWrapper;
-        private LoginViewModel loginModel = new();
-        private RegisterViewModel registerModel = new();
-        private ForgotPasswordViewModel forgotPasswordModel = new();
-        private ResetPasswordViewModel resetPasswordModel = new();
-        private ServerSideValidator serverSideAuthorizationValidator = new();
-        private ServerSideValidator serverSideRegistrationValidator = new();
-        private ServerSideValidator serverSideForgotPasswordValidator = new();
-        private ServerSideValidator serverSideResetPasswordValidator = new();
-        [Inject] public ServerHttpClient ServerHttpClient { get; set; }
-        [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public IJSRuntime JS { get; set; }
-        [Inject] public NavigationManager Navigation { get; set; }
-        [Inject] public ILocalStorageService LocalStorage { get; set; }
+        Navigation.NavigateTo($"authentication/{RemoteAuthenticationActions.LogIn}?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
 
-        private void SecretLoginToAccount()
+    private async Task LoginToAccount()
+    {
+        var response = await ServerHttpClient.PostAsJsonAsync("api/account/login", _loginModel);
+
+        if (response.IsSuccessStatusCode)
         {
-            Navigation.NavigateTo($"authentication/{RemoteAuthenticationActions.LogIn}?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+            _loginModel = new LoginViewModel();
+            ToggleVisibilityWrapper();
+            var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+            var userInfo = new UserInfo() { Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
+            await LocalStorage.SetItemAsync(userInfo);
+            AuthenticationStateProvider.NotifyUserAuthentication(userInfo.Token);
+        }
+        else
+            await JS.InvokeVoidAsync("alert", "Не пущу без регистрации!");
+
+        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+    }
+
+    private async Task CreateAccount()
+    {
+        var response = await ServerHttpClient.PostAsJsonAsync("api/account/register", _registerModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _registerModel = new RegisterViewModel();
+            StateHasChanged();
         }
 
-        private async Task LoginToAccount()
+        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+    }
+
+    private async Task ForgotPassword()
+    {
+        var response = await ServerHttpClient.PostAsJsonAsync("api/account/forgotPassword", _forgotPasswordModel);
+
+        if (response.IsSuccessStatusCode)
         {
-            var response = await ServerHttpClient.PostAsJsonAsync("api/account/login", loginModel);
-
-            if (response.IsSuccessStatusCode)
-            {
-                loginModel = new LoginViewModel();
-                ToogleVisibilityWrapper();
-                var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
-                var userInfo = new UserInfo() { Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
-                await LocalStorage.SetItemAsync(userInfo);
-                AuthenticationStateProvider.NotifyUserAuthentication(userInfo.Token);
-            }
-            else
-                await JS.InvokeVoidAsync("alert", "Не пущу без регистрации!");
-
-            await serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+            _resetPasswordModel.Email = _forgotPasswordModel.Email;
+            _forgotPasswordModel = new ForgotPasswordViewModel();
+            StateHasChanged();
         }
 
-        private async Task CreateAccount()
+        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+    }
+
+    private async Task ResetPassword()
+    {
+        var response = await ServerHttpClient.PostAsJsonAsync("api/account/resetPassword", _resetPasswordModel);
+
+        if (response.IsSuccessStatusCode == true)
         {
-            var response = await ServerHttpClient.PostAsJsonAsync("api/account/register", registerModel);
-
-            if (response.IsSuccessStatusCode)
-            {
-                registerModel = new RegisterViewModel();
-                StateHasChanged();
-            }
-
-            await serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+            _resetPasswordModel = new ResetPasswordViewModel();
+            ToggleVisibilityWrapper();
         }
 
-        private async Task ForgotPassword()
-        {
-            var response = await ServerHttpClient.PostAsJsonAsync("api/account/forgotPassword", forgotPasswordModel);
+        await _serverSideResetPasswordValidator.DisplayMessagesAsync(response.Content);
+    }
 
-            if (response.IsSuccessStatusCode)
-            {
-                resetPasswordModel.Email = forgotPasswordModel.Email;
-                forgotPasswordModel = new ForgotPasswordViewModel();
-                StateHasChanged();
-            }
-
-            await serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
-        }
-
-        private async Task ResetPassword()
-        {
-            var response = await ServerHttpClient.PostAsJsonAsync("api/account/resetPassword", resetPasswordModel);
-
-            if (response.IsSuccessStatusCode == true)
-            {
-                resetPasswordModel = new ResetPasswordViewModel();
-                ToogleVisibilityWrapper();
-            }
-            
-            await serverSideResetPasswordValidator.DisplayMessagesAsync(response.Content);
-        }
-
-        private void ToogleVisibilityWrapper()
-        {
-            isShowWrapper = !isShowWrapper;
-        }
+    private void ToggleVisibilityWrapper()
+    {
+        _isShowWrapper = !_isShowWrapper;
     }
 }

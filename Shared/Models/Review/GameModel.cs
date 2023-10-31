@@ -1,8 +1,5 @@
-﻿using EyE.Shared.Models.Common;
+﻿namespace Memory.Models.Review;
 
-namespace EyE.Shared.Models.Review
+public class GameModel : IMDbModel
 {
-    public class GameModel : IMDbModel
-    {
-    }
 }

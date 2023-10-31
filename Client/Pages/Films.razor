@@ -1,4 +1,4 @@
-﻿@using EyE.Shared.Models.Review
+﻿@using Memory.Models.Review
 @inherits IMDbReviews<FilmModel>
 
 <div class="films scroll">
@@ -21,22 +21,22 @@
 
     <div class="scroll__container">
         @if (TempItems != null && PaginationModel != null)
+    {
+        var itemsSkipCounter = 1;
+        var itemNumber = PaginationModel.PageFirstElementNumber;
+
+        foreach (var item in TempItems)
         {
-            var itemsSkipCounter = 1;
-            var itemNumber = PaginationModel.PageFirstElementNumber;
-
-            foreach (var item in TempItems)
+            //пропускает элементы до нужного элемента
+            if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
             {
-                //пропускает элементы до нужного элемента
-                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
-                {
-                    itemsSkipCounter++;
-                    continue;
-                }
-                if (itemNumber > PaginationModel.PageLastElementNumber)
-                    break;
+                itemsSkipCounter++;
+                continue;
+            }
+            if (itemNumber > PaginationModel.PageLastElementNumber)
+                break;
 
-                <div class="scroll__container__box">
+            <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
                         <img src="@(IMDbHelper.IMAGE_REQUEST_PATTERN + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
@@ -77,9 +77,9 @@
                                  DeleteItem="DeleteItemAsync" />
                 </div>
 
-                itemNumber++;
-            }
+            itemNumber++;
         }
+    }
     </div>
 
     <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
@@ -91,28 +91,28 @@
                 <label for="scroll__itemEditor__folder">Папка: </label>
                 <select id="scroll__itemEditor__folder" @bind="ItemEditorModel.FolderName" @bind:event="onchange">
                     @if (FolderName == FolderNames.FilmsWatched)
-                    {
+                {
+                    <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                }
+                else if (FolderName == FolderNames.CartoonFilmsWatched)
+                {
+                    <option value="@FolderNames.CartoonFilmsWatched">@(FolderNames.CartoonFilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
+                }
+                else if (FolderName == FolderNames.FilmsWillWatch)
+                {
+                    <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
-                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
-                    }
-                    else if (FolderName == FolderNames.CartoonFilmsWatched)
-                    {
                         <option value="@FolderNames.CartoonFilmsWatched">@(FolderNames.CartoonFilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
-                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
-                    }
-                    else if (FolderName == FolderNames.FilmsWillWatch)
-                    {
-                        <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
-                        <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
-                        <option value="@FolderNames.CartoonFilmsWatched">@(FolderNames.CartoonFilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
-                    }
-                    else if (FolderName == FolderNames.FilmsBreakingPsycheWatched || FolderName == FolderNames.FilmsBreakingPsycheWillWatch)
-                    {
-                        <option value="@FolderNames.FilmsBreakingPsycheWatched">@(FolderNames.FilmsBreakingPsycheWatched.GetAttribute<DisplayAttribute>().Name)</option>
+                }
+                else if (FolderName == FolderNames.FilmsBreakingPsycheWatched || FolderName == FolderNames.FilmsBreakingPsycheWillWatch)
+                {
+                    <option value="@FolderNames.FilmsBreakingPsycheWatched">@(FolderNames.FilmsBreakingPsycheWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsBreakingPsycheWillWatch">@(FolderNames.FilmsBreakingPsycheWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsWatched">@(FolderNames.FilmsWatched.GetAttribute<DisplayAttribute>().Name)</option>
                         <option value="@FolderNames.FilmsWillWatch">@(FolderNames.FilmsWillWatch.GetAttribute<DisplayAttribute>().Name)</option>
-                    }
+                }
                 </select>
             </p>
             <p>

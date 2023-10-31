@@ -1,9 +1,6 @@
-﻿using EyE.Shared.Models.Common;
+﻿namespace Memory.Models.Review;
 
-namespace EyE.Shared.Models.Review
+public class SerialModel : IMDbModel
 {
-    public class SerialModel : IMDbModel
-    {
-        public ushort TotalSeasons { get; set; }
-    }
+    public ushort TotalSeasons { get; set; }
 }

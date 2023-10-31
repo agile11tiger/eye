@@ -1,4 +1,4 @@
-﻿@using EyE.Shared.Models.Review
+﻿@using Memory.Models.Review
 @inherits Reviews<AnimeModel>
 
 <div class="anime scroll">
@@ -21,22 +21,22 @@
 
     <div class="scroll__container">
         @if (TempItems != null && PaginationModel != null)
+    {
+        var itemsSkipCounter = 1;
+        var itemNumber = PaginationModel.PageFirstElementNumber;
+
+        foreach (var item in TempItems)
         {
-            var itemsSkipCounter = 1;
-            var itemNumber = PaginationModel.PageFirstElementNumber;
-
-            foreach (var item in TempItems)
+            //пропускает элементы до нужного элемента
+            if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
             {
-                //пропускает элементы до нужного элемента
-                if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
-                {
-                    itemsSkipCounter++;
-                    continue;
-                }
-                if (itemNumber > PaginationModel.PageLastElementNumber)
-                    break;
+                itemsSkipCounter++;
+                continue;
+            }
+            if (itemNumber > PaginationModel.PageLastElementNumber)
+                break;
 
-                <div class="scroll__container__box">
+            <div class="scroll__container__box">
                     <figure>
                         <figcaption><h3><a href="@item.Link" target="_blank">@item.Name</a></h3></figcaption>
                         <img src="@(AniDbHelper.IMAGE_REQUEST_PATTERN + item.ImageSource)" alt="Изображение" onerror="this.style='height:250px;'">
@@ -70,9 +70,9 @@
                                  DeleteItem="DeleteItemAsync" />
                 </div>
 
-                itemNumber++;
-            }
+            itemNumber++;
         }
+    }
     </div>
 
     <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />

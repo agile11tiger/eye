@@ -1,36 +1,29 @@
-﻿using EyE.Server.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+namespace EyEServer.Controllers;
 
-namespace EyE.Server.Controllers
+[Route("[controller]/[action]")]
+public class LoggingController : ControllerBase
 {
-    [Route("[controller]/[action]")]
-    public class LoggingController : ControllerBase
+    public LoggingController()
     {
-        private readonly string errorsFilePath;
-        private static readonly object locker = new();
-        private static int counter;
+        _errorsFilePath = $"{LogDirectory}\\errors.log";
+    }
 
-        public LoggingController()
-        {
-            errorsFilePath = Environment.CurrentDirectory + @"\Logs\errors.log";
-        }
+    private static int _counter;
+    private readonly string _errorsFilePath;
+    private readonly static object _locker = new();
+    public static string LogDirectory => $"{Environment.CurrentDirectory}\\Logs";
 
-        public IActionResult AddError([FromBody] string message)
+    public IActionResult AddError([FromBody] string message)
+    {
+        lock (_locker)
         {
-            lock (locker)
-            {
-                using var writer = new StreamWriter(errorsFilePath, true, Encoding.UTF8);
-                writer.WriteLine($"{counter++}. {message}");
-                return Ok();
-            }
+            using var writer = new StreamWriter(_errorsFilePath, true, Encoding.UTF8);
+            writer.WriteLine($"{_counter++}. {message}");
+            return Ok();
         }
     }
 }

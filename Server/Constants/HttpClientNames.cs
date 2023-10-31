@@ -1,7 +1,6 @@
-﻿namespace EyE.Server.Constants
+﻿namespace EyEServer.Constants;
+
+public class HttpClientNames
 {
-    public class HttpClientNames
-    {
-        public const string LOCAL_CLIENT = "localClient";
-    }
+    public const string LOCAL_CLIENT = "localClient";
 }

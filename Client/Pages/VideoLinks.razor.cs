@@ -1,27 +1,22 @@
-﻿using EyE.Shared.Helpers;
-using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
+﻿namespace EyE.Client.Pages;
 
-namespace EyE.Client.Pages
+[Route("VideoLinks/{StrFolderName}")]
+public partial class VideoLinks
 {
-    [Route("VideoLinks/{StrFolderName}")]
-    public partial class VideoLinks
+    public override async Task AddItemIfNotExistAsync()
     {
-        public override async Task AddItemIfNotExistAsync()
+        if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
+            return;
+
+        var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicHttpClient);
+
+        if (linkModel == default)
         {
-            if (!await UserChecker.CheckAdminRoleAsync() || !await UserChecker.CheckNullOrWhiteSpaceAsync(ItemAdderViewModel.Id))
-                return;
-
-            var linkModel = await YoutubeHelper.GetLinkModelAsync(ItemAdderViewModel.Id, PublicHttpClient);
-
-            if (linkModel == default)
-            {
-                await UserChecker.ShowSomethingHappenedAsync();
-                return;
-            }
-
-            linkModel.FolderName = FolderName;
-            await AddItemIfNotExistAsync(linkModel);
+            await UserChecker.ShowSomethingHappenedAsync();
+            return;
         }
+
+        linkModel.FolderName = FolderName;
+        await AddItemIfNotExistAsync(linkModel);
     }
 }
