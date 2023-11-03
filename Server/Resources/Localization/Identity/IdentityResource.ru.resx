@@ -141,6 +141,9 @@
   <data name="SiteAdministration" xml:space="preserve">
     <value>Администрация сайта</value>
   </data>
+  <data name="string" xml:space="preserve">
+    <value>строка</value>
+  </data>
   <data name="UserExists" xml:space="preserve">
     <value>Пользователь {0} уже существует</value>
   </data>

@@ -1,80 +1,72 @@
 ﻿<div class="mainButtons">
-    <label id="authBtn" for="auth" @onclick="ToggleVisibilityWrapper">Войти</label>
-    <label id="regBtn" for="reg" @onclick="ToggleVisibilityWrapper">Создать аккаунт</label>
+    <label id="authBtn" for="auth" @onclick="ToggleVisibilityWrapper">@IdentityResource.Login</label>
+    <label id="regBtn" for="reg" @onclick="ToggleVisibilityWrapper">@IdentityResource.Register</label>
 </div>
 
 <SemiTransparentWrapper @bind-isShowWrapper="@_isShowWrapper">
-    <div class="auth-reg-form">
+    <div class="identityForm">
         <input type="radio" id="auth" name="tabs" checked>
-        <label class="tab" for="auth">Авторизация</label>
+        <label class="tab" for="auth">@IdentityResource.Authorization</label>
         <input type="radio" id="reg" name="tabs">
-        <label class="tab" for="reg">Регистрация</label>
+        <label class="tab" for="reg">@IdentityResource.Registration</label>
         <input type="radio" id="forgotPassword" name="tabs">
         <input type="radio" id="resetPassword" name="tabs">
 
-        <EditForm method="post" id="auth-form" class="tab-form" Model="@_loginModel" OnValidSubmit="LoginToAccount">
+        <EditForm method="post" id="authForm" class="tabForm" Model="@_loginModel" OnValidSubmit="LoginToAccount">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <ServerSideValidator @ref="_serverSideAuthorizationValidator" />
-
-            <div class="box-input">
+            <div class="boxInput">
                 <InputText class="input" type="text" placeholder=" " required @bind-Value="_loginModel.Email" />
-                <label>E-mail</label>
+                <label>@IdentityResource.Email</label>
             </div>
-            <div class="box-input">
+            <div class="boxInput">
                 <InputText class="input" type="password" placeholder=" " required @bind-Value="_loginModel.Password" />
-                <label>Пароль</label>
+                <label>@IdentityResource.Password</label>
             </div>
-            <button type="submit">Войти</button>
+            <button type="submit">@IdentityResource.Login</button>
 
-            <ul class="social">
-                <li><a><div><i class="fa fa-facebook"></i></div></a></li>
-                <li><a><div><i class="fa fa-twitter"></i></div></a></li>
-                <li><a><div><i class="fa fa-instagram"></i></div></a></li>
-                <li><a><div><i class="fa fa-vk"></i></div></a></li>
-                <li @ondblclick="SecretLoginToAccount"><a><div><i class="fa fa-youtube"></i></div></a></li>
-            </ul>
-
-            <label class="toggleLabel" for="forgotPassword">Я забыл свой пароль</label>
+            <label class="toggleLabel" for="forgotPassword">@IdentityResource.ForgotPassword</label>
         </EditForm>
 
-        <EditForm id="reg-form" class="tab-form" Model="@_registerModel" OnValidSubmit="CreateAccount">
+        <EditForm id="regForm" class="tabForm" Model="@_registerModel" OnValidSubmit="CreateAccount">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <ServerSideValidator @ref="_serverSideRegistrationValidator" />
 
-            <InputText class="input" type="email" placeholder="Введите E-mail" @bind-Value="_registerModel.Email" />
-            <InputText class="input" type="password" placeholder="Введите пароль" @bind-Value="_registerModel.Password" />
-            <InputText class="input" type="password" placeholder="Повторите пароль" @bind-Value="_registerModel.PasswordConfirm" />
-            <button type="submit">Регистрация</button>
+            <InputText class="input" type="text" placeholder=@IdentityResource.PlaceholderNickname @bind-Value="_registerModel.Nickname" />
+            <InputText class="input" type="email" placeholder=@IdentityResource.PlaceholderEmail @bind-Value="_registerModel.Email" />
+            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderPassword @bind-Value="_registerModel.Password" />
+            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_registerModel.PasswordConfirm" />
+            <button type="submit">@IdentityResource.Register</button>
 
-            <div class="box-conditions">
+           @*  <div class="boxConditions" style="display: none;">
                 <AnimatedCheckbox @bind-InputValue="_registerModel.AcceptedRegistrationConditions" Number="-1">
-                    "Ознакомлен(-а) и принимаю <a>условия регистрации</a>"
+                    @((MarkupString)@IdentityResource.RegistrationConditionsCheckBox)
                 </AnimatedCheckbox>
-            </div>
+            </div> *@
         </EditForm>
 
-        <EditForm id="forgotPassword-form" class="tab-form" Model="@_forgotPasswordModel" OnValidSubmit="ForgotPassword">
+        <EditForm id="forgotPasswordForm" class="tabForm" Model="@_forgotPasswordModel" OnValidSubmit="ForgotPassword">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <ServerSideValidator @ref="_serverSideForgotPasswordValidator" />
 
-            <InputText class="input" type="email" placeholder="Введите E-mail" @bind-Value="_forgotPasswordModel.Email" />
-            <button type="submit">Получить код</button>
-            <label class="toggleLabel" for="resetPassword">Сбросить пароль</label>
+            <InputText class="input" type="email" placeholder=@IdentityResource.PlaceholderEmail @bind-Value="_forgotPasswordModel.Email" />
+            <button type="submit">@IdentityResource.GetPasswordAndCode</button>
+            <label class="toggleLabel" for="resetPassword">@IdentityResource.PasswordChangeWindow</label>
         </EditForm>
 
-        <EditForm id="resetPassword-form" class="tab-form" Model="@_resetPasswordModel" OnValidSubmit="ResetPassword">
+        <EditForm id="resetPasswordForm" class="tabForm" Model="@_resetPasswordModel" OnValidSubmit="ResetPassword">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <ServerSideValidator @ref="_serverSideResetPasswordValidator" />
 
-            <InputText class="input" type="email" placeholder="Введите E-mail" @bind-Value="_resetPasswordModel.Email" />
-            <InputText class="input" type="password" placeholder="Введите пароль" @bind-Value="_resetPasswordModel.Password" />
-            <InputText class="input" type="password" placeholder="Повторите пароль" @bind-Value="_resetPasswordModel.PasswordConfirm" />
-            <InputText class="input" type="text" placeholder="Введите код" @bind-Value="_resetPasswordModel.Code" />
-            <button type="submit">Сбросить пароль</button>
+            <InputText class="input" type="email" placeholder=@IdentityResource.PlaceholderEmail @bind-Value="_resetPasswordModel.Email" />
+            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderPassword @bind-Value="_resetPasswordModel.Password" />
+            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_resetPasswordModel.PasswordConfirm" />
+            <InputText class="input" type="text" placeholder="@IdentityResource.PlaceholderCode" @bind-Value="_resetPasswordModel.Code" />
+            <button type="submit">@IdentityResource.ChangePassword</button>
         </EditForm>
 
     </div>

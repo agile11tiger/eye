@@ -1,10 +1,10 @@
 ﻿using Blazored.LocalStorage;
-using EyE.Client.Extensions;
+using MemoryClient.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-namespace EyE.Client.Services;
+namespace MemoryClient.Services;
 
 public class ServerAuthenticationStateProvider(ServerHttpClient _serverHttpClient, ILocalStorageService _localStorage)
     : AuthenticationStateProvider

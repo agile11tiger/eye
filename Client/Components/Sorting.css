@@ -6,16 +6,8 @@
 }
 
 .sorting > *{
-    height: 32px;
     padding: 0px 5px;
-    margin-bottom: 2px;  
-    outline-color: #ccc;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.sorting select > option {
-    background: #eee;
+    margin-bottom: 2px;
 }
 
 .sorting > input[type="submit"] {

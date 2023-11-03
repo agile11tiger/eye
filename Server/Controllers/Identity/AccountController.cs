@@ -1,4 +1,7 @@
-﻿using EyEServer.Services;
+﻿using Azure;
+using EyEServer.Services;
+using EyEServer.Services.Email;
+using EyEServer.Services.Protector;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -13,8 +16,7 @@ public class AccountController(
     TokenService _tokenService,
     EmailService _emailService,
     UserManager<UserModel> _userManager,
-    SignInManager<UserModel> _signInManager,
-    IStringLocalizer<AccountController> _localizer)
+    SignInManager<UserModel> _signInManager)
     : Controller
 {
     [HttpPost]
@@ -24,43 +26,39 @@ public class AccountController(
 
         if ((await _userManager.FindByEmailAsync(model.Email)) != null)
         {
-            response.Messages = new List<string> { _localizer["UserExists", model.Email] };
+            response.Messages = new List<string> { IdentityResource.UserExists.Format(model.Email) };
             return BadRequest(response);
         }
 
-        var user = new UserModel { Email = model.Email, UserName = model.Email };
-        var result = await _userManager.CreateAsync(user, model.Password);
-
-        if (result.Succeeded && (await _userManager.AddToRoleAsync(user, Roles.User.ToString())).Succeeded)
+        if ((await _userManager.FindByNameAsync(model.Nickname)) != null)
         {
-            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Action(
-                "ConfirmEmail",
-                "Account",
-                new { userId = user.Id, token = confirmationToken },
-                protocol: HttpContext.Request.Scheme);
-            await _emailService.SendEmailAsync(
-                model.Email,
-                _localizer["RegisterConfirmHeader"],
-                _localizer["RegisterConfirmMessage",
-                callbackUrl]);
-            response.Messages = new List<string> { _localizer["RegistrationCompletionMessage"] };
+            response.Messages = new List<string> { IdentityResource.UserExists.Format(model.Nickname) };
+            return BadRequest(response);
+        }
+
+        var user = new UserModel { Email = model.Email, UserName = model.Nickname };
+        var createResult = await _userManager.CreateAsync(user, model.Password);
+        var addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+
+        if (createResult.Succeeded && addToRoleResult.Succeeded)
+        {
+            await SendEmailAsync(user, response);
             return Ok(response);
         }
 
-        response.Messages = result.GetMessages();
+        response.Messages = createResult.GetMessages();
         return BadRequest(response);
     }
 
     [HttpGet]
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
-        var user = await _userManager.FindByIdAsync(userId);
         var response = new ResponseModel();
+        var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null || token == null)
         {
-            response.Messages = new List<string> { _localizer["UserNotExists", ""] };
+            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
             return BadRequest(response);
         }
 
@@ -76,72 +74,80 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        var response = new LoginResponseModel();
+
+        if (user == default)
+        {
+            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
+            return BadRequest(response);
+        }
+
+        if (!await _userManager.IsEmailConfirmedAsync(user))
+        {
+            await SendEmailAsync(user, response);
+            return BadRequest(response);
+        }
+        
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await _signInManager.PasswordSignInAsync(
-                model.Email,
-                model.Password,
-                model.RememberMe,
-                true);
-
-        var user = await _userManager.FindByNameAsync(model.Email);
-        var response = new LoginResponseModel() { UserId = user.Id };
+        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
 
         if (result.Succeeded)
         {
-            var signingCredentials = _tokenService.GetSigningCredentials();
             var claims = await _tokenService.GetClaims(user);
+            var signingCredentials = _tokenService.GetSigningCredentials();
             var tokenOptions = _tokenService.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             user.RefreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(90);
             await _userManager.UpdateAsync(user);
             response.Token = token;
             response.RefreshToken = user.RefreshToken;
             return Ok(response);
         }
 
-        response.Messages = new List<string> { _localizer["WrongLoginOrPassword"] };
+        response.Messages = new List<string> { IdentityResource.WrongLoginOrPassword };
         return BadRequest(response);
     }
 
     [HttpPost]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
         var response = new ResponseModel();
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user == null)
         {
-            response.Messages = new List<string> { _localizer["UserNotExists", ""] };
+            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ")};
             return BadRequest(response);
         }
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            response.Messages = new List<string> { _localizer["EmailNotConfirmed"] };
+            response.Messages = new List<string> { IdentityResource.EmailNotConfirmed };
             return BadRequest(response);
         }
 
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         await _emailService.SendEmailAsync(
             model.Email,
-            _localizer["PasswordResetMessageHeader"],
-            _localizer["PasswordResetMessage", resetToken]);
+            IdentityResource.PasswordResetMessageHeader,
+            IdentityResource.PasswordResetMessage.Format(resetToken));
 
-        response.Messages = new List<string> { _localizer["CodeSentToEmail"] };
+        response.Messages = new List<string> { IdentityResource.CodeSentToEmail };
         return Ok(response);
     }
 
     [HttpPost]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
         var response = new ResponseModel();
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user == null)
         {
-            response.Messages = new List<string> { _localizer["UserNotExists", model.Email] };
+            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(model.Email) };
             return BadRequest(response);
         }
 
@@ -174,7 +180,6 @@ public class AccountController(
         await _userManager.UpdateAsync(user);
         response.Token = token;
         response.RefreshToken = user.RefreshToken;
-
         return Ok(response);
     }
 
@@ -183,5 +188,20 @@ public class AccountController(
     {
         await _signInManager.SignOutAsync();
         return Ok();
+    }
+
+    private async Task SendEmailAsync(UserModel userModel, ResponseModel response)
+    {
+        var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
+        var callbackUrl = Url.Action(
+            "ConfirmEmail",
+            "Account",
+            new { userId = userModel.Id, token = confirmationToken },
+            protocol: HttpContext.Request.Scheme);
+        await _emailService.SendEmailAsync(
+            userModel.Email,
+            IdentityResource.RegisterConfirmHeader,
+            IdentityResource.RegisterConfirmMessage.Format(callbackUrl));
+        response.Messages = new List<string> { IdentityResource.RegistrationCompletionMessage };
     }
 }

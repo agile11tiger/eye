@@ -2,6 +2,9 @@
 
 public class RegisterViewModel
 {
+    [Required(ErrorMessageResourceName = "NicknameRequired", ErrorMessageResourceType = typeof(IdentityResource))]
+    [RegularExpression(@"[^@]+", ErrorMessageResourceName = "NicknameShouldNotContain", ErrorMessageResourceType = typeof(IdentityResource))]
+    public string? Nickname { get; set; }
     [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(IdentityResource))]
     [EmailAddress(ErrorMessageResourceName = "EmailIncorrect", ErrorMessageResourceType = typeof(IdentityResource))]
     public string? Email { get; set; }
@@ -20,6 +23,6 @@ public class RegisterViewModel
     [DataType(DataType.Password)]
     public string? PasswordConfirm { get; set; }
 
-    [Range(typeof(bool), "true", "true", ErrorMessageResourceName = "RegistrationConditions", ErrorMessageResourceType = typeof(IdentityResource))]
-    public bool AcceptedRegistrationConditions { get; set; }
+    //[Range(typeof(bool), "true", "true", ErrorMessageResourceName = "RegistrationConditions", ErrorMessageResourceType = typeof(IdentityResource))]
+    //public bool AcceptedRegistrationConditions { get; set; }
 }

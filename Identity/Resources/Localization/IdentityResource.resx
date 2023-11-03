@@ -118,36 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeRequired" xml:space="preserve">
-    <value>Поле "Код подтвержения" не заполнено</value>
+    <value>The "Confirmation code" field is empty</value>
   </data>
   <data name="EmailIncorrect" xml:space="preserve">
-    <value>Поле "E-mail" некорректно</value>
+    <value>The "E-mail" field is incorrect</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
-    <value>Поле "E-mail" не заполнено</value>
+    <value>The "E-mail" field is empty</value>
+  </data>
+  <data name="NicknameRequired" xml:space="preserve">
+    <value>The "Nickname" field is empty</value>
+  </data>
+  <data name="NicknameShouldNotContain" xml:space="preserve">
+    <value>Nickname shouldn`t contain @</value>
   </data>
   <data name="PasswordConfirmRequired" xml:space="preserve">
-    <value>Поле "Потверждение Пароля" не заполнено</value>
+    <value>The "Password confirmation" field is empty</value>
   </data>
   <data name="PasswordLength" xml:space="preserve">
-    <value>Пароль должен содержать {2}-{1} символов</value>
+    <value>Password must contain {2}-{1} characters</value>
   </data>
   <data name="PasswordOneUppercaseAndOneLowercaseAndOneNumeric" xml:space="preserve">
-    <value>Пароль должен содержать миниум одну: 
-1) прописную букву
-2) срочную букву
-3) цифру</value>
+    <value>The password must contain at least one:
+1) capital letter
+2) lowercase letter
+3) number</value>
   </data>
   <data name="PasswordRequired" xml:space="preserve">
-    <value>Поле "Пароль" не заполнено</value>
+    <value>The "Password" field is empty</value>
   </data>
   <data name="PasswordsNotMatch" xml:space="preserve">
-    <value>Пароли не совпадают</value>
+    <value>Password mismatch</value>
   </data>
   <data name="RegistrationConditions" xml:space="preserve">
-    <value>Условия регистрации не приняты</value>
+    <value>Registration conditions are not accepted</value>
   </data>
   <data name="SupportedMailDomains" xml:space="preserve">
-    <value>Поддерживаемые домены почт</value>
+    <value>Supported email domains</value>
   </data>
 </root>

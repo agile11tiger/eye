@@ -26,7 +26,7 @@ public class AnimeController : Database<AnimeModel>
             return await PostAsync(model);
         }
 
-        return BadRequest(_localizer["ObjectExist"]);
+        return BadRequest(RequestsResource.ObjectExist);
     }
 
     public override DbSet<AnimeModel> GetItems()

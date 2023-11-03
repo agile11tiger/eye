@@ -123,6 +123,9 @@
   <data name="EmailNotConfirmed" xml:space="preserve">
     <value>Your email is not verified</value>
   </data>
+  <data name="give" xml:space="preserve">
+    <value>give</value>
+  </data>
   <data name="PasswordResetMessage" xml:space="preserve">
     <value>Password reset code: {0}</value>
   </data>

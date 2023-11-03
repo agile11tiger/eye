@@ -1,5 +1,5 @@
-﻿using EyE.Client.Components;
-using EyE.Client.Services;
+﻿using MemoryClient.Components;
+using MemoryClient.Services;
 using Identity.Models;
 using Memory.Extensions;
 using Memory.ViewModels;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-namespace EyE.Client.Pages.Common;
+namespace MemoryClient.Pages.Common;
 
 public class Scroll<T> : ComponentBase where T : class, IDatabaseItem, new()
 {

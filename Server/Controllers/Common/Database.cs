@@ -14,12 +14,10 @@ public abstract class Database<T> : Controller where T : class, IDatabaseItem, n
     protected Database()
     {
         _database = Startup.ServiceProvider.GetService<ApplicationDbContext>();
-        _localizer = Startup.ServiceProvider.GetService<IStringLocalizer<T>>();
         _clientFactory = Startup.ServiceProvider.GetService<IHttpClientFactory>();
     }
 
     protected readonly ApplicationDbContext _database;
-    protected readonly IStringLocalizer<T> _localizer;
     protected readonly IHttpClientFactory _clientFactory;
 
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]

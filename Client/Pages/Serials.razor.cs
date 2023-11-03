@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Pages;
+﻿namespace MemoryClient.Pages;
 
 [Route("Serials/{StrFolderName}")]
 public partial class Serials

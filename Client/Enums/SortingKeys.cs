@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EyE.Client.Enums;
+namespace MemoryClient.Enums;
 
 //В дальнейшем, по этим ключам, с помощью рефлексии, находят свойства
 public enum SortingKeys

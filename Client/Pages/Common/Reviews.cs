@@ -1,9 +1,9 @@
-﻿using EyE.Client.Enums;
+﻿using MemoryClient.Enums;
 using Memory.Extensions;
 using Memory.Models.Common;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace EyE.Client.Pages.Common;
+namespace MemoryClient.Pages.Common;
 
 public class Reviews<T> : Folders<T> where T : ReviewModel, new()
 {

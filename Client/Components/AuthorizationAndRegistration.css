@@ -10,7 +10,7 @@
     cursor: pointer;
 }
 /* -----  Выравнивание по середине  -----*/
-.auth-reg-form__button {
+.identityForm__button {
     display: inline-block;
     line-height: 2.2em;
     padding: 0 0.62em;
@@ -19,15 +19,15 @@
     background-image: linear-gradient( to bottom, #fff, #ccc );
     box-shadow: inset 0 0 0.1em #fff, 0.2em 0.2em 0.2em rgba( 0, 0, 0, 0.3 );
 }
-.auth-reg-form__button:hover {
+.identityForm__button:hover {
     border-color: #3c7fb1;
     background-image: linear-gradient( to bottom, #fff, #a9dbf6 );
 }
-.auth-reg-form__button :focus {
+.identityForm__button :focus {
     padding: 0 0.56em 0 0.68em;
 }
 
-.auth-reg-form {
+.identityForm {
     background-color: #888;
     font-family: Roboto, sans-serif;
     font-size: 1rem;
@@ -35,34 +35,34 @@
     padding: 10px;
     max-width: 500px;
 }
-.auth-reg-form a {
+.identityForm a {
     text-decoration: none;
     color: #298cad;
 }
-.auth-reg-form a:hover {
+.identityForm a:hover {
     color: #36d2ff;
 }
-.auth-reg-form ul {
+.identityForm ul {
     padding: 0;
     list-style: none;
 }
-.auth-reg-form input {
+.identityForm input {
     display: block;
     width: 100%;
 }
-.auth-reg-form .tab-form {
+.identityForm .tabForm {
     background-color: #fff;
     display: none;
     padding: 20px;
 }
-.auth-reg-form .tab-form.active,
-.auth-reg-form #auth:checked ~ #auth-form,
-.auth-reg-form #reg:checked ~ #reg-form,
-.auth-reg-form #forgotPassword:checked ~ #forgotPassword-form, 
-.auth-reg-form #resetPassword:checked ~ #resetPassword-form {
+.identityForm .tabForm.active,
+.identityForm #auth:checked ~ #authForm,
+.identityForm #reg:checked ~ #regForm,
+.identityForm #forgotPassword:checked ~ #forgotPasswordForm, 
+.identityForm #resetPassword:checked ~ #resetPasswordForm {
     display: block;
 }
-.auth-reg-form label.tab {
+.identityForm label.tab {
     color: #ffffff;
     font-weight: 600;
     padding: 15px;
@@ -71,29 +71,29 @@
     margin-bottom: -1px;
     cursor: pointer;
 }
-.auth-reg-form label.tab.active,
-.auth-reg-form input[name="tabs"]:checked + label {
+.identityForm label.tab.active,
+.identityForm input[name="tabs"]:checked + label {
     background-color: #fff;
     color: #1d5f75;
 }
-.auth-reg-form input[name="tabs"] {
+.identityForm input[name="tabs"] {
     display: none;
 }
 
 /* Иконки во вкладках */
-.auth-reg-form .tab::before {
+.identityForm .tab::before {
     content: '\f090';
     font-family: 'FontAwesome', sans-serif;
     font-size: 24px;
     margin-right: 11px;
     font-weight: normal;
 }
-.auth-reg-form .tab[for="reg"]::before {
+.identityForm .tab[for="reg"]::before {
     content: '\f234';
 }
 
 /* Формы */
-.auth-reg-form .input {
+.identityForm .input {
     font-size: 16px;
     border: 2px solid #e9eaea;
     padding: 12px 14px;
@@ -108,93 +108,16 @@
 :-moz-placeholder           {color:#298cad;}/* Firefox 18- */
 :-ms-input-placeholder      {color:#298cad;}/* IE */
 
-/* Анимация иконок */
-.auth-reg-form .social {
-    display: flex;
-    justify-content: space-between;
-    font-size: 30px;
-    margin-bottom: 0px;
-}
-.auth-reg-form .social a {
-    width: 40px;
-    height: 40px;
-    display: block;
-    line-height: 40px;
-    text-align: center;
-    position: relative;
-}
-.auth-reg-form .social li a::before,
-.auth-reg-form .social li a::after {
-    content: '';
-    position: absolute;
-    background: #2fbae1;
-    width: 100%;
-    height: 1px;
-    left: 0;
-    transition: transform .5s;
-    transform: scaleY(0);
-}
-.auth-reg-form .social li a::before {
-    transform-origin: right;
-}
-.auth-reg-form .social li a::after {
-    transform-origin: left;
-}
-.auth-reg-form .social li a:hover::before {
-    transform: scaleX(0);
-    transform-origin: left;
-}
-.auth-reg-form .social li a:hover::after {
-    transform: scaleX(0);
-    transform-origin: right;
-}
-
-.auth-reg-form .social li a div::before,
-.auth-reg-form .social li a div::after {
-    content: '';
-    position: absolute;
-    background: #2fbae1;
-    width: 1px;
-    height: 100%;
-    transition: transform .5s;
-    transform: scaleY(0);
-}
-.auth-reg-form .social li a div::before {
-    left: 0;
-    transform-origin: bottom;
-}
-.auth-reg-form .social li a div::after {
-    right: 0;
-    transform-origin: top;
-}
-.auth-reg-form .social li a:hover div::before {
-    transform: scaleY(1);
-    transform-origin: top;
-}
-.auth-reg-form .social li a:hover div::after {
-    transform: scaleY(1);
-    transform-origin: bottom;
-}
-
-
-.auth-reg-form .social + a {
-    margin-top: 10px;
-    display: block;
-    font-size: 12px;
-    text-align: center;
-}
-
-
 /* Плавающий текст */
-.auth-reg-form .box-input {
+.identityForm .boxInput {
     position: relative;
 }
-.auth-reg-form .box-input input {
+.identityForm .boxInput input {
     border: none;
     border-bottom: 2px solid #e9eaea;
     padding: 10px 0;
 }
-.auth-reg-form .box-input label {
+.identityForm .boxInput label {
     position: absolute;
     top: 0;
     left: 0;
@@ -202,15 +125,15 @@
     color: #c4c9c9;
     pointer-events: none;
 }
-.auth-reg-form .box-input input:focus ~ label,
-.auth-reg-form .box-input input:not(:placeholder-shown) ~ label {
+.identityForm .boxInput input:focus ~ label,
+.identityForm .boxInput input:not(:placeholder-shown) ~ label {
     top: -20px;
     font-size: 12px;
     color: #33d3fe;
 }
 
 /* Эффект кнопки */
-.auth-reg-form button[type="submit"] {
+.identityForm button[type="submit"] {
     width: 100%;
     background: #298cad;
     color: #ffffff;
@@ -225,11 +148,11 @@
     overflow: hidden;
     border-bottom: 4px solid #36d2ff;
 }
-.auth-reg-form button[type="submit"]:hover {
+.identityForm button[type="submit"]:hover {
     color: #ffffff;
 }
-.auth-reg-form button[type="submit"]::before, 
-.auth-reg-form button[type="submit"]::after {
+.identityForm button[type="submit"]::before, 
+.identityForm button[type="submit"]::after {
     content: "";
     display: block;
     width: 100%;
@@ -241,21 +164,21 @@
     transition: .3s;
     z-index: -1;
 }
-.auth-reg-form button[type="submit"]::after {
+.identityForm button[type="submit"]::after {
     background: #36d2ff;
     top: 100%;
     left: 0;
     transition-delay: .2s;
 }
-.auth-reg-form button[type="submit"]:hover::before {
+.identityForm button[type="submit"]:hover::before {
     left: 0;
 }
-.auth-reg-form button[type="submit"]:hover::after {
+.identityForm button[type="submit"]:hover::after {
     top: 0;
 }
 
 /**/
-.auth-reg-form .toggleLabel {
+.identityForm .toggleLabel {
     cursor: pointer;
     color: dodgerblue;
     display: block;
@@ -263,11 +186,11 @@
     margin-top: 10px;
     font-size: 15px;
 }
-.auth-reg-form label {
+.identityForm label {
     margin-bottom: 0px;
 }
 
-.auth-reg-form .box-conditions {
+.identityForm .boxConditions {
     margin-top: 5px;
     font-size: 12px;
 }

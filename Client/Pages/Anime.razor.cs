@@ -1,8 +1,8 @@
-﻿using EyE.Client.Enums;
+﻿using MemoryClient.Enums;
 using Memory.Extensions;
 using Memory.Models.Review;
 using System.ComponentModel.DataAnnotations;
-namespace EyE.Client.Pages;
+namespace MemoryClient.Pages;
 
 [Route("Anime/{StrFolderName}")]
 public partial class Anime

@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Memory.ViewModels;
-namespace EyE.Client.Pages;
+namespace MemoryClient.Pages;
 
 [Route("/")]
 [Route("Quotes")]

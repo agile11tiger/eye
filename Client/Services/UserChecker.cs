@@ -1,7 +1,7 @@
 ﻿using Identity.Enums;
 using Microsoft.JSInterop;
 using System.Net;
-namespace EyE.Client.Services;
+namespace MemoryClient.Services;
 
 public class UserChecker(IJSRuntime js, ServerAuthenticationStateProvider _authenticationStateProvider)
 {

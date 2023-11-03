@@ -1,4 +1,4 @@
-﻿namespace EyE.Client;
+﻿namespace MemoryClient;
 
 public class UserInfo
 {

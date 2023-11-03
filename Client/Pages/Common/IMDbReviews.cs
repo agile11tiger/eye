@@ -1,8 +1,8 @@
-﻿using EyE.Client.Enums;
+﻿using MemoryClient.Enums;
 using Memory.Extensions;
 using Memory.Models.Common;
 using System.ComponentModel.DataAnnotations;
-namespace EyE.Client.Pages.Common;
+namespace MemoryClient.Pages.Common;
 
 public class IMDbReviews<T> : Reviews<T> where T : IMDbModel, new()
 {

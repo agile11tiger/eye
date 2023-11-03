@@ -1,7 +1,7 @@
-﻿using EyE.Client.Enums;
+﻿using MemoryClient.Enums;
 using Memory.Models.Common;
 using System.Collections.Generic;
-namespace EyE.Client.Pages.Common;
+namespace MemoryClient.Pages.Common;
 
 public class Texts : Folders<TextModel>
 {

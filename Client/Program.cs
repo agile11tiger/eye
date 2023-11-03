@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
-using EyE.Client.Handlers;
-using EyE.Client.Services;
+using MemoryClient.Extensions;
+using MemoryClient.Handlers;
+using MemoryClient.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
-namespace EyE.Client;
+namespace MemoryClient;
 
 public class Program
 {
@@ -56,7 +57,7 @@ public class Program
         ////https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
         //        .AddApiAuthorization(options =>
         //        {
-        //            options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/EyE.Client";
+        //            options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/MemoryClient";
         //        });
 
         builder.Services.AddScoped<ServerAuthenticationStateProvider>();
@@ -67,10 +68,9 @@ public class Program
             .AddScoped<UserChecker>()
             .AddSingleton(JsonHelper.SerializeOptions);
 
-        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("ru");
-        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("ru");
-
-        await builder.Build().RunAsync();
+        var host = builder.Build();
+        await host.SetCultureFromStorage();
+        await host.RunAsync();
     }
 }
 

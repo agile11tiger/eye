@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Pages;
+﻿namespace MemoryClient.Pages;
 
 [Route("Games/{StrFolderName}")]
 public partial class Games

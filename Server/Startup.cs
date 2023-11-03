@@ -3,6 +3,9 @@ using EyEServer.Controllers;
 using EyEServer.Data;
 using EyEServer.Middlewares;
 using EyEServer.Services;
+using EyEServer.Services.Email;
+using EyEServer.Services.Protector;
+using EyEServer.Services.RoleInitializer;
 using Memory.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -35,27 +39,26 @@ public class Startup
         var builder = new ConfigurationBuilder()
             .AddConfiguration(configuration);
 
-        if (env.IsProduction())
-            builder.AddJsonFile("appsettings.Production.private.json");
+        //if (env.IsProduction())
+        //todo add secrets
 
-        Configuration = builder.Build();
+        _configuration = builder.Build();
     }
 
     public static IServiceProvider ServiceProvider { get; private set; }
-    public static IConfiguration Configuration { get; private set; }
+    public readonly IConfiguration _configuration;
 
     // This method gets called by the runtime. Use this method to add services to the container.
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton(provider => Configuration);
-        var connection = Configuration.GetConnectionString("DefaultConnection");
+        var connection = _configuration.GetConnectionString("DefaultConnection");
         services
             .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
             .AddDatabaseDeveloperPageExceptionFilter();
         services.AddScoped<TokenService, TokenService>();
 
-        var allowedOrigins = new[] { Configuration.GetValue<string>("ClientUri"), Configuration.GetValue<string>("ServerUri") };
+        var allowedOrigins = new[] { _configuration.GetValue<string>("ClientUri"), _configuration.GetValue<string>("ServerUri") };
         services
             //Cors для ASP.NET Core
             .AddCors(options =>
@@ -67,21 +70,19 @@ public class Startup
                     .AllowCredentials());
             });
 
-
+        services.AddTransient<IPasswordHasher<UserModel>, CustomPasswordHasher>();//should be above AddDefaultIdentity
         services.AddDefaultIdentity<UserModel>(options =>
         {
-            options.SignIn.RequireConfirmedAccount = true;
             options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequiredLength = 0;
-            options.Password.RequiredUniqueChars = 0;
+            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedAccount = true;
+            options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
+            options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        var jwtSettings = Configuration.GetSection("JwtSettings");
+        var jwtSettings = _configuration.GetSection("JwtSettings");
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -145,11 +146,14 @@ public class Startup
 
         services.AddControllersWithViews();
         services.AddRazorPages();
+        services.Configure<PettyBotEmailData>(_configuration.GetSection("PettyBotEmailData"));
+        services.Configure<RoleInitializerTestData>(_configuration.GetSection("RoleInitializerTestData"));
         services
             .AddSingleton<EmailService>()
+            .AddSingleton<RoleInitializerService>()
             .AddSingleton(JsonHelper.SerializeOptions)
-            .AddLocalization(options => options.ResourcesPath = "Resources\\Localization")
-            .AddHttpClient(HttpClientNames.LOCAL_CLIENT, config => config.BaseAddress = new Uri(Configuration.GetValue<string>("ServerUri")));
+            .AddHttpClient(HttpClientNames.LOCAL_CLIENT, config => config.BaseAddress = new Uri(_configuration.GetValue<string>("ServerUri")));
+
         ServiceProvider = services.BuildServiceProvider();
     }
 

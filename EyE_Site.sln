@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.32912.340
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyE.Client", "Client\EyE.Client.csproj", "{5A124148-166A-4889-9D9A-AADA3E5ED55B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryClient", "Client\MemoryClient.csproj", "{5A124148-166A-4889-9D9A-AADA3E5ED55B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyEServer", "Server\EyEServer.csproj", "{545EEE07-E814-4369-AC64-F83157C28362}"
 EndProject

@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Identity.Models;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
-namespace EyE.Client.Components;
+namespace MemoryClient.Components;
 
-//https://remibou.github.io/Using-the-Blazor-form-validation/
+/// <summary>
+/// https://remibou.github.io/Using-the-Blazor-form-validation/
+/// </summary>
 public partial class ServerSideValidator
 {
-    private ValidationMessageStore messageStore;
+    private ValidationMessageStore _messageStore;
     [CascadingParameter] public EditContext CurrentEditContext { get; set; }
 
     protected override void OnInitialized()
@@ -19,19 +23,19 @@ public partial class ServerSideValidator
                 $"inside an {nameof(EditForm)}.");
         }
 
-        messageStore = new ValidationMessageStore(CurrentEditContext);
-        CurrentEditContext.OnValidationRequested += (s, e) => messageStore.Clear();
-        CurrentEditContext.OnFieldChanged += (s, e) => messageStore.Clear(e.FieldIdentifier);
+        _messageStore = new ValidationMessageStore(CurrentEditContext);
+        CurrentEditContext.OnValidationRequested += (s, e) => _messageStore.Clear();
+        CurrentEditContext.OnFieldChanged += (s, e) => _messageStore.Clear(e.FieldIdentifier);
     }
 
-    public async Task DisplayMessagesAsync(HttpContent content)
+    public async Task DisplayMessagesAsync<T>(HttpContent content) where T: ResponseModel
     {
         try
         {
-            var messages = await content.ReadFromJsonAsync<Dictionary<string, List<string>>>();
+            var identityModel = await content.ReadFromJsonAsync<T>();
 
-            foreach (var message in messages)
-                messageStore.Add(CurrentEditContext.Field(message.Key), message.Value);
+            foreach (var message in identityModel.Messages)
+                _messageStore.Add(CurrentEditContext.Field(string.Empty), message);
 
             CurrentEditContext.NotifyValidationStateChanged();
         }
@@ -45,7 +49,7 @@ public partial class ServerSideValidator
     public async Task DisplayMessageAsync(HttpContent content, string key = "")
     {
         var message = await content.ReadAsStringAsync();
-        messageStore.Add(CurrentEditContext.Field(key), message);
+        _messageStore.Add(CurrentEditContext.Field(key), message);
         CurrentEditContext.NotifyValidationStateChanged();
     }
 }

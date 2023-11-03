@@ -1,6 +1,6 @@
-﻿using EyE.Client.Services;
+﻿using MemoryClient.Services;
 using Microsoft.JSInterop;
-namespace EyE.Client.Components;
+namespace MemoryClient.Components;
 
 public partial class AdminMenu
 {

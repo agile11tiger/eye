@@ -1,10 +1,10 @@
-﻿using EyE.Client.Enums;
+﻿using MemoryClient.Enums;
 using Memory.Models.Common;
 using Memory.Models.Review;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-namespace EyE.Client.Components;
+namespace MemoryClient.Components;
 
 public partial class Filter
 {

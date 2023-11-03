@@ -4,7 +4,7 @@ using Memory.Extensions;
 using Memory.Models.Common.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-namespace EyE.Client.Pages.Common;
+namespace MemoryClient.Pages.Common;
 
 public class Folders<T> : Scroll<T> where T : class, IDbFolderItem, new()
 {

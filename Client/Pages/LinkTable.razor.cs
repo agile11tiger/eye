@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Pages;
+﻿namespace MemoryClient.Pages;
 
 [Route("LinkTable/{StrFolderName}")]
 public partial class LinkTable

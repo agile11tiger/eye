@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Pages;
+﻿namespace MemoryClient.Pages;
 
 [Route("Music/{StrFolderName}")]
 public partial class Music

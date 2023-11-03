@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EyE.Client.Enums;
+namespace MemoryClient.Enums;
 
 public enum FilterKeys
 {

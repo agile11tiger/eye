@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
-namespace EyE.Client.Handlers;
+namespace MemoryClient.Handlers;
 
 //https://www.meziantou.net/bypass-browser-cache-using-httpclient-in-blazor-webassembly.htm
 public class DefaultBrowserOptionsMessageHandler : DelegatingHandler

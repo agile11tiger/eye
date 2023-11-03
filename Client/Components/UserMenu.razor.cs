@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using EyE.Client.Services;
+using MemoryClient.Services;
 using Microsoft.AspNetCore.Components.Web;
 using System.Net.Http;
-namespace EyE.Client.Components;
+namespace MemoryClient.Components;
 
 public partial class UserMenu
 {

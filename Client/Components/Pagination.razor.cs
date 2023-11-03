@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Components;
+﻿namespace MemoryClient.Components;
 
 public partial class Pagination
 {

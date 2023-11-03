@@ -21,7 +21,7 @@ public abstract class IMDbController<T> : AdminLinksController<T> where T : IMDb
         if (await items.FirstOrDefaultAsync(i => i.IMDbId == model.IMDbId) == null)
             return await PostAsync(model);
 
-        return BadRequest(_localizer["ObjectExist"]);
+        return BadRequest(RequestsResource.ObjectExist);
     }
 
     [HttpPost("[action]")]

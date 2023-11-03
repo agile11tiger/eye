@@ -51,7 +51,7 @@ public class LinksController : AdminLinksController<LinkModel>
             return await PostAsync(model);
         }
 
-        return BadRequest(_localizer["ObjectExist"]);
+        return BadRequest(RequestsResource.ObjectExist);
     }
 
     public override DbSet<LinkModel> GetItems()

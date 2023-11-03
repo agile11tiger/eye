@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeRequired" xml:space="preserve">
-    <value>Поле "Код подтвержения" не заполнено</value>
+    <value>Поле "Код подтверждения" не заполнено</value>
   </data>
   <data name="EmailIncorrect" xml:space="preserve">
     <value>Поле "E-mail" некорректно</value>
@@ -126,16 +126,22 @@
   <data name="EmailRequired" xml:space="preserve">
     <value>Поле "E-mail" не заполнено</value>
   </data>
+  <data name="NicknameRequired" xml:space="preserve">
+    <value>Поле "Прозвище" не заполнено</value>
+  </data>
+  <data name="NicknameShouldNotContain" xml:space="preserve">
+    <value>Прозвище не должно содержать @</value>
+  </data>
   <data name="PasswordConfirmRequired" xml:space="preserve">
-    <value>Поле "Потверждение Пароля" не заполнено</value>
+    <value>Поле "Подтверждение пароля" не заполнено</value>
   </data>
   <data name="PasswordLength" xml:space="preserve">
     <value>Пароль должен содержать {2}-{1} символов</value>
   </data>
   <data name="PasswordOneUppercaseAndOneLowercaseAndOneNumeric" xml:space="preserve">
-    <value>Пароль должен содержать миниум одну: 
+    <value>Пароль должен содержать минимум одну: 
 1) прописную букву
-2) срочную букву
+2) строчную букву
 3) цифру</value>
   </data>
   <data name="PasswordRequired" xml:space="preserve">

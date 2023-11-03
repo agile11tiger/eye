@@ -1,0 +1,6 @@
+﻿<select class="languageSelector" @bind="CurrentCulture" @bind:event="onchange">
+    @foreach (var languageData in _languagesData)
+    {
+        <option value="@languageData.CultureInfo">@languageData.Name</option>
+    }
+</select>

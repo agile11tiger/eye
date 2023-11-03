@@ -21,7 +21,7 @@ public class MusicController : Database<MusicModel>
             return await PostAsync(model);
         }
 
-        return BadRequest(_localizer["ObjectExist"]);
+        return BadRequest(RequestsResource.ObjectExist);
     }
 
     [HttpPost("[action]")]

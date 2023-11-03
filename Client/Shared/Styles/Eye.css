@@ -27,7 +27,15 @@ a {
 }
 
 select {
+    height: 32px;
+    outline-color: #ccc;
+    border-radius: 10px;
+    border: 1px solid #ccc;
     background-color: white;
+}
+
+select > option {
+    background: #eee;
 }
 
 pre {

@@ -32,7 +32,7 @@ public class TokenService
 
     public async Task<List<Claim>> GetClaims(UserModel user)
     {
-        var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+        var claims = new List<Claim> { new(ClaimTypes.Name, user.Email) };
         var roles = await _userManager.GetRolesAsync(user);
 
         foreach (var role in roles)

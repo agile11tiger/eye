@@ -1,12 +1,13 @@
 ﻿using Blazored.LocalStorage;
-using EyE.Client.Extensions;
-using EyE.Client.Services;
+using MemoryClient.Extensions;
+using MemoryClient.Services;
 using Identity.Models;
 using Identity.ViewModels;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
-namespace EyE.Client.Components;
+namespace MemoryClient.Components;
 
 public partial class AuthorizationAndRegistration
 {
@@ -25,11 +26,6 @@ public partial class AuthorizationAndRegistration
     [Inject] public ServerHttpClient ServerHttpClient { get; set; }
     [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
-    private void SecretLoginToAccount()
-    {
-        Navigation.NavigateTo($"authentication/{RemoteAuthenticationActions.LogIn}?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
-    }
-
     private async Task LoginToAccount()
     {
         var response = await ServerHttpClient.PostAsJsonAsync("api/account/login", _loginModel);
@@ -43,10 +39,8 @@ public partial class AuthorizationAndRegistration
             await LocalStorage.SetItemAsync(userInfo);
             AuthenticationStateProvider.NotifyUserAuthentication(userInfo.Token);
         }
-        else
-            await JS.InvokeVoidAsync("alert", "Не пущу без регистрации!");
 
-        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+        await _serverSideAuthorizationValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
     }
 
     private async Task CreateAccount()
@@ -59,7 +53,7 @@ public partial class AuthorizationAndRegistration
             StateHasChanged();
         }
 
-        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+        await _serverSideRegistrationValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
     }
 
     private async Task ForgotPassword()
@@ -73,7 +67,7 @@ public partial class AuthorizationAndRegistration
             StateHasChanged();
         }
 
-        await _serverSideRegistrationValidator.DisplayMessagesAsync(response.Content);
+        await _serverSideForgotPasswordValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
     }
 
     private async Task ResetPassword()
@@ -86,7 +80,7 @@ public partial class AuthorizationAndRegistration
             ToggleVisibilityWrapper();
         }
 
-        await _serverSideResetPasswordValidator.DisplayMessagesAsync(response.Content);
+        await _serverSideResetPasswordValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
     }
 
     private void ToggleVisibilityWrapper()

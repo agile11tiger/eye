@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using System.Threading;
-namespace EyE.Client.Extensions;
+namespace MemoryClient.Extensions;
 
 public static class LocalStorageExtensions
 {

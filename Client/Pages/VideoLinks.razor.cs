@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Pages;
+﻿namespace MemoryClient.Pages;
 
 [Route("VideoLinks/{StrFolderName}")]
 public partial class VideoLinks

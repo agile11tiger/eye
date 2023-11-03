@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using EyEServer.Services.RoleInitializer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,12 +16,13 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
+            var roleInitializer = services.GetService<RoleInitializerService>();
 
             try
             {
-                RoleInitializer.InitializeAsync(services.GetRequiredService<RoleManager<IdentityRole>>()).Wait();
-                RoleInitializer.AddAdminAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
-                RoleInitializer.AddUserAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
+                roleInitializer.InitializeAsync(services.GetRequiredService<RoleManager<IdentityRole>>()).Wait();
+                roleInitializer.AddAdminAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
+                roleInitializer.AddUserAsync(services.GetRequiredService<UserManager<UserModel>>()).Wait();
             }
             catch (Exception ex)
             {

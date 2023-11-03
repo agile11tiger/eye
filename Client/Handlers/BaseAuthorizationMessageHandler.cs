@@ -1,4 +1,4 @@
-﻿namespace EyE.Client.Handlers;
+﻿namespace MemoryClient.Handlers;
 
 /// <summary>
 /// A <see cref="DelegatingHandler"/> that attaches access tokens to outgoing <see cref="HttpResponseMessage"/> instances.

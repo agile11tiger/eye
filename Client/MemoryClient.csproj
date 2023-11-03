@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+    <NoWarn>10012</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Pages\AnimeThatIWatched_Table.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Pages\AnimeThatIWatched_Table.razor" />
+    <Content Remove="Resources\Localization\Identity\Identity.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +22,16 @@
 
   <ItemGroup>
     <Content Include="Components\YinYangSpinner.scss" />
+    <Content Include="Resources\Localization\Identity\IdentityResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IdentityResource.resx</DependentUpon>
+    </Content>
+    <Content Include="Resources\Localization\Identity\IdentityResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IdentityResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\Localization\Identity\IdentityResource.ru.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +40,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-rc.2.23480.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
@@ -38,11 +51,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <ProjectReference Include="..\Shared\Memory.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Memory.csproj" />
+    <Compile Update="Resources\Localization\Identity\IdentityResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IdentityResource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
