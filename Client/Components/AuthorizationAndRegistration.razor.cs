@@ -35,7 +35,7 @@ public partial class AuthorizationAndRegistration
             _loginModel = new LoginViewModel();
             ToggleVisibilityWrapper();
             var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
-            var userInfo = new UserInfo() { Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
+            var userInfo = new UserInfo() { Nickname = loginResponse.Nickname, Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
             await LocalStorage.SetItemAsync(userInfo);
             AuthenticationStateProvider.NotifyUserAuthentication(userInfo.Token);
         }

@@ -1,0 +1,31 @@
+.mud-popover {
+    border-radius: 10px;
+}
+
+.mud-list {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+}
+
+.mud-popover::before {
+    content: "";
+    top: -7px;
+    right: 37px;
+    width: 13px;
+    height: 13px;
+    background: #eee;
+    position: absolute;
+    transform: rotate(135deg);
+    border-bottom-left-radius: 3.5px;
+    border: 1px solid rgba(145, 158, 171, 0.12);
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+}
+
+.mud-list-item-icon {
+    min-width: 40px;
+}
+
+.mud-list.mud-list-padding {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

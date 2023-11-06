@@ -1,4 +1,4 @@
-*,
+/**,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -304,3 +304,4 @@ button:not(:disabled),
 [type="submit"]:not(:disabled) {
     cursor: pointer;
 }
+*/

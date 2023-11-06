@@ -129,8 +129,8 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>I forgot my password</value>
   </data>
-  <data name="GetPasswordAndCode" xml:space="preserve">
-    <value>Get password and code</value>
+  <data name="GetCode" xml:space="preserve">
+    <value>Get code</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -164,5 +164,8 @@
   </data>
   <data name="RegistrationConditionsCheckBox" xml:space="preserve">
     <value>"I have read and accept &lt;a&gt;registration conditions&lt;/a&gt;"</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
   </data>
 </root>

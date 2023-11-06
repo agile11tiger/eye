@@ -129,8 +129,8 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Я забыл свой пароль</value>
   </data>
-  <data name="GetPasswordAndCode" xml:space="preserve">
-    <value>Получить пароль и код</value>
+  <data name="GetCode" xml:space="preserve">
+    <value>Получить код</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Войти</value>
@@ -164,5 +164,8 @@
   </data>
   <data name="RegistrationConditionsCheckBox" xml:space="preserve">
     <value>"Ознакомлен(-а) и принимаю &lt;a&gt;условия регистрации&lt;/a&gt;"</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Выход</value>
   </data>
 </root>

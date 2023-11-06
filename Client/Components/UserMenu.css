@@ -4,16 +4,7 @@
 }
 
 .userMenu > a{
+    cursor: pointer;
     font-size: 1.2rem;
-}
-
-.userMenu a:first-child {
-    cursor: default;
     text-decoration: none;
-}
-
-@media (max-width: 600px) {
-    .userMenu a:first-child {
-        display: none;
-    }
 }

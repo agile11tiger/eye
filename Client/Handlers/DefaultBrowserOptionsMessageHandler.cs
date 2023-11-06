@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 namespace MemoryClient.Handlers;
 
@@ -22,6 +24,8 @@ public class DefaultBrowserOptionsMessageHandler : DelegatingHandler
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        request.Headers.AcceptLanguage.Clear();
+        request.Headers.AcceptLanguage.Add(new StringWithQualityHeaderValue(CultureInfo.CurrentCulture.Name));
         // Get the existing options to not override them if set explicitly
         IDictionary<string, object> existingProperties = null;
         var requestOptionsKey = new HttpRequestOptionsKey<object>("WebAssemblyFetchOptions");

@@ -2,6 +2,7 @@
 using EyEServer.Services;
 using EyEServer.Services.Email;
 using EyEServer.Services.Protector;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -42,7 +43,7 @@ public class AccountController(
 
         if (createResult.Succeeded && addToRoleResult.Succeeded)
         {
-            await SendEmailAsync(user, response);
+            await SendEmailAsync(user, response, model.RedirectUri);
             return Ok(response);
         }
 
@@ -51,18 +52,19 @@ public class AccountController(
     }
 
     [HttpGet]
-    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    public async Task<IActionResult> ConfirmEmail([FromQuery]ConfirmEmailViewModel confirmEmailModel)
     {
+        return View();
         var response = new ResponseModel();
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
 
-        if (user == null || token == null)
+        if (user == null || confirmEmailModel.Token == null)
         {
             response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
             return BadRequest(response);
         }
 
-        var result = await _userManager.ConfirmEmailAsync(user, token);
+        var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.Token);
 
         if (result.Succeeded)
             return View();
@@ -85,13 +87,13 @@ public class AccountController(
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            await SendEmailAsync(user, response);
+            await SendEmailAsync(user, response, model.RedirectUri);
             return BadRequest(response);
         }
-        
+
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+        var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
         if (result.Succeeded)
         {
@@ -102,6 +104,7 @@ public class AccountController(
             user.RefreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(90);
             await _userManager.UpdateAsync(user);
+            response.Nickname = user.UserName;
             response.Token = token;
             response.RefreshToken = user.RefreshToken;
             return Ok(response);
@@ -154,7 +157,7 @@ public class AccountController(
         var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
 
         if (result.Succeeded)
-            return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password });
+            return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password, RedirectUri = model.RedirectUri });
 
         response.Messages = result.GetMessages();
         return BadRequest(response);
@@ -190,13 +193,13 @@ public class AccountController(
         return Ok();
     }
 
-    private async Task SendEmailAsync(UserModel userModel, ResponseModel response)
+    private async Task SendEmailAsync(UserModel userModel, ResponseModel response, string redirectUri)
     {
         var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
         var callbackUrl = Url.Action(
-            "ConfirmEmail",
+            nameof(ConfirmEmail),
             "Account",
-            new { userId = userModel.Id, token = confirmationToken },
+            new ConfirmEmailViewModel { UserId = userModel.Id, Token = confirmationToken },
             protocol: HttpContext.Request.Scheme);
         await _emailService.SendEmailAsync(
             userModel.Email,

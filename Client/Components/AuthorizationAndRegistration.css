@@ -117,6 +117,9 @@
     border-bottom: 2px solid #e9eaea;
     padding: 10px 0;
 }
+.identityForm .boxInput input:focus {
+    border-bottom-color: #bbb;
+}
 .identityForm .boxInput label {
     position: absolute;
     top: 0;
@@ -193,4 +196,8 @@
 .identityForm .boxConditions {
     margin-top: 5px;
     font-size: 12px;
+}
+
+#authForm .validation-errors {
+    margin-bottom: 15px;
 }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using MudBlazor.Services;
 namespace MemoryClient;
 
 public class Program
@@ -64,12 +65,12 @@ public class Program
         builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
         builder.Services
             //https://github.com/Blazored/LocalStorage
-            .AddBlazoredLocalStorage()
+            .AddMudServices()
             .AddScoped<UserChecker>()
+            .AddBlazoredLocalStorage()
             .AddSingleton(JsonHelper.SerializeOptions);
-
         var host = builder.Build();
-        await host.SetCultureFromStorage();
+        await host.SetCultureFromStorageAsync();
         await host.RunAsync();
     }
 }

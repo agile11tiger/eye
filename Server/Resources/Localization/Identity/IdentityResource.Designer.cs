@@ -79,15 +79,6 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to give.
-        /// </summary>
-        internal static string give {
-            get {
-                return ResourceManager.GetString("give", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Password reset code: {0}.
         /// </summary>
         internal static string PasswordResetMessage {
@@ -142,7 +133,16 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} already exists.
+        ///   Looks up a localized string similar to Thanks for the confirmation email..
+        /// </summary>
+        internal static string ThanksConfirmationEmail {
+            get {
+                return ResourceManager.GetString("ThanksConfirmationEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User &quot;{0}&quot; already exists. Try login..
         /// </summary>
         internal static string UserExists {
             get {
@@ -151,7 +151,7 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} does not exist.
+        ///   Looks up a localized string similar to User &quot;{0}&quot; does not exist.
         /// </summary>
         internal static string UserNotExists {
             get {

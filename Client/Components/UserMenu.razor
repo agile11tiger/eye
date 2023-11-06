@@ -1,8 +1,7 @@
 ﻿<nav class="userMenu">
     <AuthorizeView>
         <Authorized>
-            <a>Hello, @context.User.Identity.Name</a>
-            <a @onclick="Logout">Выход</a>
+            <a @onclick="Logout" title="Выход" >@_nickName</a>
         </Authorized>
         <NotAuthorized>
             <AuthorizationAndRegistration />

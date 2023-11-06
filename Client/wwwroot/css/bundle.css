@@ -1,4 +1,4 @@
-*,
+/**,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -304,7 +304,7 @@ button:not(:disabled),
 [type="submit"]:not(:disabled) {
     cursor: pointer;
 }
-
+*/
 .scroll {
 }
 
@@ -685,14 +685,41 @@ main:after {
     top: 0.5rem;
 }
 
+.mud-popover {
+    border-radius: 10px;
+}
+
+.mud-list {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+}
+
+.mud-popover::before {
+    content: "";
+    top: -7px;
+    right: 37px;
+    width: 13px;
+    height: 13px;
+    background: #eee;
+    position: absolute;
+    transform: rotate(135deg);
+    border-bottom-left-radius: 3.5px;
+    border: 1px solid rgba(145, 158, 171, 0.12);
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+}
+
+.mud-list-item-icon {
+    min-width: 40px;
+}
+
+.mud-list.mud-list-padding {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
 @font-face {
     font-family: "Open Sans";
     src: local("Monotype Corsiva"), 
          url("https://github.com/agile7tiger/eye/blob/gh-pages/fonts/MonotypeCorsiva.ttf?raw=true")
-}
-
-* {
-    cursor: default;
 }
 
 body {
@@ -703,6 +730,7 @@ body {
 
 a,
 input,
+button,
 select,
 textarea,
 summary {
@@ -990,6 +1018,9 @@ pre {
     border-bottom: 2px solid #e9eaea;
     padding: 10px 0;
 }
+.identityForm .boxInput input:focus {
+    border-bottom-color: #bbb;
+}
 .identityForm .boxInput label {
     position: absolute;
     top: 0;
@@ -1066,6 +1097,10 @@ pre {
 .identityForm .boxConditions {
     margin-top: 5px;
     font-size: 12px;
+}
+
+#authForm .validation-errors {
+    margin-bottom: 15px;
 }
 /* medium.com/@krokhin.ezh/%D0%BA%D0%B0%D0%BA-%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C-%D0%B3%D0%B0%D0%BC%D0%B1%D1%83%D1%80%D0%B3%D0%B5%D1%80-%D0%BC%D0%B5%D0%BD%D1%8E-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D1%8F-%D1%82%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-css-%D0%B8-html-c6abf7c32c6d */
 .contextMenu{
@@ -1539,18 +1574,9 @@ pre {
 }
 
 .userMenu > a{
+    cursor: pointer;
     font-size: 1.2rem;
-}
-
-.userMenu a:first-child {
-    cursor: default;
     text-decoration: none;
-}
-
-@media (max-width: 600px) {
-    .userMenu a:first-child {
-        display: none;
-    }
 }
 .yinyangSpinner {
     margin: auto;

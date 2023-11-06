@@ -22,4 +22,5 @@ public class ResetPasswordViewModel
 
     [Required(ErrorMessageResourceName = "CodeRequired", ErrorMessageResourceType = typeof(IdentityResource))]
     public string? Code { get; set; }
+    public string RedirectUri { get; set; }
 }

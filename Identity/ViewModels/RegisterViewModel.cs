@@ -23,6 +23,8 @@ public class RegisterViewModel
     [DataType(DataType.Password)]
     public string? PasswordConfirm { get; set; }
 
+    public string? RedirectUri { get; set; }
+
     //[Range(typeof(bool), "true", "true", ErrorMessageResourceName = "RegistrationConditions", ErrorMessageResourceType = typeof(IdentityResource))]
     //public bool AcceptedRegistrationConditions { get; set; }
 }

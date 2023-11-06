@@ -141,16 +141,16 @@
   <data name="SiteAdministration" xml:space="preserve">
     <value>Администрация сайта</value>
   </data>
-  <data name="string" xml:space="preserve">
-    <value>строка</value>
-  </data>
   <data name="UserExists" xml:space="preserve">
-    <value>Пользователь {0} уже существует</value>
+    <value>Пользователь "{0}" уже существует.  Попытайтесь войти.</value>
   </data>
   <data name="UserNotExists" xml:space="preserve">
     <value>Пользователя {0} не существует</value>
   </data>
   <data name="WrongLoginOrPassword" xml:space="preserve">
     <value>Неправильный логин и(или) пароль</value>
+  </data>
+  <data name="ThanksConfirmationEmail" xml:space="preserve">
+    <value>Спасибо за подтверждение почты.</value>
   </data>
 </root>

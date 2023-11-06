@@ -4,10 +4,6 @@
          url("https://github.com/agile7tiger/eye/blob/gh-pages/fonts/MonotypeCorsiva.ttf?raw=true")
 }
 
-* {
-    cursor: default;
-}
-
 body {
     font-family: 'Sitka Heading', sans-serif;
     font-size: 1.1rem;
@@ -16,6 +12,7 @@ body {
 
 a,
 input,
+button,
 select,
 textarea,
 summary {

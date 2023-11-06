@@ -1,6 +1,7 @@
-﻿<select class="languageSelector" @bind="CurrentCulture" @bind:event="onchange">
-    @foreach (var languageData in _languagesData)
+﻿<MudMenu Icon="@CurrentLanguageData.ImageSource" Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
+    @for (var i = 0; i < SupportedLanguages.Count; i++)
     {
-        <option value="@languageData.CultureInfo">@languageData.Name</option>
+        var languageData = SupportedLanguages[i];
+        <MudMenuItem Icon="@languageData.ImageSource" OnClick="@(() => CurrentLanguageData = languageData)">@languageData.Name</MudMenuItem>
     }
-</select>
+</MudMenu>

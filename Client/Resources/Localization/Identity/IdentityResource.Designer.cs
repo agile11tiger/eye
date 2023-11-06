@@ -88,6 +88,15 @@ namespace MemoryClient.Resources.Localization.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I forgot my password.
         /// </summary>
         internal static string ForgotPassword {
@@ -97,11 +106,11 @@ namespace MemoryClient.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get password and code.
+        ///   Looks up a localized string similar to Get code.
         /// </summary>
-        internal static string GetPasswordAndCode {
+        internal static string GetCode {
             get {
-                return ResourceManager.GetString("GetPasswordAndCode", resourceCulture);
+                return ResourceManager.GetString("GetCode", resourceCulture);
             }
         }
         

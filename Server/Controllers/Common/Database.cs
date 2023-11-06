@@ -13,8 +13,8 @@ public abstract class Database<T> : Controller where T : class, IDatabaseItem, n
 {
     protected Database()
     {
-        _database = Startup.ServiceProvider.GetService<ApplicationDbContext>();
-        _clientFactory = Startup.ServiceProvider.GetService<IHttpClientFactory>();
+        _database = Program.ServiceProvider.GetService<ApplicationDbContext>();
+        _clientFactory = Program.ServiceProvider.GetService<IHttpClientFactory>();
     }
 
     protected readonly ApplicationDbContext _database;
