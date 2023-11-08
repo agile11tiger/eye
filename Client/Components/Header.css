@@ -1,11 +1,11 @@
 ﻿.header {
-    height: 3.5rem;
-    padding: 0.5rem 3rem 0.5rem 1rem;
     display: flex;
+    height: 3.5rem;
     position: relative;
     align-items: center;
-    justify-content: space-between;
     border: 1px solid #bbb;
+    justify-content: space-between;
+    padding: 0.5rem 3rem 0.5rem 1rem;
     background: linear-gradient(to bottom, #ddd 0%, #ccc 100%);
 }
 
@@ -16,10 +16,10 @@
 
 .header .brand {
     font-size: 1.7rem;
+    margin-right: 1rem;
     display: inline-block;
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
-    margin-right: 1rem;
 }
 
 @media (max-width: 500px) {

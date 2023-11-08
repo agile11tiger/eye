@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Components\YinYangSpinner.scss" />
     <Content Include="Resources\Localization\Identity\IdentityResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

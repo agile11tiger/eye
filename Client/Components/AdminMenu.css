@@ -1,22 +1,22 @@
 ﻿.adminMenu {
-    z-index: 1001;
-    width: 400px;
-    height: 90%;
     top: 0;
+    height: 90%;
     right: -100%;
+    width: 400px;
+    z-index: 1001;
     position: fixed;
     visibility: hidden;
+    background: #e5e5e5;
     transition-duration: .25s;
     border-radius: 15px 0px 0px 15px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, .5);
-    background: #e5e5e5;
 }
 
 #adminMenu__toggle {
-    visibility: hidden;
-    position: absolute;
     top: -9999px;
     left: -9999px;
+    position: absolute;
+    visibility: hidden;
 }
 
 #adminMenu__toggle:checked + .adminMenu__btn > span {
@@ -28,17 +28,17 @@
 }
 
 .adminMenu__btn {
-    z-index: 1002;
-    width: 40px;
-    height: 40px;
     top: 7px;
     right: 7px;
+    width: 40px;
+    height: 40px;
+    z-index: 1002;
+    display: flex;
     cursor: pointer;
     position: absolute;
-    display: flex;
     align-items: center;
-    justify-content: center;
     border-radius: 15px;
+    justify-content: center;
 }
 
 .adminMenu__btn > span,
@@ -53,20 +53,20 @@
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    background-color: #616161;
     transition-duration: .5s;
+    background-color: #616161;
 }
 
 .adminMenu__btn > span::before,
 .adminMenu__btn > i::before {
-    content: '';
     top: -12px;
+    content: '';
 }
 
 .adminMenu__btn > span::after,
 .adminMenu__btn > i::after {
-    content: '';
     top: 12px;
+    content: '';
 }
 
 .adminMenu > ul {
@@ -83,9 +83,9 @@
 
 .adminMenu > ul > li {
     padding: 7px;
+    display: block;
     font-size: 20px;
     cursor: pointer;
-    display: block;
     border-radius: 15px;
 }
 

@@ -4,17 +4,17 @@
 }
 
 .oneLineAdder__header h1 {
+    position:relative;
     font-style: italic;
     text-shadow: 1px 1px 1px black;
-    position:relative;
 }
 
 .oneLineAdder__header h1 > a {
     color: inherit;
     text-underline-offset: 9px;
+    text-decoration-style: solid;
     text-decoration-skip-ink: none;
     text-decoration-color: inherit;
-    text-decoration-style: solid;
     text-decoration-thickness: 2px;
 }
 

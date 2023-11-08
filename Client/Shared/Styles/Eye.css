@@ -5,9 +5,9 @@
 }
 
 body {
-    font-family: 'Sitka Heading', sans-serif;
     font-size: 1.1rem;
     background-color: whitesmoke;
+    font-family: 'Sitka Heading', sans-serif;
 }
 
 a,
@@ -37,6 +37,6 @@ select > option {
 
 pre {
     margin-top: 0;
-    margin-bottom: 1rem;
     overflow: auto;
+    margin-bottom: 1rem;
 }

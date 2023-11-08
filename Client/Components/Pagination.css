@@ -1,21 +1,21 @@
 ﻿.pagination {
-    padding: 0px;
     margin: 0px;
-    list-style: none;
+    padding: 0px;
     display: flex;
-    justify-content: center;
+    list-style: none;
     border-radius: 0.25rem;
+    justify-content: center;
 }
 
 .pagination li {
-    padding: 0.5rem 0.75rem;
     margin: -1px;
-    color: dodgerblue;
     cursor:pointer;
+    color: dodgerblue;
     line-height: 1.25;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
     border: 1px solid #ccc;
+    padding: 0.5rem 0.75rem;
     transition: background .3s;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
 }
 
 .pagination li > i{
@@ -27,7 +27,7 @@
 .pagination li:hover {
     opacity: .7;
     color: white;
-    box-shadow: 0 0 1px inset;    
+    box-shadow: 0 0 1px inset;
     background: linear-gradient(to bottom, #379cff 0%, #0a86ff 100%);
 }
 

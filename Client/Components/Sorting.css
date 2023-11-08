@@ -1,6 +1,6 @@
 ﻿.sorting {
-    margin-top: 5px;
     display: flex;
+    margin-top: 5px;
     flex-flow: row wrap;
     justify-content: center;
 }

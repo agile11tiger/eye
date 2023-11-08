@@ -1,8 +1,8 @@
 /*https://dwstroy.ru/lessons/les4020/demo/*/
 /*Главные кнопки*/
 .mainButtons {
-    margin: 0 -5px;
     display: flex;
+    margin: 0 -5px;
     color: dodgerblue;
 }
 .mainButtons label {
@@ -11,11 +11,11 @@
 }
 /* -----  Выравнивание по середине  -----*/
 .identityForm__button {
-    display: inline-block;
-    line-height: 2.2em;
     padding: 0 0.62em;
-    border: 1px solid #666;
+    line-height: 2.2em;
+    display: inline-block;
     border-radius: 0.25em;
+    border: 1px solid #666;
     background-image: linear-gradient( to bottom, #fff, #ccc );
     box-shadow: inset 0 0 0.1em #fff, 0.2em 0.2em 0.2em rgba( 0, 0, 0, 0.3 );
 }
@@ -28,16 +28,16 @@
 }
 
 .identityForm {
+    padding: 10px;
+    font-size: 1rem;
+    max-width: 500px;
+    line-height: normal;
     background-color: #888;
     font-family: Roboto, sans-serif;
-    font-size: 1rem;
-    line-height: normal;
-    padding: 10px;
-    max-width: 500px;
 }
 .identityForm a {
-    text-decoration: none;
     color: #298cad;
+    text-decoration: none;
 }
 .identityForm a:hover {
     color: #36d2ff;
@@ -47,13 +47,13 @@
     list-style: none;
 }
 .identityForm input {
-    display: block;
     width: 100%;
+    display: block;
 }
 .identityForm .tabForm {
-    background-color: #fff;
     display: none;
     padding: 20px;
+    background-color: #fff;
 }
 .identityForm .tabForm.active,
 .identityForm #auth:checked ~ #authForm,
@@ -63,18 +63,18 @@
     display: block;
 }
 .identityForm label.tab {
-    color: #ffffff;
-    font-weight: 600;
     padding: 15px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: -1px;
     display: inline-block;
     border-radius: 3px 3px 0 0;
-    margin-bottom: -1px;
-    cursor: pointer;
 }
 .identityForm label.tab.active,
 .identityForm input[name="tabs"]:checked + label {
-    background-color: #fff;
     color: #1d5f75;
+    background-color: #fff;
 }
 .identityForm input[name="tabs"] {
     display: none;
@@ -82,11 +82,11 @@
 
 /* Иконки во вкладках */
 .identityForm .tab::before {
-    content: '\f090';
-    font-family: 'FontAwesome', sans-serif;
     font-size: 24px;
+    content: '\f090';
     margin-right: 11px;
     font-weight: normal;
+    font-family: 'FontAwesome', sans-serif;
 }
 .identityForm .tab[for="reg"]::before {
     content: '\f234';
@@ -94,13 +94,13 @@
 
 /* Формы */
 .identityForm .input {
-    font-size: 16px;
-    border: 2px solid #e9eaea;
-    padding: 12px 14px;
-    box-sizing: border-box;
-    margin-bottom: 18px;
-    color: #1e8da6;
     outline: none;
+    color: #1e8da6;
+    font-size: 16px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    box-sizing: border-box;
+    border: 2px solid #e9eaea;
 }
 
 ::-webkit-input-placeholder {color:#c4c9c9;}/* webkit */
@@ -114,41 +114,41 @@
 }
 .identityForm .boxInput input {
     border: none;
-    border-bottom: 2px solid #e9eaea;
     padding: 10px 0;
+    border-bottom: 2px solid #e9eaea;
 }
 .identityForm .boxInput input:focus {
     border-bottom-color: #bbb;
 }
 .identityForm .boxInput label {
-    position: absolute;
     top: 0;
     left: 0;
-    padding-top: 10px;
     color: #c4c9c9;
+    padding-top: 10px;
+    position: absolute;
     pointer-events: none;
 }
 .identityForm .boxInput input:focus ~ label,
 .identityForm .boxInput input:not(:placeholder-shown) ~ label {
     top: -20px;
-    font-size: 12px;
     color: #33d3fe;
+    font-size: 12px;
 }
 
 /* Эффект кнопки */
 .identityForm button[type="submit"] {
+    z-index: 1;
     width: 100%;
-    background: #298cad;
     color: #ffffff;
     font-size: 18px;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 45px;
     margin-top: 5px;
+    overflow: hidden;
+    line-height: 45px;
+    text-align: center;
     margin-bottom: 5px;
     position: relative;
-    z-index: 1;
-    overflow: hidden;
+    background: #298cad;
+    text-transform: uppercase;
     border-bottom: 4px solid #36d2ff;
 }
 .identityForm button[type="submit"]:hover {
@@ -156,21 +156,21 @@
 }
 .identityForm button[type="submit"]::before, 
 .identityForm button[type="submit"]::after {
+    top: 0;
+    z-index: -1;
     content: "";
-    display: block;
+    left: -100%;
     width: 100%;
     height: 100%;
-    background: #27bfdc;
-    position: absolute;
-    top: 0;
-    left: -100%;
+    display: block;
     transition: .3s;
-    z-index: -1;
+    position: absolute;
+    background: #27bfdc;
 }
 .identityForm button[type="submit"]::after {
-    background: #36d2ff;
-    top: 100%;
     left: 0;
+    top: 100%;
+    background: #36d2ff;
     transition-delay: .2s;
 }
 .identityForm button[type="submit"]:hover::before {
@@ -182,12 +182,12 @@
 
 /**/
 .identityForm .toggleLabel {
-    cursor: pointer;
-    color: dodgerblue;
     display: block;
-    text-align: center;
-    margin-top: 10px;
+    cursor: pointer;
     font-size: 15px;
+    margin-top: 10px;
+    color: dodgerblue;
+    text-align: center;
 }
 .identityForm label {
     margin-bottom: 0px;
