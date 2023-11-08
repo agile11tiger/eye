@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-namespace EyEServer.Services.Protector;
+namespace EyEServer.Services.Identity;
 
 /// <summary>
 /// https://dev.to/mohammedahmed/encrypt-and-decrypt-users-data-in-aspnet-core-identity-using-the-ilookupprotector-and-ilookupprotectorkeyring-interfaces-2gep

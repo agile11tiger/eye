@@ -4,7 +4,7 @@ using EyEServer.Data;
 using EyEServer.Middlewares;
 using EyEServer.Services;
 using EyEServer.Services.Email;
-using EyEServer.Services.Protector;
+using EyEServer.Services.Identity;
 using EyEServer.Services.RoleInitializer;
 using Memory.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -89,7 +89,8 @@ public class Program
             });
 
         builder.Services.AddSingleton<IPasswordHasher<UserModel>, CustomPasswordHasher>();//should be above AddDefaultIdentity
-        builder.Services.AddTransient<IPasswordValidator<UserModel>, CustomPasswordValidator>();
+        builder.Services.AddSingleton<IUserValidator<UserModel>, CustomUsernameValidator>();
+        builder.Services.AddSingleton<IPasswordValidator<UserModel>, CustomPasswordValidator>();
         builder.Services.AddDefaultIdentity<UserModel>(options =>
         {
             options.SignIn.RequireConfirmedEmail = true;

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers.Identity;
 
@@ -22,17 +22,9 @@ public class AccountController(
     {
         var response = new RegisterResponseModel();
 
-        if ((await _userManager.FindByEmailAsync(model.Email)) != null)
-        {
-            response.Messages = new List<string> { IdentityResource.UserExists.Format(model.Email) };
+        if (Check(await (_userManager.FindByNameAsync(model.Nickname)) != null, IdentityResource.NicknameExists.Format(model.Nickname), response)
+         || Check(await (_userManager.FindByEmailAsync(model.Email)) != null, IdentityResource.UserExists.Format(model.Email), response))
             return BadRequest(response);
-        }
-
-        if ((await _userManager.FindByNameAsync(model.Nickname)) != null)
-        {
-            response.Messages = new List<string> { IdentityResource.UserExists.Format(model.Nickname) };
-            return BadRequest(response);
-        }
 
         var user = new UserModel { Email = model.Email, UserName = model.Nickname };
         var createResult = await _userManager.CreateAsync(user, model.Password);
@@ -43,29 +35,27 @@ public class AccountController(
             return Ok(response);
         }
 
-        response.Messages = createResult.GetMessages();
+        response.Message = createResult.GetMessages().FirstOrDefault();
         return BadRequest(response);
     }
 
 
     [HttpGet]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailViewModel confirmEmailModel)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] EmailConfirmationViewModel confirmEmailModel)
     {
         var response = new ResponseModel();
         var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
 
-        if (user == null || confirmEmailModel.Token == null)
-        {
-            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
+        if (Check(user == null, IdentityResource.UserNotExists.Format(confirmEmailModel.UserId), response)
+         || Check(confirmEmailModel.Token == null, IdentityResource.EmailConfirmationTokenEmpty, response))
             return BadRequest(response);
-        }
 
         var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.Token);
 
         if (result.Succeeded)
             return View();
 
-        response.Messages = result.GetMessages();
+        response.Message = result.GetMessages().FirstOrDefault();
         return BadRequest(response);
     }
 
@@ -75,11 +65,8 @@ public class AccountController(
         var user = await _userManager.FindByEmailAsync(model.Email);
         var response = new LoginResponseModel();
 
-        if (user == default)
-        {
-            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
+        if (Check(user == null, IdentityResource.UserNotExists.Format(model.Email), response))
             return BadRequest(response);
-        }
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
@@ -106,7 +93,7 @@ public class AccountController(
             return Ok(response);
         }
 
-        response.Messages = new List<string> { IdentityResource.WrongLoginOrPassword };
+        response.Message = IdentityResource.WrongLoginOrPassword;
         return BadRequest(response);
     }
 
@@ -116,17 +103,9 @@ public class AccountController(
         var response = new ResponseModel();
         var user = await _userManager.FindByEmailAsync(model.Email);
 
-        if (user == null)
-        {
-            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
+        if (Check(user == null, IdentityResource.UserNotExists.Format(model.Email), response)
+         || Check(!await _userManager.IsEmailConfirmedAsync(user), IdentityResource.EmailNotConfirmed, response))
             return BadRequest(response);
-        }
-
-        if (!await _userManager.IsEmailConfirmedAsync(user))
-        {
-            response.Messages = new List<string> { IdentityResource.EmailNotConfirmed };
-            return BadRequest(response);
-        }
 
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         await _emailService.SendEmailAsync(
@@ -134,7 +113,7 @@ public class AccountController(
             IdentityResource.PasswordResetMessageHeader,
             IdentityResource.PasswordResetMessage.Format(resetToken));
 
-        response.Messages = new List<string> { IdentityResource.CodeSentToEmail };
+        response.Message = IdentityResource.CodeSentToEmail;
         return Ok(response);
     }
 
@@ -144,21 +123,19 @@ public class AccountController(
         var response = new ResponseModel();
         var user = await _userManager.FindByEmailAsync(model.Email);
 
-        if (user == null)
-        {
-            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(model.Email) };
+        if (Check(user == null, IdentityResource.UserNotExists.Format(model.Email), response)
+         || Check(!(await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, UserManager<UserModel>.ResetPasswordTokenPurpose, model.Code)),
+            IdentityResource.InvalidPasswordResetCode, response))
             return BadRequest(response);
-        }
 
         var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
 
         if (result.Succeeded)
             return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password });
 
-        response.Messages = result.GetMessages();
+        response.Message = result.GetMessages().FirstOrDefault();
         return BadRequest(response);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenViewModel refreshToken)
@@ -168,7 +145,7 @@ public class AccountController(
         var response = new RefreshTokenViewModel();
 
         if (user == null || user.RefreshToken != refreshToken.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            return BadRequest(response.Messages = new List<string> { "Can`t refresh JSON Web Token" });
+            return BadRequest(response.Message = "Can`t refresh JSON Web Token");
 
         var signingCredentials = _tokenService.GetSigningCredentials();
         var claims = await _tokenService.GetClaims(user);
@@ -195,12 +172,23 @@ public class AccountController(
         var callbackUrl = Url.Action(
             nameof(ConfirmEmail),
             "Account",
-            new ConfirmEmailViewModel { UserId = userModel.Id, Token = confirmationToken },
+            new EmailConfirmationViewModel { UserId = userModel.Id, Token = confirmationToken },
             protocol: HttpContext.Request.Scheme);
         await _emailService.SendEmailAsync(
             userModel.Email,
             IdentityResource.RegisterConfirmHeader,
             IdentityResource.RegisterConfirmMessage.Format(callbackUrl));
-        response.Messages = new List<string> { IdentityResource.RegistrationCompletionMessage };
+        response.Message = IdentityResource.RegistrationCompletionMessage;
+    }
+
+    private bool Check(bool condition, string message, ResponseModel responseModel)
+    {
+        if (condition)
+        {
+            responseModel.Message = message;
+            return true;
+        }
+
+        return false;
     }
 }

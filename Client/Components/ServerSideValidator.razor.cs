@@ -13,6 +13,37 @@ public partial class ServerSideValidator
     [Parameter] public string StartMessage { get; set; }
     [CascadingParameter] public EditContext CurrentEditContext { get; set; }
 
+    public async Task DisplayMessagesAsync<T>(HttpContent content) where T : ResponseModel
+    {
+        try
+        {
+            var identityModel = await content.ReadFromJsonAsync<T>();
+
+            if (identityModel.Message != null)
+                _messageStore.Add(CurrentEditContext.Field(string.Empty), identityModel.Message);
+
+            CurrentEditContext.NotifyValidationStateChanged();
+        }
+        catch
+        {
+            //some not excepted exeption
+            await DisplayMessageAsync(content);
+        }
+    }
+
+    public async Task DisplayMessageAsync(HttpContent content, string key = "")
+    {
+        var message = await content.ReadAsStringAsync();
+        _messageStore.Add(CurrentEditContext.Field(key), message);
+        CurrentEditContext.NotifyValidationStateChanged();
+    }
+
+    public void Reset()
+    {
+        _messageStore.Clear();
+        OnParametersSet();
+    }
+
     protected override void OnInitialized()
     {
         if (CurrentEditContext == null)
@@ -33,30 +64,5 @@ public partial class ServerSideValidator
             _messageStore.Add(CurrentEditContext.Field(string.Empty), StartMessage);
 
         base.OnParametersSet();
-    }
-
-    public async Task DisplayMessagesAsync<T>(HttpContent content) where T : ResponseModel
-    {
-        try
-        {
-            var identityModel = await content.ReadFromJsonAsync<T>();
-
-            foreach (var message in identityModel.Messages)
-                _messageStore.Add(CurrentEditContext.Field(string.Empty), message);
-
-            CurrentEditContext.NotifyValidationStateChanged();
-        }
-        catch
-        {
-            await DisplayMessageAsync(content);
-        }
-
-    }
-
-    public async Task DisplayMessageAsync(HttpContent content, string key = "")
-    {
-        var message = await content.ReadAsStringAsync();
-        _messageStore.Add(CurrentEditContext.Field(key), message);
-        CurrentEditContext.NotifyValidationStateChanged();
     }
 }

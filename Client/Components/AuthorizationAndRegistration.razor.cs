@@ -4,6 +4,7 @@ using Identity.ViewModels;
 using MemoryClient.Extensions;
 using MemoryClient.Services;
 using Microsoft.JSInterop;
+using System.Net.Http;
 using System.Net.Http.Json;
 namespace MemoryClient.Components;
 
@@ -17,29 +18,22 @@ public partial class AuthorizationAndRegistration
     private ResetPasswordViewModel _resetPasswordModel = new();
     private ForgotPasswordViewModel _forgotPasswordModel = new();
     private ServerSideValidator _serverSideRegistrationValidator = new();
-    private ServerSideValidator _serverSideResetPasswordValidator = new();
     private ServerSideValidator _serverSideAuthorizationValidator = new();
     private ServerSideValidator _serverSideForgotPasswordValidator = new();
-    [Parameter] public Func<Task> AuthorizationCompleteAsync { get; set; }
+    private ServerSideValidator _serverSideResetPasswordValidator = new();
     [Inject] public IJSRuntime JS { get; set; }
     [Inject] public NavigationManager Navigation { get; set; }
     [Inject] public ILocalStorageService LocalStorage { get; set; }
     [Inject] public ServerHttpClient ServerHttpClient { get; set; }
     [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Parameter] public Func<Task> AuthorizationCompleteAsync { get; set; }
 
     private async Task LoginToAccount()
     {
         var response = await ServerHttpClient.PostAsJsonAsync("api/account/login", _loginModel);
 
         if (response.IsSuccessStatusCode)
-        {
-            var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
-            var userInfo = new UserInfo() { Nickname = loginResponse.Nickname, Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
-            await AuthenticationStateProvider.NotifyUserAuthenticationAsync(userInfo);
-            ToggleVisibilityWrapper();
-            _loginModel = new LoginViewModel();
-            await AuthorizationCompleteAsync();
-        }
+            await LoginAsync(response);
         else
             await _serverSideAuthorizationValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
     }
@@ -54,7 +48,7 @@ public partial class AuthorizationAndRegistration
             _loginModel.Password = _registerModel.Password;
             await _serverSideAuthorizationValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
             await _auth.Click(JS);
-            _registerModel = new RegisterViewModel();
+            _registerModel = new();
             StateHasChanged();
         }
         else
@@ -68,7 +62,7 @@ public partial class AuthorizationAndRegistration
         if (response.IsSuccessStatusCode)
         {
             _resetPasswordModel.Email = _forgotPasswordModel.Email;
-            _forgotPasswordModel = new ForgotPasswordViewModel();
+            _forgotPasswordModel = new();
             await _resetPassword.Click(JS);
             StateHasChanged();
         }
@@ -80,10 +74,10 @@ public partial class AuthorizationAndRegistration
     {
         var response = await ServerHttpClient.PostAsJsonAsync("api/account/resetPassword", _resetPasswordModel);
 
-        if (response.IsSuccessStatusCode == true)
+        if (response.IsSuccessStatusCode)
         {
-            _resetPasswordModel = new ResetPasswordViewModel();
-            ToggleVisibilityWrapper();
+            await LoginAsync(response);
+            _resetPasswordModel = new();
         }
         else
             await _serverSideResetPasswordValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
@@ -92,5 +86,20 @@ public partial class AuthorizationAndRegistration
     private void ToggleVisibilityWrapper()
     {
         _isShowWrapper = !_isShowWrapper;
+    }
+
+    private async Task LoginAsync(HttpResponseMessage response)
+    {
+        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+        var userInfo = new UserInfo() { Nickname = loginResponse.Nickname, Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
+        await AuthenticationStateProvider.NotifyUserAuthenticationAsync(userInfo);
+        _loginModel = new LoginViewModel();
+        await AuthorizationCompleteAsync();
+        _serverSideRegistrationValidator.Reset();
+        _serverSideAuthorizationValidator.Reset();
+        _serverSideForgotPasswordValidator.Reset();
+        _serverSideResetPasswordValidator.Reset();
+        ToggleVisibilityWrapper();
+        StateHasChanged();
     }
 }

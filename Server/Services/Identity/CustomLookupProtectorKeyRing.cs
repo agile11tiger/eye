@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace EyEServer.Services.Protector;
+namespace EyEServer.Services.Identity;
 
 public class CustomLookupProtectorKeyRing : ILookupProtectorKeyRing
 {

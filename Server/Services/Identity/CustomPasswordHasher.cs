@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-namespace EyEServer.Services.Protector;
+namespace EyEServer.Services.Identity;
 
 public class CustomPasswordHasher : IPasswordHasher<UserModel>
 {

@@ -153,4 +153,13 @@
   <data name="ThanksConfirmationEmail" xml:space="preserve">
     <value>Спасибо за подтверждение почты.</value>
   </data>
+  <data name="InvalidPasswordResetCode" xml:space="preserve">
+    <value>Неверный код сброса пароля</value>
+  </data>
+  <data name="EmailConfirmationTokenEmpty" xml:space="preserve">
+    <value>Токен подтверждения электронной почты пуст</value>
+  </data>
+  <data name="NicknameExists" xml:space="preserve">
+    <value>Псевдоним "{0}" уже занят</value>
+  </data>
 </root>

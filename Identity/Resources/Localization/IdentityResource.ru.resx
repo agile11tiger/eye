@@ -130,7 +130,7 @@
     <value>Поле "Прозвище" не заполнено</value>
   </data>
   <data name="NicknameShouldNotContain" xml:space="preserve">
-    <value>Прозвище не должно содержать @</value>
+    <value>Псевдоним не должно содержать @</value>
   </data>
   <data name="PasswordConfirmRequired" xml:space="preserve">
     <value>Поле "Подтверждение пароля" не заполнено</value>

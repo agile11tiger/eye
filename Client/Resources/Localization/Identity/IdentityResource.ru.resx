@@ -148,7 +148,7 @@
     <value>Введите e-mail</value>
   </data>
   <data name="PlaceholderNickname" xml:space="preserve">
-    <value>Прозвище (\/)_(0_o)_(\/)</value>
+    <value>Псевдоним (\/)_(0_o)_(\/)</value>
   </data>
   <data name="PlaceholderPassword" xml:space="preserve">
     <value>Введите пароль</value>

@@ -155,4 +155,13 @@
 confirmation&lt;br/&gt;
 email.</value>
   </data>
+  <data name="InvalidPasswordResetCode" xml:space="preserve">
+    <value>Invalid password reset code</value>
+  </data>
+  <data name="EmailConfirmationTokenEmpty" xml:space="preserve">
+    <value>Email confirm  token empty</value>
+  </data>
+  <data name="NicknameExists" xml:space="preserve">
+    <value>Nickname"{0}" is taken</value>
+  </data>
 </root>

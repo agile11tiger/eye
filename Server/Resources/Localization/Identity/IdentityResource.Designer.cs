@@ -70,11 +70,38 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email confirm  token empty.
+        /// </summary>
+        internal static string EmailConfirmationTokenEmpty {
+            get {
+                return ResourceManager.GetString("EmailConfirmationTokenEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email is not verified.
         /// </summary>
         internal static string EmailNotConfirmed {
             get {
                 return ResourceManager.GetString("EmailNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password reset code.
+        /// </summary>
+        internal static string InvalidPasswordResetCode {
+            get {
+                return ResourceManager.GetString("InvalidPasswordResetCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nickname&quot;{0}&quot; is taken.
+        /// </summary>
+        internal static string NicknameExists {
+            get {
+                return ResourceManager.GetString("NicknameExists", resourceCulture);
             }
         }
         
@@ -115,7 +142,7 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To complete registration, check your email and follow the link provided in the letter.
+        ///   Looks up a localized string similar to To complete registration, check your email and follow the link provided in the letter, then you will be able to log in. For your convenience, the data has already been inserted..
         /// </summary>
         internal static string RegistrationCompletionMessage {
             get {
@@ -133,7 +160,9 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thanks for the confirmation email..
+        ///   Looks up a localized string similar to Thanks for the&lt;br/&gt;
+        ///confirmation&lt;br/&gt;
+        ///email..
         /// </summary>
         internal static string ThanksConfirmationEmail {
             get {
@@ -160,7 +189,7 @@ namespace EyEServer.Resources.Localization.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect login and/or password.
+        ///   Looks up a localized string similar to Incorrect login or password.
         /// </summary>
         internal static string WrongLoginOrPassword {
             get {
