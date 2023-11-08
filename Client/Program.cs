@@ -53,7 +53,8 @@ public class Program
                         DefaultBrowserRequestMode = BrowserRequestMode.Cors,
                     });
                 return client;
-            });
+            })
+            .AddSingleton<HttpClient, ServerHttpClient>();
         ////https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
         //        .AddApiAuthorization(options =>
         //        {

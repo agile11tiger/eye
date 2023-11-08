@@ -1,3 +1,300 @@
+.scroll {
+}
+
+.scroll h1 {
+    color: black;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 1px 1px 1px black;
+}
+
+.scroll__panel {
+    padding: 5px;
+    display: flex;
+    flex-flow: row wrap;
+    border-radius: 10px;
+    margin: 30px 0 20px 0;
+    border: 1px solid #ddd;
+    justify-content: center;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+}
+
+.scroll__panel__xLine {
+    width: 280px;
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px auto 5px auto;
+}
+
+.scroll__panel footer {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.scroll__panel footer button {
+    width: 200px;
+    line-height: 30px;
+    outline-color: #ccc;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    background: linear-gradient(to bottom, #eaeaea 0%, #ddd 100%);
+}
+
+
+.scroll__container {
+    display: flex;
+    margin: 15px 0px;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.scroll__container__box {
+    margin: 10px;
+    position: relative;
+    border-radius: 15px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 1px;
+    padding: 10px 15px 15px 15px;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%)
+}
+
+.scroll__container__box figure {
+    z-index: 1;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.scroll__container__box figcaption {
+    margin: 0px 5px 10px 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+.scroll__container__box figcaption h3 {
+    margin: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.scroll__container__box figcaption h3 a {
+    z-index: 1;
+    color: inherit;
+    position: relative;
+    text-underline-offset: 4px;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-color: inherit;
+}
+
+.scroll__container__box img{
+    z-index:1;
+    float: left;
+    width: 200px;
+    height: auto;
+    position:relative;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px black;
+}
+
+.scroll__container__box a img{
+    color: initial;
+    cursor:pointer;
+}
+
+.scroll__container__box dl {
+    margin: 0;
+    z-index: 1;
+    position: relative;
+}
+
+/*Показать/скрыть*/
+.scroll__container__box dt, dd {
+    margin: 0;
+    display: inline;
+}
+
+.scroll__container__box dd {
+    white-space: pre-line;
+}
+
+.scroll__container__box dt:after {
+    content: ": ";
+}
+
+.scroll__container__box input[type="checkbox"] {
+    top: -9999px;
+    left: -9999px;
+    visibility: hidden;
+    position: absolute;
+}
+
+.scroll__container__box dl input[type="checkbox"] + label {
+    display: inline;
+    cursor: pointer;
+    margin-bottom: 0px;
+    text-decoration: underline;
+}
+
+.scroll__container__box input[type="checkbox"] + label + dd {
+    display: none;
+}
+
+.scroll__container__box input[type="checkbox"]:checked + label + dd {
+    display: inline;
+}
+
+.scroll__container__box input[type="checkbox"]:checked + label + dd.grid {
+    display: grid;
+}
+
+.scroll__container__box input[type="checkbox"] + label + dd a {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.scroll__container__box dl > dd:after {
+    content: ' ';
+    display: block;
+}
+
+.scroll__container__box input[type="checkbox"] + label:after {
+    content: ' ';
+    display: block;
+}
+
+
+.scroll__container__box .contextMenu {
+    top: 5px;
+    right: 1px;
+}
+
+.scroll__itemEditor {
+    display: flex;
+    min-width: 500px;
+    background: #ddd;
+    border-radius: 10px;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 15px 30px 5px 30px;
+}
+
+.scroll__itemEditor input,
+.scroll__itemEditor select,
+.scroll__itemEditor textarea {
+    padding: 0px 5px;
+    outline-color: #ccc;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.scroll__itemEditor > h4 {
+    margin: 0 0 25px 0;
+    align-self: center;
+}
+
+.scroll__itemEditor > p {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.scroll__itemEditor option {
+    background: #eee;
+}
+
+.scroll__itemEditor > p > label {
+    margin-right: 10px;
+}
+
+.scroll__itemEditor > p > label + * {
+    flex: 3;
+    resize: none;
+}
+
+.scroll__itemEditor > p:last-child {
+    margin-top: 10px;
+}
+
+.scroll__itemEditor > p:last-child > input {
+    flex: 1;
+    margin: 0px 5px;
+    padding: 5px 0px;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+}
+
+@media (min-width: 1030px) {
+    .scroll__panel__yLine {
+        width: 2px;
+        height: 40px;
+        margin: 0 10px;
+        visibility: hidden;
+    }
+}
+
+@media (max-width: 500px) {
+    .scroll__container__box img {
+        float: none;
+    }
+
+    .scroll__container__box dl {
+        text-align: center;
+    }
+}
+.table {
+    width: 100%;
+    margin-bottom: 2px;
+}
+
+.table > caption {
+    caption-side: top;
+    padding-bottom: 0px;
+}
+
+.table tr {
+    cursor: default;
+}
+
+.table tr:hover {
+    background-color: rgba(30, 144, 255, .05);
+}
+
+.table td {
+    padding: 10px;
+    position: relative;
+    vertical-align: top;
+    white-space: pre-line;
+}
+
+.table td.newItem {
+    display: flex;
+    align-items: center;
+}
+
+.table td:last-child > .contextMenu {
+    margin-top: -1.5px;
+}
+
+.table td textarea {
+    width: 100%;
+    height: 30px;
+    resize: vertical;
+    padding: 0px 5px;
+    margin-right: 15px;
+    outline-color: #ccc;
+    border-radius: 10px;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+.table td button {
+    padding: 2px 20px;
+    outline-color: #ccc;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+}
 /*http://beloweb.ru/novichkam/kak-sdelat-krasivuyu-ten-dlya-bloka-s-pomoshhyu-css-8-primerov.html  --- тень*/
 
 main {
@@ -1061,303 +1358,6 @@ pre {
 
 .anime .scroll__container__box img {
     margin-right: 10px;
-}
-.scroll {
-}
-
-.scroll h1 {
-    color: black;
-    text-align: center;
-    font-style: italic;
-    text-shadow: 1px 1px 1px black;
-}
-
-.scroll__panel {
-    padding: 5px;
-    display: flex;
-    flex-flow: row wrap;
-    border-radius: 10px;
-    margin: 30px 0 20px 0;
-    border: 1px solid #ddd;
-    justify-content: center;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
-}
-
-.scroll__panel__xLine {
-    width: 280px;
-    height: 1px;
-    background-color: #ccc;
-    margin: 10px auto 5px auto;
-}
-
-.scroll__panel footer {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.scroll__panel footer button {
-    width: 200px;
-    line-height: 30px;
-    outline-color: #ccc;
-    border-radius: 30px;
-    border: 1px solid #ccc;
-    background: linear-gradient(to bottom, #eaeaea 0%, #ddd 100%);
-}
-
-
-.scroll__container {
-    display: flex;
-    margin: 15px 0px;
-    flex-flow: row wrap;
-    justify-content: center;
-}
-
-.scroll__container__box {
-    margin: 10px;
-    position: relative;
-    border-radius: 15px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-shadow: 0px 0px 1px;
-    padding: 10px 15px 15px 15px;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%)
-}
-
-.scroll__container__box figure {
-    z-index: 1;
-    margin-bottom: 0px;
-    text-align: center;
-}
-
-.scroll__container__box figcaption {
-    margin: 0px 5px 10px 0px;
-    border-bottom: 1px solid #ccc;
-}
-
-.scroll__container__box figcaption h3 {
-    margin: 0px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.scroll__container__box figcaption h3 a {
-    z-index: 1;
-    color: inherit;
-    position: relative;
-    text-underline-offset: 4px;
-    text-decoration-style: solid;
-    text-decoration-skip-ink: none;
-    text-decoration-color: inherit;
-}
-
-.scroll__container__box img{
-    z-index:1;
-    float: left;
-    width: 200px;
-    height: auto;
-    position:relative;
-    border-radius: 10px;
-    box-shadow: 0px 0px 2px black;
-}
-
-.scroll__container__box a img{
-    color: initial;
-    cursor:pointer;
-}
-
-.scroll__container__box dl {
-    margin: 0;
-    z-index: 1;
-    position: relative;
-}
-
-/*Показать/скрыть*/
-.scroll__container__box dt, dd {
-    margin: 0;
-    display: inline;
-}
-
-.scroll__container__box dd {
-    white-space: pre-line;
-}
-
-.scroll__container__box dt:after {
-    content: ": ";
-}
-
-.scroll__container__box input[type="checkbox"] {
-    top: -9999px;
-    left: -9999px;
-    visibility: hidden;
-    position: absolute;
-}
-
-.scroll__container__box dl input[type="checkbox"] + label {
-    display: inline;
-    cursor: pointer;
-    margin-bottom: 0px;
-    text-decoration: underline;
-}
-
-.scroll__container__box input[type="checkbox"] + label + dd {
-    display: none;
-}
-
-.scroll__container__box input[type="checkbox"]:checked + label + dd {
-    display: inline;
-}
-
-.scroll__container__box input[type="checkbox"]:checked + label + dd.grid {
-    display: grid;
-}
-
-.scroll__container__box input[type="checkbox"] + label + dd a {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.scroll__container__box dl > dd:after {
-    content: ' ';
-    display: block;
-}
-
-.scroll__container__box input[type="checkbox"] + label:after {
-    content: ' ';
-    display: block;
-}
-
-
-.scroll__container__box .contextMenu {
-    top: 5px;
-    right: 1px;
-}
-
-.scroll__itemEditor {
-    display: flex;
-    min-width: 500px;
-    background: #ddd;
-    border-radius: 10px;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 15px 30px 5px 30px;
-}
-
-.scroll__itemEditor input,
-.scroll__itemEditor select,
-.scroll__itemEditor textarea {
-    padding: 0px 5px;
-    outline-color: #ccc;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.scroll__itemEditor > h4 {
-    margin: 0 0 25px 0;
-    align-self: center;
-}
-
-.scroll__itemEditor > p {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.scroll__itemEditor option {
-    background: #eee;
-}
-
-.scroll__itemEditor > p > label {
-    margin-right: 10px;
-}
-
-.scroll__itemEditor > p > label + * {
-    flex: 3;
-    resize: none;
-}
-
-.scroll__itemEditor > p:last-child {
-    margin-top: 10px;
-}
-
-.scroll__itemEditor > p:last-child > input {
-    flex: 1;
-    margin: 0px 5px;
-    padding: 5px 0px;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
-}
-
-@media (min-width: 1030px) {
-    .scroll__panel__yLine {
-        width: 2px;
-        height: 40px;
-        margin: 0 10px;
-        visibility: hidden;
-    }
-}
-
-@media (max-width: 500px) {
-    .scroll__container__box img {
-        float: none;
-    }
-
-    .scroll__container__box dl {
-        text-align: center;
-    }
-}
-.table {
-    width: 100%;
-    margin-bottom: 2px;
-}
-
-.table > caption {
-    caption-side: top;
-    padding-bottom: 0px;
-}
-
-.table tr {
-    cursor: default;
-}
-
-.table tr:hover {
-    background-color: rgba(30, 144, 255, .05);
-}
-
-.table td {
-    padding: 10px;
-    position: relative;
-    vertical-align: top;
-    white-space: pre-line;
-}
-
-.table td.newItem {
-    display: flex;
-    align-items: center;
-}
-
-.table td:last-child > .contextMenu {
-    margin-top: -1.5px;
-}
-
-.table td textarea {
-    width: 100%;
-    height: 30px;
-    resize: vertical;
-    padding: 0px 5px;
-    margin-right: 15px;
-    outline-color: #ccc;
-    border-radius: 10px;
-    vertical-align: middle;
-    border: 1px solid #ccc;
-}
-
-.table td button {
-    padding: 2px 20px;
-    outline-color: #ccc;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
 }
 .films .scroll__container__box{
     width: 490px;

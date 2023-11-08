@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\bundle.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\Localization\Identity\IdentityResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
