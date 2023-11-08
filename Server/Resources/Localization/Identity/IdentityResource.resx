@@ -136,7 +136,7 @@
     <value>Confirm your registration by following the link: &lt;a href={0}&gt;link&lt;/a&gt;</value>
   </data>
   <data name="RegistrationCompletionMessage" xml:space="preserve">
-    <value>To complete registration, check your email and follow the link provided in the letter</value>
+    <value>To complete registration, check your email and follow the link provided in the letter, then you will be able to log in. For your convenience, the data has already been inserted.</value>
   </data>
   <data name="SiteAdministration" xml:space="preserve">
     <value>Administration of site</value>
@@ -148,9 +148,11 @@
     <value>User "{0}" does not exist</value>
   </data>
   <data name="WrongLoginOrPassword" xml:space="preserve">
-    <value>Incorrect login and/or password</value>
+    <value>Incorrect login or password</value>
   </data>
   <data name="ThanksConfirmationEmail" xml:space="preserve">
-    <value>Thanks for the confirmation email.</value>
+    <value>Thanks for the&lt;br/&gt;
+confirmation&lt;br/&gt;
+email.</value>
   </data>
 </root>

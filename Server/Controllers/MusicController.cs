@@ -1,16 +1,19 @@
 ﻿using EyEServer.Constants;
 using EyEServer.Controllers.Common;
+using EyEServer.Data;
 using Memory.Helpers;
 using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers;
 
 [Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
-public class MusicController : Database<MusicModel>
+public class MusicController(ApplicationDbContext database, IHttpClientFactory _clientFactory)
+    : Database<MusicModel>(database)
 {
     [HttpPut("[action]")]
     public async Task<IActionResult> AddIfNotExistAsync(MusicModel model)

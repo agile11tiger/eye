@@ -79,6 +79,15 @@ namespace MemoryClient.Resources.Localization.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A code has been sent to your email.
+        /// </summary>
+        internal static string CodeSentToEmail {
+            get {
+                return ResourceManager.GetString("CodeSentToEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string Email {
@@ -120,6 +129,15 @@ namespace MemoryClient.Resources.Localization.Identity {
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We are all fed up with password restrictions, there are none here, like in other applications, it can even be empty, all at your own peril and risk :).
+        /// </summary>
+        internal static string NoRestrictionsForPassword {
+            get {
+                return ResourceManager.GetString("NoRestrictionsForPassword", resourceCulture);
             }
         }
         

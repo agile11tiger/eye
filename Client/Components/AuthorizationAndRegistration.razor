@@ -5,23 +5,23 @@
 
 <SemiTransparentWrapper @bind-isShowWrapper="@_isShowWrapper">
     <div class="identityForm">
-        <input type="radio" id="auth" name="tabs" checked>
+        <input type="radio" id="auth" name="tabs" checked @ref="_auth">
         <label class="tab" for="auth">@IdentityResource.Authorization</label>
         <input type="radio" id="reg" name="tabs">
         <label class="tab" for="reg">@IdentityResource.Registration</label>
         <input type="radio" id="forgotPassword" name="tabs">
-        <input type="radio" id="resetPassword" name="tabs">
+        <input type="radio" id="resetPassword" name="tabs" @ref="_resetPassword">
 
         <EditForm method="post" id="authForm" class="tabForm" Model="@_loginModel" OnValidSubmit="LoginToAccount">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <ServerSideValidator @ref="_serverSideAuthorizationValidator" />
+            <ServerSideValidator @ref=_serverSideAuthorizationValidator />
             <div class="boxInput">
-                <InputText class="input" type="text" placeholder=" " required @bind-Value="_loginModel.Email" />
+                <InputText class="input" type="text" placeholder=" " @bind-Value="_loginModel.Email" />
                 <label>@IdentityResource.Email</label>
             </div>
             <div class="boxInput">
-                <InputText class="input" type="password" placeholder=" " required @bind-Value="_loginModel.Password" />
+                <InputText class="input" type="password" placeholder=" " @bind-Value="_loginModel.Password" />
                 <label>@IdentityResource.Password</label>
             </div>
             <button type="submit">@IdentityResource.Login</button>
@@ -32,12 +32,12 @@
         <EditForm id="regForm" class="tabForm" Model="@_registerModel" OnValidSubmit="CreateAccount">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <ServerSideValidator @ref="_serverSideRegistrationValidator" />
+            <ServerSideValidator @ref="_serverSideRegistrationValidator" StartMessage="@IdentityResource.NoRestrictionsForPassword" />
 
             <InputText class="input" type="text" placeholder=@IdentityResource.PlaceholderNickname @bind-Value="_registerModel.Nickname" />
             <InputText class="input" type="email" placeholder=@IdentityResource.PlaceholderEmail @bind-Value="_registerModel.Email" />
             <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderPassword @bind-Value="_registerModel.Password" />
-            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_registerModel.PasswordConfirm" />
+            @* <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_registerModel.PasswordConfirm" /> *@
             <button type="submit">@IdentityResource.Register</button>
 
            @*  <div class="boxConditions" style="display: none;">
@@ -60,11 +60,11 @@
         <EditForm id="resetPasswordForm" class="tabForm" Model="@_resetPasswordModel" OnValidSubmit="ResetPassword">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <ServerSideValidator @ref="_serverSideResetPasswordValidator" />
+            <ServerSideValidator @ref="_serverSideResetPasswordValidator" StartMessage="@IdentityResource.CodeSentToEmail" />
 
             <InputText class="input" type="email" placeholder=@IdentityResource.PlaceholderEmail @bind-Value="_resetPasswordModel.Email" />
             <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderPassword @bind-Value="_resetPasswordModel.Password" />
-            <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_resetPasswordModel.PasswordConfirm" />
+            @* <InputText class="input" type="password" placeholder=@IdentityResource.PlaceholderRepeatPassword @bind-Value="_resetPasswordModel.PasswordConfirm" /> *@
             <InputText class="input" type="text" placeholder="@IdentityResource.PlaceholderCode" @bind-Value="_resetPasswordModel.Code" />
             <button type="submit">@IdentityResource.ChangePassword</button>
         </EditForm>

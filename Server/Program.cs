@@ -1,35 +1,33 @@
 ﻿using EyEServer.Constants;
 using EyEServer.Controllers;
 using EyEServer.Data;
+using EyEServer.Middlewares;
+using EyEServer.Services;
 using EyEServer.Services.Email;
 using EyEServer.Services.Protector;
-using EyEServer.Services;
 using EyEServer.Services.RoleInitializer;
 using Memory.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using EyEServer.Middlewares;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
-using static System.Formats.Asn1.AsnWriter;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.FileProviders;
 
-//[assembly: ApiController]
+[assembly: ApiController]
 namespace EyEServer;
 
 public class Program
@@ -62,7 +60,7 @@ public class Program
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
             options.DefaultRequestCulture = new RequestCulture("en-US");
-            options.SupportedUICultures = options.SupportedCultures =  new[]
+            options.SupportedUICultures = options.SupportedCultures = new[]
             {
                 new CultureInfo("ru-RU"),
                 new CultureInfo("en-US"),
@@ -91,9 +89,9 @@ public class Program
             });
 
         builder.Services.AddSingleton<IPasswordHasher<UserModel>, CustomPasswordHasher>();//should be above AddDefaultIdentity
+        builder.Services.AddTransient<IPasswordValidator<UserModel>, CustomPasswordValidator>();
         builder.Services.AddDefaultIdentity<UserModel>(options =>
         {
-            options.Password.RequireNonAlphanumeric = false;
             options.SignIn.RequireConfirmedEmail = true;
             options.SignIn.RequireConfirmedAccount = true;
             options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
@@ -165,8 +163,7 @@ public class Program
         //    .AddAuthentication()
         //    .AddIdentityServerJwt();
         #endregion
-        //builder.Services.AddControllersWithViews();
-        builder.Services.AddRazorPages();
+        builder.Services.AddControllersWithViews();
         builder.Services
             .AddSingleton<EmailService>()
             .AddSingleton<RoleInitializerService>()
@@ -224,8 +221,7 @@ public class Program
         //app.UseIdentityServer();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapRazorPages();
-        //app.MapControllers();
+        app.MapControllers();
         //app.MapFallbackToFile("index.html");
     }
 }

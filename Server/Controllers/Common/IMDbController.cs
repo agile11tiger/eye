@@ -1,14 +1,17 @@
 ﻿using EyEServer.Constants;
+using EyEServer.Data;
 using Memory.Enums;
 using Memory.Helpers;
 using Memory.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers.Common;
 
-public abstract class IMDbController<T> : AdminLinksController<T> where T : IMDbModel, new()
+public abstract class IMDbController<T>(ApplicationDbContext database, IHttpClientFactory _clientFactory)
+    : AdminLinksController<T>(database) where T : IMDbModel, new()
 {
     [HttpPut("[action]")]
     public async Task<IActionResult> AddIfNotExistAsync(T model)

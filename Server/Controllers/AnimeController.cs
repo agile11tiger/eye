@@ -1,17 +1,20 @@
 ﻿using EyEServer.Constants;
 using EyEServer.Controllers.Common;
+using EyEServer.Data;
 using Memory.Helpers;
 using Memory.Models.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers;
 
 [Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
-public class AnimeController : Database<AnimeModel>
+public class AnimeController(ApplicationDbContext database, IHttpClientFactory _clientFactory)
+    : Database<AnimeModel>(database)
 {
     [HttpPut("[action]")]
     public async Task<IActionResult> AddIfNotExistAsync(AnimeModel model)

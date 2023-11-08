@@ -1,5 +1,5 @@
-﻿using MemoryClient.Enums;
-using Memory.Models.Common;
+﻿using Memory.Models.Common;
+using MemoryClient.Enums;
 using System.Collections.Generic;
 namespace MemoryClient.Pages.Common;
 

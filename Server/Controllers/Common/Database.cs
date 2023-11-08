@@ -2,23 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using System.Net.Http;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers.Common;
 
 public abstract class Database<T> : Controller where T : class, IDatabaseItem, new()
 {
-    protected Database()
+    public Database(ApplicationDbContext database)
     {
-        _database = Program.ServiceProvider.GetService<ApplicationDbContext>();
-        _clientFactory = Program.ServiceProvider.GetService<IHttpClientFactory>();
+        _database = database;
     }
 
     protected readonly ApplicationDbContext _database;
-    protected readonly IHttpClientFactory _clientFactory;
 
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
     [AllowAnonymous]

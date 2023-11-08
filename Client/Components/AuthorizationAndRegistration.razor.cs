@@ -1,10 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using MemoryClient.Extensions;
-using MemoryClient.Services;
 using Identity.Models;
 using Identity.ViewModels;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.Extensions.Localization;
+using MemoryClient.Extensions;
+using MemoryClient.Services;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 namespace MemoryClient.Components;
@@ -12,6 +10,8 @@ namespace MemoryClient.Components;
 public partial class AuthorizationAndRegistration
 {
     private bool _isShowWrapper;
+    private ElementReference _auth;
+    private ElementReference _resetPassword;
     private LoginViewModel _loginModel = new();
     private RegisterViewModel _registerModel = new();
     private ResetPasswordViewModel _resetPasswordModel = new();
@@ -20,6 +20,7 @@ public partial class AuthorizationAndRegistration
     private ServerSideValidator _serverSideResetPasswordValidator = new();
     private ServerSideValidator _serverSideAuthorizationValidator = new();
     private ServerSideValidator _serverSideForgotPasswordValidator = new();
+    [Parameter] public Func<Task> AuthorizationCompleteAsync { get; set; }
     [Inject] public IJSRuntime JS { get; set; }
     [Inject] public NavigationManager Navigation { get; set; }
     [Inject] public ILocalStorageService LocalStorage { get; set; }
@@ -32,15 +33,15 @@ public partial class AuthorizationAndRegistration
 
         if (response.IsSuccessStatusCode)
         {
-            _loginModel = new LoginViewModel();
-            ToggleVisibilityWrapper();
             var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
             var userInfo = new UserInfo() { Nickname = loginResponse.Nickname, Token = loginResponse.Token, RefreshToken = loginResponse.RefreshToken };
-            await LocalStorage.SetItemAsync(userInfo);
-            AuthenticationStateProvider.NotifyUserAuthentication(userInfo.Token);
+            await AuthenticationStateProvider.NotifyUserAuthenticationAsync(userInfo);
+            ToggleVisibilityWrapper();
+            _loginModel = new LoginViewModel();
+            await AuthorizationCompleteAsync();
         }
-
-        await _serverSideAuthorizationValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
+        else
+            await _serverSideAuthorizationValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
     }
 
     private async Task CreateAccount()
@@ -49,11 +50,15 @@ public partial class AuthorizationAndRegistration
 
         if (response.IsSuccessStatusCode)
         {
+            _loginModel.Email = _registerModel.Email;
+            _loginModel.Password = _registerModel.Password;
+            await _serverSideAuthorizationValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
+            await _auth.Click(JS);
             _registerModel = new RegisterViewModel();
             StateHasChanged();
         }
-
-        await _serverSideRegistrationValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
+        else
+            await _serverSideRegistrationValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
     }
 
     private async Task ForgotPassword()
@@ -64,10 +69,11 @@ public partial class AuthorizationAndRegistration
         {
             _resetPasswordModel.Email = _forgotPasswordModel.Email;
             _forgotPasswordModel = new ForgotPasswordViewModel();
+            await _resetPassword.Click(JS);
             StateHasChanged();
         }
-
-        await _serverSideForgotPasswordValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
+        else
+            await _serverSideForgotPasswordValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
     }
 
     private async Task ResetPassword()
@@ -79,8 +85,8 @@ public partial class AuthorizationAndRegistration
             _resetPasswordModel = new ResetPasswordViewModel();
             ToggleVisibilityWrapper();
         }
-
-        await _serverSideResetPasswordValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
+        else
+            await _serverSideResetPasswordValidator.DisplayMessagesAsync<ResponseModel>(response.Content);
     }
 
     private void ToggleVisibilityWrapper()

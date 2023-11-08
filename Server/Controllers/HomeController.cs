@@ -9,7 +9,7 @@ public class HomeController : Controller
     public HomeController()
     {
     }
-
+    //[Route("~/", Name = "default")]
     public IActionResult Index()
     {
         return View();

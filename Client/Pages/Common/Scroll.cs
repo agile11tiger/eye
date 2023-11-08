@@ -1,8 +1,8 @@
-﻿using MemoryClient.Components;
-using MemoryClient.Services;
-using Identity.Models;
+﻿using Identity.Models;
 using Memory.Extensions;
 using Memory.ViewModels;
+using MemoryClient.Components;
+using MemoryClient.Services;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;

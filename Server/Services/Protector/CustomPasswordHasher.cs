@@ -17,8 +17,8 @@ public class CustomPasswordHasher : IPasswordHasher<UserModel>
 
     public PasswordVerificationResult VerifyHashedPassword(UserModel user, string hashedPassword, string providedPassword)
     {
-        return hashedPassword == Protect(providedPassword) 
-            ? PasswordVerificationResult.Success 
+        return hashedPassword == Protect(providedPassword)
+            ? PasswordVerificationResult.Success
             : PasswordVerificationResult.Failed;
     }
 

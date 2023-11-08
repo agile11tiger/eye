@@ -1,4 +1,5 @@
-﻿using Memory.Helpers;
+﻿using EyEServer.Data;
+using Memory.Helpers;
 using Memory.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace EyEServer.Controllers.Common;
 
-public abstract class AdminLinksController<T> : Database<T> where T : LinkModel, new()
+public abstract class AdminLinksController<T>(ApplicationDbContext database)
+    : Database<T>(database) where T : LinkModel, new()
 {
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client)]
     [AllowAnonymous]

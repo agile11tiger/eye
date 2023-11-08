@@ -139,7 +139,7 @@
     <value>Пароль должен содержать {2}-{1} символов</value>
   </data>
   <data name="PasswordOneUppercaseAndOneLowercaseAndOneNumeric" xml:space="preserve">
-    <value>Пароль должен содержать минимум одну: 
+    <value>Пароль должен содержать минимум одну(а-я): 
 1) прописную букву
 2) строчную букву
 3) цифру</value>

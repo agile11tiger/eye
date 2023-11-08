@@ -136,7 +136,7 @@
     <value>Подтвердите регистрацию, перейдя по ссылке: &lt;a href={0}&gt;ссылка&lt;/a&gt;</value>
   </data>
   <data name="RegistrationCompletionMessage" xml:space="preserve">
-    <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме</value>
+    <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке указанной в письме, затем  вы сможете войти. Для вашего удобства данные уже вставлены.</value>
   </data>
   <data name="SiteAdministration" xml:space="preserve">
     <value>Администрация сайта</value>
@@ -148,7 +148,7 @@
     <value>Пользователя {0} не существует</value>
   </data>
   <data name="WrongLoginOrPassword" xml:space="preserve">
-    <value>Неправильный логин и(или) пароль</value>
+    <value>Неправильный логин или пароль</value>
   </data>
   <data name="ThanksConfirmationEmail" xml:space="preserve">
     <value>Спасибо за подтверждение почты.</value>

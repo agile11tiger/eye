@@ -168,4 +168,10 @@
   <data name="Exit" xml:space="preserve">
     <value>Выход</value>
   </data>
+  <data name="NoRestrictionsForPassword" xml:space="preserve">
+    <value>Все мы сыты ограничениями на пароль, тут их нет, как в остальных приложениях, он даже может быть пустым, все на ваш страх и риск:)</value>
+  </data>
+  <data name="CodeSentToEmail" xml:space="preserve">
+    <value>На почту был отправлен код</value>
+  </data>
 </root>

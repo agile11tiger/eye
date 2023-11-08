@@ -1,11 +1,8 @@
-﻿using Azure;
-using EyEServer.Services;
+﻿using EyEServer.Services;
 using EyEServer.Services.Email;
-using EyEServer.Services.Protector;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,11 +36,10 @@ public class AccountController(
 
         var user = new UserModel { Email = model.Email, UserName = model.Nickname };
         var createResult = await _userManager.CreateAsync(user, model.Password);
-        var addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.User.ToString());
 
-        if (createResult.Succeeded && addToRoleResult.Succeeded)
+        if (createResult.Succeeded && (await _userManager.AddToRoleAsync(user, Roles.User.ToString())).Succeeded)
         {
-            await SendEmailAsync(user, response, model.RedirectUri);
+            await SendEmailAsync(user, response);
             return Ok(response);
         }
 
@@ -51,10 +47,10 @@ public class AccountController(
         return BadRequest(response);
     }
 
+
     [HttpGet]
-    public async Task<IActionResult> ConfirmEmail([FromQuery]ConfirmEmailViewModel confirmEmailModel)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailViewModel confirmEmailModel)
     {
-        return View();
         var response = new ResponseModel();
         var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
 
@@ -87,7 +83,7 @@ public class AccountController(
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            await SendEmailAsync(user, response, model.RedirectUri);
+            await SendEmailAsync(user, response);
             return BadRequest(response);
         }
 
@@ -122,7 +118,7 @@ public class AccountController(
 
         if (user == null)
         {
-            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ")};
+            response.Messages = new List<string> { IdentityResource.UserNotExists.Format(" ") };
             return BadRequest(response);
         }
 
@@ -157,7 +153,7 @@ public class AccountController(
         var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
 
         if (result.Succeeded)
-            return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password, RedirectUri = model.RedirectUri });
+            return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password });
 
         response.Messages = result.GetMessages();
         return BadRequest(response);
@@ -193,7 +189,7 @@ public class AccountController(
         return Ok();
     }
 
-    private async Task SendEmailAsync(UserModel userModel, ResponseModel response, string redirectUri)
+    private async Task SendEmailAsync(UserModel userModel, ResponseModel response)
     {
         var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
         var callbackUrl = Url.Action(

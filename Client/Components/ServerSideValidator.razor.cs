@@ -1,7 +1,5 @@
 ﻿using Identity.Models;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 namespace MemoryClient.Components;
@@ -12,6 +10,7 @@ namespace MemoryClient.Components;
 public partial class ServerSideValidator
 {
     private ValidationMessageStore _messageStore;
+    [Parameter] public string StartMessage { get; set; }
     [CascadingParameter] public EditContext CurrentEditContext { get; set; }
 
     protected override void OnInitialized()
@@ -28,7 +27,15 @@ public partial class ServerSideValidator
         CurrentEditContext.OnFieldChanged += (s, e) => _messageStore.Clear(e.FieldIdentifier);
     }
 
-    public async Task DisplayMessagesAsync<T>(HttpContent content) where T: ResponseModel
+    protected override void OnParametersSet()
+    {
+        if (StartMessage != null)
+            _messageStore.Add(CurrentEditContext.Field(string.Empty), StartMessage);
+
+        base.OnParametersSet();
+    }
+
+    public async Task DisplayMessagesAsync<T>(HttpContent content) where T : ResponseModel
     {
         try
         {

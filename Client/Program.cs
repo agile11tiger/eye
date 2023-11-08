@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
+using MudBlazor.Services;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using MudBlazor.Services;
 namespace MemoryClient;
 
 public class Program
@@ -31,7 +30,7 @@ public class Program
         //    // Supply HttpClient instances that include access tokens when making requests to the server project
         //    .AddHttpMessageHandler<BaseAuthorizationMessageHandler>();
         services
-            .AddScoped(sp =>
+            .AddSingleton(sp =>
             {
                 var client = new ServerHttpClient(
                     new DefaultBrowserOptionsMessageHandler(
@@ -45,7 +44,7 @@ public class Program
                 client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
                 return client;
             })
-            .AddScoped(sp =>
+            .AddSingleton(sp =>
             {
                 var client = new PublicHttpClient(
                     new DefaultBrowserOptionsMessageHandler(
@@ -61,14 +60,14 @@ public class Program
         //            options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/MemoryClient";
         //        });
 
-        builder.Services.AddScoped<ServerAuthenticationStateProvider>();
-        builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
         builder.Services
             //https://github.com/Blazored/LocalStorage
             .AddMudServices()
-            .AddScoped<UserChecker>()
-            .AddBlazoredLocalStorage()
+            .AddSingleton<UserChecker>()
+            .AddBlazoredLocalStorageAsSingleton()
             .AddSingleton(JsonHelper.SerializeOptions);
+        builder.Services.AddSingleton<ServerAuthenticationStateProvider>();
+        builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
         var host = builder.Build();
         await host.SetCultureFromStorageAsync();
         await host.RunAsync();

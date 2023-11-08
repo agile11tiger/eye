@@ -1,12 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MemoryClient.Extensions;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Resources;
 namespace MemoryClient.Components;
 
 /// <summary>

@@ -1,10 +1,10 @@
 ﻿<nav class="userMenu">
     <AuthorizeView>
         <Authorized>
-            <a @onclick="Logout" title="Выход" >@_nickName</a>
+            <a @onclick="Logout" title="@IdentityResource.Exit">@_nickname</a>
         </Authorized>
         <NotAuthorized>
-            <AuthorizationAndRegistration />
+            <AuthorizationAndRegistration AuthorizationCompleteAsync="AuthorizationCompleteAsync" />
         </NotAuthorized>
     </AuthorizeView>
 </nav>

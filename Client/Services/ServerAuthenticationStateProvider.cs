@@ -24,16 +24,15 @@ public class ServerAuthenticationStateProvider(ServerHttpClient _serverHttpClien
         return new AuthenticationState(new ClaimsPrincipal(claimsIdentity ?? new ClaimsIdentity()));
     }
 
-    public void NotifyUserAuthentication(string token)
+    public async Task NotifyUserAuthenticationAsync(UserInfo userInfo)
     {
-        var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-        var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims, "jwtAuth"));
-        var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-        NotifyAuthenticationStateChanged(authState);
+        await _localStorage.SetItemAsync(userInfo);
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
-    public void NotifyUserLogout()
+    public async Task NotifyUserLogoutAsync()
     {
+        await _localStorage.RemoveItemAsync(nameof(UserInfo));
         _serverHttpClient.DefaultRequestHeaders.Authorization = null;
         var authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
         NotifyAuthenticationStateChanged(authState);

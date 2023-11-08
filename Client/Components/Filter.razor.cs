@@ -1,6 +1,6 @@
-﻿using MemoryClient.Enums;
-using Memory.Models.Common;
+﻿using Memory.Models.Common;
 using Memory.Models.Review;
+using MemoryClient.Enums;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;

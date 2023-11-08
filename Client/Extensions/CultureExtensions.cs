@@ -2,10 +2,8 @@
 using MemoryClient.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 namespace MemoryClient.Extensions;
 
 public static class CultureExtensions
@@ -23,7 +21,7 @@ public static class CultureExtensions
             //default browser set header example "Accept-Language: en-US" and this, i think, current CultureInfo.CurrentCulture.Name 
             var currentLanguageData = LanguageSelector.SupportedLanguages.FirstOrDefault(lang => lang.CultureInfo.Name == CultureInfo.CurrentCulture.Name);
             var currentCultureInfo = currentLanguageData != null ? currentLanguageData.CultureInfo : new CultureInfo("en-US");
-            await localStorage.SetCultureAsync(currentCultureInfo); 
+            await localStorage.SetCultureAsync(currentCultureInfo);
             await localStorage.SetItemAsync(IS_FIRST_RUN, false);
         }
         else

@@ -1,4 +1,5 @@
 ﻿using EyEServer.Controllers.Common;
+using EyEServer.Data;
 using Memory.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace EyEServer.Controllers;
 
 [Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
-public class TextsController : Database<TextModel>
+public class TextsController(ApplicationDbContext database) : Database<TextModel>(database)
 {
     public override DbSet<TextModel> GetItems()
     {

@@ -168,4 +168,10 @@
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="NoRestrictionsForPassword" xml:space="preserve">
+    <value>We are all fed up with password restrictions, there are none here, like in other applications, it can even be empty, all at your own peril and risk :)</value>
+  </data>
+  <data name="CodeSentToEmail" xml:space="preserve">
+    <value>A code has been sent to your email</value>
+  </data>
 </root>

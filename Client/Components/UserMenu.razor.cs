@@ -1,16 +1,12 @@
 ﻿using Blazored.LocalStorage;
 using MemoryClient.Services;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Net.Http;
-using System.Text;
 namespace MemoryClient.Components;
 
 public partial class UserMenu
 {
-    private string _nickName;
+    private string _nickname;
     [Inject] public NavigationManager Navigation { get; set; }
     [Inject] public ILocalStorageService LocalStorage { get; set; }
     [Inject] public ServerHttpClient ServerHttpClient { get; set; }
@@ -19,8 +15,15 @@ public partial class UserMenu
     protected async override Task OnInitializedAsync()
     {
         var userInfo = await LocalStorage.GetItemAsync<UserInfo>(nameof(UserInfo));
-        _nickName = userInfo?.Nickname;
+        _nickname = userInfo?.Nickname;
         await base.OnInitializedAsync();
+    }
+
+    private async Task AuthorizationCompleteAsync()
+    {
+        var userInfo = await LocalStorage.GetItemAsync<UserInfo>(nameof(UserInfo));
+        _nickname = userInfo?.Nickname;
+        StateHasChanged();
     }
 
     private async Task Logout(MouseEventArgs args)
@@ -29,10 +32,6 @@ public partial class UserMenu
         var response = await ServerHttpClient.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
-        {
-            await LocalStorage.RemoveItemAsync(nameof(UserInfo));
-            AuthenticationStateProvider.NotifyUserLogout();
-        }
+            await AuthenticationStateProvider.NotifyUserLogoutAsync();
     }
-
 }

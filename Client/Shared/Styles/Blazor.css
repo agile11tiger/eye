@@ -6,6 +6,10 @@
     border-bottom: 1px solid red;
 }
 
+.validation-errors {
+    margin-bottom: 5px;
+}
+
 .validation-message {
     color: red;
     white-space: pre-line;
