@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "EyE",
+  "short_name": "EyE",
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#03173d",
+  "background_color": "#ffffff",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "eye-32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "eye-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+﻿@using MemoryLib.Helpers
+@inherits Links
+
+<div class="videoLinks scroll">
+    <OneLineAdder Header=@($"<a href='{YoutubeHelper.BASE_PATH}' target='_blank'>{Header}</a>")
+                  Model="ItemAdderViewModel"
+                  Placeholder="Введите ссылку Youtube"
+                  Create="AddItemIfNotExistAsync" />
+
+    <div class="scroll__panel">
+        <Sorting Model="SortingModel" Data="TempItems" UpdateData="UpdateTempItems" SortingParameters="SortingParameters" />
+        <div class="scroll__panel__yLine"></div>
+        <Filter Model="FilterModel" Data="TempItems" UpdateData="UpdateTempItems" FilterParameters="FilterParameters" />
+        <footer>
+            <div class="scroll__panel__xLine"></div>
+            <button @onclick="Reset">Сбросить</button>
+        </footer>
+    </div>
+
+    <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+
+    <div class="scroll__container">
+        @if (TempItems != null && PaginationModel != null)
+    {
+        var itemsSkipCounter = 1;
+        var itemNumber = PaginationModel.PageFirstElementNumber;
+
+        foreach (var item in TempItems)
+        {
+            //пропускает элементы до нужного элемента
+            if (PaginationModel.PageFirstElementNumber > itemsSkipCounter)
+            {
+                itemsSkipCounter++;
+                continue;
+            }
+            if (itemNumber > PaginationModel.PageLastElementNumber)
+                break;
+
+            <div class="videoLinks__videoBox">
+                    <iframe frameborder="0"
+                            allowfullscreen="true"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            srcdoc=@($"<link rel='stylesheet' href='css/youtube.css?v1'>" +
+                                 $"<a href=//www.youtube.com/embed/{YoutubeHelper.GetId(item.Link)}?disablekb=1&autoplay=1>" +
+                                 $"<img src={item.ImageSource}>" +
+                                 $"<span class='playerStartButton'></span></a>")>
+                    </iframe>
+
+                    <ContextMenu Item="item"
+                                 ItemId="item.Id"
+                                 ItemNumber="itemNumber"
+                                 ShowItemEditor="ShowItemEditor"
+                                 DeleteItem="DeleteItemAsync" />
+                </div>
+
+            itemNumber++;
+        }
+    }
+    </div>
+
+    <Pagination Model="PaginationModel" UpdateState="StateHasChanged" />
+
+    <SemiTransparentWrapper @bind-isShowWrapper="@IsShowItemEditorWrapper">
+        <EditForm class="scroll__itemEditor" Model="ItemEditorModel" OnValidSubmit="TryUpdateItemAsync">
+            <h4>Редактировать</h4>
+            <p>
+                <label for="scroll__itemEditor__link">Название: </label>
+                <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Name">
+            </p>
+            <p>
+                <label for="scroll__itemEditor__link">Ссылка: </label>
+                <input type="text" id="scroll__itemEditor__link" @bind-value="ItemEditorModel.Link">
+            </p>
+            <p>
+                <input type="submit" value="Сохранить">
+                <input type="reset" value="Отмена" @onclick:preventDefault @onclick="() => IsShowItemEditorWrapper = false">
+            </p>
+        </EditForm>
+    </SemiTransparentWrapper>
+</div>

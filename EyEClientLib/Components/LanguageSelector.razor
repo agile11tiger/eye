@@ -1,0 +1,7 @@
+﻿<MudMenu Icon="@CurrentLanguageData.ImageSource" Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
+    @for (var i = 0; i < SupportedLanguages.Count; i++)
+{
+    var languageData = SupportedLanguages[i];
+    <MudMenuItem Icon="@languageData.ImageSource" OnClick="@(() => CurrentLanguageData = languageData)">@languageData.Name</MudMenuItem>
+}
+</MudMenu>

@@ -1,0 +1,26 @@
+[
+  {
+    "outputFileName": "Resources/Css/bundle.css",
+    "inputFiles": [
+      "Resources/Css/**/**/**/**/**/*.1.css",
+      "Components/**/**/**/**/**/*.1.css",
+      "Resources/Css/**/**/**/**/**/*.css",
+      "Components/**/**/**/**/**/*.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "Resources/Js/bundle.js",
+    "inputFiles": [
+      "Resources/Js/**/**/**/**/**/*.js",
+      "Components/**/**/**/**/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]

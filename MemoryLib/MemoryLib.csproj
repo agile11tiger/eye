@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Identity\**" />
+    <Compile Remove="Resources\**" />
+    <Compile Remove="ViewModels\Identity\**" />
+    <EmbeddedResource Remove="Models\Identity\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <EmbeddedResource Remove="ViewModels\Identity\**" />
+    <None Remove="Models\Identity\**" />
+    <None Remove="Resources\**" />
+    <None Remove="ViewModels\Identity\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Enums\Roles.cs" />
+    <Compile Remove="Models\Common\Interfaces\IDatabaseItem.cs" />
+    <Compile Remove="Models\Common\ResponseModel.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityLib\IdentityLib.csproj" />
+  </ItemGroup>
+
+</Project>

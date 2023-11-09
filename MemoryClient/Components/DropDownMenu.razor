@@ -1,0 +1,214 @@
+﻿@using MemoryLib.Enums 
+
+<nav class="dropDownMenu">
+    <input type="checkbox" id="pageMenu" class="dropDownMenu__toggle">
+    <label for="pageMenu" class="dropDownMenu__btn"><i class="fa fa-bars"></i>Меню</label>
+    <ul class="dropDownMenu_box">
+        <li><a><i class="fa fa-home"></i>Пусто</a></li>
+        <li><a><i class="fa fa-home"></i>Пусто</a></li>
+        <li>
+            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu3">
+            <a><i class="fa fa-home"></i>Пусто</a>
+            <label for="dropDownMenu__submenu3" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+            <ul>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu3-1">
+                    <a>Пусто</a>
+                    <label for="dropDownMenu__submenu3-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a>Пусто</a></li>
+                        <li><a>Пусто</a></li>
+                        <li><a>Пусто</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu3-2">
+                    <a>Пусто</a>
+                    <label for="dropDownMenu__submenu3-2" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a>Пусто</a></li>
+                        <li><a>Пусто</a></li>
+                        <li>
+                            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu3-2-3">
+                            <a>Пусто</a>
+                            <label for="dropDownMenu__submenu3-2-3" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                            <ul>
+                                <li><a>Пусто</a></li>
+                                <li><a>Пусто</a></li>
+                                <li><a>Пусто</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a>Пусто</a></li>
+                <li><a>Пусто</a></li>
+                <li><a>Пусто</a></li>
+            </ul>
+        </li>
+        <li>
+            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4">
+            <a><i class="fa fa-cogs"></i>Разработка</a>
+            <label for="dropDownMenu__submenu4" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+            <ul>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4-1">
+                    <a>Backend</a>
+                    <label for="dropDownMenu__submenu4-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkTable/{FolderNames.BackendUsefulTools}")>Полезные инструменты</a></li>
+                        <li>
+                            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4-1-1">
+                            <a>C#</a>
+                            <label for="dropDownMenu__submenu4-1-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                            <ul>
+                                <li><a href=@($"LinkTable/{FolderNames.CSharpBase}")>Основа</a></li>
+                                <li><a href=@($"LinkTable/{FolderNames.CSharpArticles}")>Интересные статьи</a></li>
+                            </ul>
+                        </li>
+                        <li><a href=@($"LinkTable/{FolderNames.SQLBase}")>SQL</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.BlazorBase}")>Blazor</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.AspNetCoreBase}")>ASP.NET Core</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.TestingBase}")>Тестирование</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.VersionControlSystemBase}")>VCS</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4-2">
+                    <a>Frontend</a>
+                    <label for="dropDownMenu__submenu4-2" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkTable/{FolderNames.FrontendUsefulTools}")>Полезные инструменты</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.FinishedElements}")>Готовые элементы</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.HtmlBase}")>HTML</a></li>
+                        <li>
+                            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4-2-1">
+                            <a>CSS</a>
+                            <label for="dropDownMenu__submenu4-2-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                            <ul>
+                                <li><a href=@($"LinkTable/{FolderNames.CssBase}")>Основа</a></li>
+                                <li><a href=@($"LinkTable/{FolderNames.CssElementStyles}")>Стили элементов</a></li>
+                            </ul>
+                        </li>
+                        <li><a href=@($"LinkTable/{FolderNames.TypeScriptBase}")>TypeScript</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.JavaScriptBase}")>JavaScript</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu4-3">
+                    <a>Mobile</a>
+                    <label for="dropDownMenu__submenu4-3" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkTable/{FolderNames.MobileUsefulTools}")>Полезные инструменты</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.XamarinBase}")>Xamarin</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5">
+            <a><i class="fa fa-thumbs-o-up"></i>Развлечения</a>
+            <label for="dropDownMenu__submenu5" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+            <ul>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-30">
+                    <a>Заметки</a>
+                    <label for="dropDownMenu__submenu5-30" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.Schedule}")>Расписание</a></li>
+                        <li><a href=@($"TextTable/{FolderNames.TextNotes}")>Текстовые</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.YoutubeNotes}")>Ютуба</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.LinkNotes}")>Ссылочные</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-1">
+                    <a>Музыка</a>
+                    <label for="dropDownMenu__submenu5-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.MusicSites}")>Сайты для прослушивания</a></li>
+                        <li><a href="@($"Music/{FolderNames.RussianMusicListened}")">Русская, которую я слушал</a> </li>
+                        <li><a href="@($"Music/{FolderNames.ForeignMusicListened}")">Зарубежная, которую я слушал</a> </li>
+                        <li><a href="@($"Music/{FolderNames.MusicWillListen}")">Нужно послушать</a> </li>
+                        <li><a href=@($"LinkTable/{FolderNames.MusicLinks}")>Ссылки</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-2">
+                    <a>Аниме</a>
+                    <label for="dropDownMenu__submenu5-2" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.AnimeSites}")>Сайты для просмотра</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.AnimeClips}")>Аниме клипы</a></li>
+                        <li><a href=@($"Anime/{FolderNames.AnimeWatched}")>Которые смотрел</a></li>
+                        <li><a href=@($"Anime/{FolderNames.AnimeWillWatch}")>Нужно посмотреть</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-3">
+                    <a>Фильмы</a>
+                    <label for="dropDownMenu__submenu5-3" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.FilmSites}")>Сайты для просмотра</a></li>
+                        <li><a href=@($"Films/{FolderNames.FilmsWatched}")>Которые смотрел</a></li>
+                        <li><a href=@($"Films/{FolderNames.CartoonFilmsWatched}")>Мультфильмы, которые смотрел</a></li>
+                        <li><a href=@($"Films/{FolderNames.FilmsWillWatch}")>Нужно посмотреть</a></li>
+                        <li>
+                            <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-3-1">
+                            <a>Ломающие психику</a>
+                            <label for="dropDownMenu__submenu5-3-1" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                            <ul>
+                                <li><a href=@($"Films/{FolderNames.FilmsBreakingPsycheWatched}")>Которые смотрел</a></li>
+                                <li><a href=@($"Films/{FolderNames.FilmsBreakingPsycheWillWatch}")>Нужно посмотреть</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-4">
+                    <a>Сериалы</a>
+                    <label for="dropDownMenu__submenu5-4" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.SerialSites}")>Сайты для просмотра</a></li>
+                        <li><a href=@($"Serials/{FolderNames.SerialsWatched}")>Которые смотрел</a></li>
+                        <li><a href=@($"Serials/{FolderNames.CartoonSeriesWatched}")>Мультсериалы, которые смотрел</a></li>
+                        <li><a href=@($"Serials/{FolderNames.CartoonSeriesMyChildhood}")>Мультсериалы моего детства</a></li>
+                        <li><a href=@($"Serials/{FolderNames.SerialsWillWatch}")>Нужно посмотреть</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-5">
+                    <a>YouTube</a>
+                    <label for="dropDownMenu__submenu5-5" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"VideoLinks/{FolderNames.Threads}")>Ниточки</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.BieutifulVideos}")>Красивые видео</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.BieutifulSongs}")>Красивые песни</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.NightcoreMusic}")>Nightcore</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.UnusualMusic}")>Необычная музыка</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.RelaxingMusic}")>Расслабляющая музыка</a></li>
+                        <li><a href=@($"VideoLinks/{FolderNames.ConcentratingMusic}")>Концентрирующая музыка</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-6">
+                    <a>Игры</a>
+                    <label for="dropDownMenu__submenu5-6" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"Games/{FolderNames.GamesPlayed}")>В которые играл</a></li>
+                        <li><a href=@($"LinkTable/{FolderNames.GameLinks}")>Ссылки</a></li>
+                    </ul>
+                </li>
+                <li><a href=@($"LinkTable/{FolderNames.Freebie}")>Халява</a></li>
+                <li>
+                    <input type="checkbox" class="dropDownMenu__submenuToggle" id="dropDownMenu__submenu5-7">
+                    <a>Рецепты</a>
+                    <label for="dropDownMenu__submenu5-7" class="dropDownMenu__submenuBtn"><i class="fa"></i></label>
+                    <ul>
+                        <li><a href=@($"LinkCatalog/{FolderNames.FoodRecipes}")>Еды</a></li>
+                        <li><a href=@($"LinkCatalog/{FolderNames.DrinkRecipes}")>Напитков</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
