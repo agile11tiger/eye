@@ -33,13 +33,25 @@ public class Scroll<T> : ComponentBase where T : class, IDatabaseItem, new()
     public virtual async Task InitializeAsync(string pageURI, bool needUpdateTempItems = true)
     {
         PageURI = pageURI;
+        StateHasChanged();
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
         //Получаем список с базы данных ОДИН РАЗ
         //DatabaseItems = authState.User.Identity.IsAuthenticated
         //    ? await ServerHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI)
         //    : await PublicHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
-        DatabaseItems = await ServerHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
+        try
+        {
+            DatabaseItems = await ServerHttpClient.GetFromJsonAsync<LinkedList<T>>(PageURI);
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode != System.Net.HttpStatusCode.ServiceUnavailable)
+                throw;
+
+            DatabaseItems = new LinkedList<T>();
+        }
+
         if (needUpdateTempItems)
             UpdateTempItems();
     }

@@ -174,4 +174,7 @@
   <data name="CodeSentToEmail" xml:space="preserve">
     <value>A code has been sent to your email</value>
   </data>
+  <data name="CheckInternetConnection" xml:space="preserve">
+    <value>The action cannot be performed, check your internet connection.</value>
+  </data>
 </root>

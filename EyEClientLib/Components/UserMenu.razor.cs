@@ -27,10 +27,8 @@ public partial class UserMenu
 
     private async Task Logout(MouseEventArgs args)
     {
+        await AuthenticationStateProvider.NotifyUserLogoutAsync();
         var request = new HttpRequestMessage(HttpMethod.Post, "api/account/logout");
         var response = await ServerHttpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-            await AuthenticationStateProvider.NotifyUserLogoutAsync();
     }
 }

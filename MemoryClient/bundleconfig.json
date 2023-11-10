@@ -2,19 +2,29 @@
 //(https://github.com/madskristensen/BundlerMinifier)
 [
   {
-    "outputFileName": "wwwroot/css/bundle.css",
+    "outputFileName": "wwwroot/bundle.min.css",
     "inputFiles": [
-      "Shared/**/**/**/**/**/*.1.css",
-      "Components/**/**/**/**/**/*.1.css",
       "Pages/**/**/**/**/**/*.1.css",
       "Shared/**/**/**/**/**/*.css",
-      "Components/**/**/**/**/**/*.css",
-      "Pages/**/**/**/**/**/*.css"
+      "Pages/**/**/**/**/**/*.css",
+      "Components/**/**/**/**/**/*.css"
     ],
     "minify": {
       "enabled": true,
       "renameLocals": true
     },
-    "sourceMap": false
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/bundle.min.js",
+    "inputFiles": [
+      "Components/**/**/**/**/**/*.js",
+      "Pages/**/**/**/**/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
   }
 ]

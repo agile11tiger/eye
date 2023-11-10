@@ -174,4 +174,7 @@
   <data name="CodeSentToEmail" xml:space="preserve">
     <value>На почту был отправлен код</value>
   </data>
+  <data name="CheckInternetConnection" xml:space="preserve">
+    <value>Невозможно выполнить действие, проверьте интернет соединение!</value>
+  </data>
 </root>

@@ -6,12 +6,20 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\css\Blazor.css" />
+    <Content Remove="wwwroot\css\CustomMudBlazor.css" />
+    <Content Remove="wwwroot\css\Eye.css" />
+    <Content Remove="wwwroot\js\EventsScripts.js" />
+  </ItemGroup>
   
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier2022" Version="2.9.9" />
     <PackageReference Include="MudBlazor" Version="6.11.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
@@ -25,10 +33,28 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Services\" />
+    <None Include="wwwroot\css\Blazor.css" />
+    <None Include="wwwroot\css\CustomMudBlazor.css" />
+    <None Include="wwwroot\css\Eye.css" />
+    <None Include="wwwroot\js\EventsScripts.js" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\IdentityLib\IdentityLib.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Resources\Localization\Identity\IdentityResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IdentityResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization\Identity\IdentityResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IdentityResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

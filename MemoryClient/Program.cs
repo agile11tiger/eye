@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using EyEClientLib.Extensions;
+using MudBlazor;
+using EyEClientLib.Services;
 namespace MemoryClient;
 
 public class Program
@@ -19,7 +22,6 @@ public class Program
         builder.Logging.SetMinimumLevel(LogLevel.Information);
         builder.RootComponents.Add<App>("#app");
         var serverUri = builder.Configuration["ServerUri"];
-        builder.Services.AddAuthorizationCore();
 
         //if AccessTokenNotAvailableException: https://chrissainty.com/avoiding-accesstokennotavailableexception-when-using-blazor-webassembly-hosted-template-with-individual-user-accounts/
         //services
@@ -28,28 +30,42 @@ public class Program
         //    // Supply HttpClient instances that include access tokens when making requests to the server project
         //    .AddHttpMessageHandler<BaseAuthorizationMessageHandler>();
         services
-            .AddSingleton(sp =>
+            .AddMudServices(config =>
             {
-                var client = new ServerHttpClient(
-                    new DefaultBrowserOptionsMessageHandler(
-                        new HttpClientHandler())
-                    {
-                        DefaultBrowserRequestMode = BrowserRequestMode.Cors,
-                    })
-                {
-                    BaseAddress = new Uri(serverUri),
-                };
+                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+                config.SnackbarConfiguration.PreventDuplicates = false;
+                config.SnackbarConfiguration.NewestOnTop = true;
+                config.SnackbarConfiguration.ShowCloseIcon = true;
+                config.SnackbarConfiguration.VisibleStateDuration = 5000;
+                config.SnackbarConfiguration.HideTransitionDuration = 500;
+                config.SnackbarConfiguration.ShowTransitionDuration = 500;
+                config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+            })
+            .AddMudServices()
+            .AddEyEClientServices()
+            .AddAuthorizationCore()
+            .AddScoped<UserChecker>()
+            .AddBlazoredLocalStorage() //https://github.com/Blazored/LocalStorage
+            .AddTransient<HttpClientHandler>()
+            .AddSingleton(JsonHelper.SerializeOptions) //todo change
+            .AddTransient<DefaultBrowserOptionsMessageHandler>()
+            .AddScoped(sp =>
+            {
+                var browserMessageHandler = new DefaultBrowserOptionsMessageHandler(
+                    sp.GetService<ISnackbar>(),
+                    sp.GetService<LoggerService>(), 
+                    sp.GetService<HttpClientHandler>());
+                var client = new ServerHttpClient(browserMessageHandler) { BaseAddress = new Uri(serverUri) };
                 client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { NoCache = true };
                 return client;
             })
-            .AddSingleton(sp =>
+            .AddScoped(sp =>
             {
-                var client = new PublicHttpClient(
-                    new DefaultBrowserOptionsMessageHandler(
-                        new HttpClientHandler())
-                    {
-                        DefaultBrowserRequestMode = BrowserRequestMode.Cors,
-                    });
+                var browserMessageHandler = new DefaultBrowserOptionsMessageHandler(
+                    sp.GetService<ISnackbar>(),
+                    sp.GetService<LoggerService>(),
+                    sp.GetService<HttpClientHandler>());
+                var client = new PublicHttpClient(browserMessageHandler);
                 return client;
             });
         ////https://docs.microsoft.com/ru-ru/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-5.0
@@ -58,14 +74,8 @@ public class Program
         //            options.ProviderOptions.ConfigurationEndpoint = serverUri + "_configuration/MemoryClient";
         //        });
 
-        builder.Services
-            //https://github.com/Blazored/LocalStorage
-            .AddMudServices()
-            .AddSingleton<UserChecker>()
-            .AddBlazoredLocalStorageAsSingleton()
-            .AddSingleton(JsonHelper.SerializeOptions);
-        builder.Services.AddSingleton<ServerAuthenticationStateProvider>();
-        builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
+        builder.Services.AddScoped<ServerAuthenticationStateProvider>();
+        builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<ServerAuthenticationStateProvider>());
         var host = builder.Build();
         await host.SetCultureFromStorageAsync();
         await host.RunAsync();

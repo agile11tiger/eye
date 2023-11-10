@@ -25,15 +25,13 @@
       },
       "extensionToExtension": {
         "add": {
-          ".ts": [
-            ".razor"
-          ],
           ".js": [
             ".coffee",
             ".iced",
             ".ts",
             ".tsx",
-            ".jsx"
+            ".jsx",
+            ".razor"
           ],
           ".scss": [
             ".razor"

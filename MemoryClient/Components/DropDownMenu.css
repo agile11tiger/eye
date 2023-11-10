@@ -3,6 +3,7 @@
 
 /* menu */
 .dropDownMenu {
+    margin-bottom: 30px;
     font-family: Cuprum, Arial, Helvetica, sans-serif;
 }
 .dropDownMenu * {

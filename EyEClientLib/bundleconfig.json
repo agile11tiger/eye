@@ -1,26 +1,26 @@
 [
   {
-    "outputFileName": "Resources/Css/bundle.css",
+    "outputFileName": "wwwroot/bundle.min.css",
     "inputFiles": [
-      "Resources/Css/**/**/**/**/**/*.1.css",
-      "Components/**/**/**/**/**/*.1.css",
-      "Resources/Css/**/**/**/**/**/*.css",
+      "wwwroot/css/**/**/**/**/**/*.css",
       "Components/**/**/**/**/**/*.css"
     ],
     "minify": {
       "enabled": true,
       "renameLocals": true
-    }
+    },
+    "sourceMap": true
   },
   {
-    "outputFileName": "Resources/Js/bundle.js",
+    "outputFileName": "wwwroot/bundle.min.js",
     "inputFiles": [
-      "Resources/Js/**/**/**/**/**/*.js",
+      "wwwroot/js/**/**/**/**/**/*.js",
       "Components/**/**/**/**/**/*.js"
     ],
     "minify": {
       "enabled": true,
       "renameLocals": true
-    }
+    },
+    "sourceMap": true
   }
 ]

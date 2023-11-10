@@ -1,13 +1,6 @@
 ﻿.scroll {
 }
 
-.scroll h1 {
-    color: black;
-    text-align: center;
-    font-style: italic;
-    text-shadow: 1px 1px 1px black;
-}
-
 .scroll__panel {
     padding: 5px;
     display: flex;
