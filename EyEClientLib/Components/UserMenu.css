@@ -1,5 +1,6 @@
 ﻿.userMenu {
     display: flex;
+    margin-right: 5px;
     align-items: center;
 }
 

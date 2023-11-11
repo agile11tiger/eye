@@ -172,6 +172,7 @@
     flex-direction: column;
     border: 1px solid #ccc;
     padding: 15px 30px 5px 30px;
+    background: linear-gradient(to bottom, #ddd 0%, #e8e8e8 100%);
 }
 
 .scroll__itemEditor input,
@@ -183,13 +184,15 @@
     border: 1px solid #ccc;
 }
 
-.scroll__itemEditor > h4 {
+.scroll__itemEditor > h3 {
     margin: 0 0 25px 0;
     align-self: center;
 }
 
 .scroll__itemEditor > p {
     display: flex;
+    margin-bottom: 5px;
+    align-items: center;
     justify-content: flex-end;
 }
 
@@ -207,14 +210,14 @@
 }
 
 .scroll__itemEditor > p:last-child {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .scroll__itemEditor > p:last-child > input {
     flex: 1;
     margin: 0px 5px;
     padding: 5px 0px;
-    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+    background: linear-gradient(to bottom, #ddd 0%, #d8d8d8 100%);
 }
 
 @media (min-width: 1030px) {

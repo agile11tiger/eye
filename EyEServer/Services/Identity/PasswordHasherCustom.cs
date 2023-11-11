@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 namespace EyEServer.Services.Identity;
 
-public class CustomPasswordHasher : IPasswordHasher<UserModel>
+public class PasswordHasherCustom : IPasswordHasher<UserModel>
 {
     private readonly static string _keyId = Convert.ToBase64String([200, 15, 147, 5, 155, 78, 118, 57, 180, 179, 60, 150, 188, 18, 165, 134]);
     private readonly static byte[] _iv = [208, 148, 29, 187, 168, 51, 181, 178, 137, 83, 40, 13, 28, 177, 131, 248];

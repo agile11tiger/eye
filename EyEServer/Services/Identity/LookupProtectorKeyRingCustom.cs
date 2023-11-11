@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace EyEServer.Services.Identity;
 
-public class CustomLookupProtectorKeyRing : ILookupProtectorKeyRing
+public class LookupProtectorKeyRingCustom : ILookupProtectorKeyRing
 {
     public string this[string keyId] => GetAllKeyIds().Where(x => x == keyId).FirstOrDefault();
     public string CurrentKeyId { get; } = Convert.ToBase64String([200, 15, 147, 5, 155, 78, 118, 57, 180, 179, 60, 150, 188, 18, 165, 134]);

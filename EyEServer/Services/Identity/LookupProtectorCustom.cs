@@ -8,7 +8,7 @@ namespace EyEServer.Services.Identity;
 /// <summary>
 /// https://dev.to/mohammedahmed/encrypt-and-decrypt-users-data-in-aspnet-core-identity-using-the-ilookupprotector-and-ilookupprotectorkeyring-interfaces-2gep
 /// </summary>
-public class CustomLookupProtector : ILookupProtector
+public class LookupProtectorCustom : ILookupProtector
 {
     private readonly byte[] _iv = [208, 148, 29, 187, 168, 51, 181, 178, 137, 83, 40, 13, 28, 177, 131, 248];
     public string Protect(string keyId, string data)

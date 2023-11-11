@@ -88,9 +88,9 @@ public class Program
                     .AllowCredentials());
             });
 
-        builder.Services.AddSingleton<IPasswordHasher<UserModel>, CustomPasswordHasher>();//should be above AddDefaultIdentity
-        builder.Services.AddSingleton<IUserValidator<UserModel>, CustomUsernameValidator>();
-        builder.Services.AddSingleton<IPasswordValidator<UserModel>, CustomPasswordValidator>();
+        builder.Services.AddSingleton<IPasswordHasher<UserModel>, PasswordHasherCustom>();//should be above AddDefaultIdentity
+        builder.Services.AddSingleton<IUserValidator<UserModel>, UsernameValidatorCustom>();
+        builder.Services.AddSingleton<IPasswordValidator<UserModel>, PasswordValidatorCustom>();
         builder.Services.AddDefaultIdentity<UserModel>(options =>
         {
             options.SignIn.RequireConfirmedEmail = true;
