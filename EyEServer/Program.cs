@@ -5,7 +5,7 @@ using EyEServer.Middlewares;
 using EyEServer.Services;
 using EyEServer.Services.Email;
 using EyEServer.Services.Identity;
-using EyEServer.Services.RoleInitializer;
+using EyEServer.Services.Role;
 using MemoryLib.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

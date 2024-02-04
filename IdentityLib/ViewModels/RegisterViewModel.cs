@@ -7,7 +7,7 @@ public class RegisterViewModel
     public string? Nickname { get; set; }
     [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(IdentityResource))]
     [EmailAddress(ErrorMessageResourceName = "EmailIncorrect", ErrorMessageResourceType = typeof(IdentityResource))]
-    public string? Email { get; set; }
+    public string Email { get; set; }
 
     //[Required(ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(IdentityResource))]
     //[StringLength(15, ErrorMessageResourceName = "PasswordLength", ErrorMessageResourceType = typeof(IdentityResource), MinimumLength = 6)]

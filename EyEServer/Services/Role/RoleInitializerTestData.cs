@@ -1,4 +1,4 @@
-﻿namespace EyEServer.Services.RoleInitializer;
+﻿namespace EyEServer.Services.Role;
 
 public class RoleInitializerTestData
 {

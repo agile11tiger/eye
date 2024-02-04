@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-namespace EyEServer.Services.RoleInitializer;
+namespace EyEServer.Services.Role;
 
 public class RoleInitializerService(IOptions<RoleInitializerTestData> roleInitializerData)
 {
