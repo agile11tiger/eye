@@ -24,6 +24,7 @@ public partial class AuthorizationAndRegistration
     [Inject] public NavigationManager Navigation { get; set; }
     [Inject] public ILocalStorageService LocalStorage { get; set; }
     [Inject] public ServerHttpClient ServerHttpClient { get; set; }
+    [Inject] public PublicHttpClient PublicHttpClient { get; set; }
     [Inject] public ServerAuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Parameter] public Func<Task> AuthorizationCompleteAsync { get; set; }
 
@@ -68,7 +69,6 @@ public partial class AuthorizationAndRegistration
         else
             await _serverSideForgotPasswordValidator.DisplayMessagesAsync<RegisterResponseModel>(response.Content);
     }
-
     private async Task ResetPassword()
     {
         var response = await ServerHttpClient.PostAsJsonAsync("api/account/resetPassword", _resetPasswordModel);

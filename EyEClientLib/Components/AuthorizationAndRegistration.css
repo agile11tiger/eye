@@ -1,4 +1,6 @@
-/*https://dwstroy.ru/lessons/les4020/demo/*/
+/*
+    https://dwstroy.ru/lessons/les4020/demo/
+*/
 /*Главные кнопки*/
 .mainButtons {
     display: flex;
@@ -185,7 +187,6 @@
     display: block;
     cursor: pointer;
     font-size: 15px;
-    margin-top: 10px;
     color: dodgerblue;
     text-align: center;
 }
@@ -200,4 +201,81 @@
 
 #authForm .validation-errors {
     margin-bottom: 15px;
+}
+
+/*social*/
+.social {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+}
+
+.social a {
+    width: 40px;
+    height: 40px;
+    display: block;
+    line-height: 40px;
+    text-align: center;
+    position: relative;
+}
+
+.social li a::before,
+.social li a::after {
+    content: '';
+    position: absolute;
+    background: #2fbae1;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    transition: transform .5s;
+    transform: scaleY(0);
+}
+
+.social li a::before {
+    transform-origin: right;
+}
+
+.social li a::after {
+    transform-origin: left;
+}
+
+.social li a:hover::before {
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.social li a:hover::after {
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+.social li a div::before,
+.social li a div::after {
+    width: 1px;
+    height: 100%;
+    content: '';
+    position: absolute;
+    background: #2fbae1;
+    transform: scaleY(0);
+    transition: transform .5s;
+}
+
+.social li a div::before {
+    left: 0;
+    transform-origin: bottom;
+}
+
+.social li a div::after {
+    right: 0;
+    transform-origin: top;
+}
+
+.social li a:hover div::before {
+    transform: scaleY(1);
+    transform-origin: top;
+}
+
+.social li a:hover div::after {
+    transform: scaleY(1);
+    transform-origin: bottom;
 }

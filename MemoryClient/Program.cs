@@ -81,5 +81,3 @@ public class Program
         await host.RunAsync();
     }
 }
-
-public class PublicHttpClient(HttpMessageHandler handler) : HttpClient(handler) { }
