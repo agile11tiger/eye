@@ -2,10 +2,10 @@
 using EyEServer.Controllers;
 using EyEServer.Data;
 using EyEServer.Middlewares;
-using EyEServer.Services;
 using EyEServer.Services.Email;
 using EyEServer.Services.Identity;
 using EyEServer.Services.Role;
+using EyEServer.Services.Token;
 using MemoryLib.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -48,7 +48,7 @@ public class Program
         var app = builder.Build();
         ServiceProvider = app.Services;
         InitializeRoles(app);
-        Configure(app);
+        ConfigureApplication(app);
         app.Run();
     }
 
@@ -85,40 +85,29 @@ public class Program
                     .WithOrigins(allowedOrigins)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
+                    .AllowCredentials()
                     .AllowCredentials());
-            });
-
-        builder.Services.AddSingleton<IPasswordHasher<UserModel>, PasswordHasherCustom>();//should be above AddDefaultIdentity
-        builder.Services.AddSingleton<IUserValidator<UserModel>, UsernameValidatorCustom>();
-        builder.Services.AddSingleton<IPasswordValidator<UserModel>, PasswordValidatorCustom>();
-        builder.Services.AddDefaultIdentity<UserModel>(options =>
-        {
-            options.SignIn.RequireConfirmedEmail = true;
-            options.SignIn.RequireConfirmedAccount = true;
-            options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
-            options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
-        })
-        .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+            .AddSingleton<IPasswordHasher<UserModel>, PasswordHasherCustom>()//should be above AddDefaultIdentity
+            .AddSingleton<IUserValidator<UserModel>, UsernameValidatorCustom>()
+            .AddSingleton<IPasswordValidator<UserModel>, PasswordValidatorCustom>()
+            .AddDefaultIdentity<UserModel>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
+                options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider; //shortens token
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
         builder.Services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
-            };
-        });
+        })
+        .AddJwtBearer(options => options.TokenValidationParameters = TokenService.GetTokenValidationParameters(jwtSettings));
 
         #region comment for identityServer
         //// Cors для IdentityServer
@@ -190,7 +179,7 @@ public class Program
         }
     }
 
-    private static void Configure(WebApplication app)
+    private static void ConfigureApplication(WebApplication app)
     {
         app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto });
         app.UseIpLogger();

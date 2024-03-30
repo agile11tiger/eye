@@ -9,11 +9,11 @@ public class RoleInitializerService(IOptions<RoleInitializerTestData> roleInitia
 
     public async Task InitializeAsync(RoleManager<IdentityRole> roleManager)
     {
-        if (await roleManager.FindByNameAsync(Roles.Admin.ToString()) == null)
-            await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+        if (await roleManager.FindByNameAsync(Roles.ADMIN) == null)
+            await roleManager.CreateAsync(new IdentityRole(Roles.ADMIN));
 
-        if (await roleManager.FindByNameAsync(Roles.User.ToString()) == null)
-            await roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
+        if (await roleManager.FindByNameAsync(Roles.USER) == null)
+            await roleManager.CreateAsync(new IdentityRole(Roles.USER));
     }
 
     public async Task AddUserAsync(UserManager<UserModel> userManager)
@@ -29,7 +29,7 @@ public class RoleInitializerService(IOptions<RoleInitializerTestData> roleInitia
             var result = await userManager.CreateAsync(user, _roleInitializerData.UserPassword);
 
             if (result.Succeeded)
-                await userManager.AddToRoleAsync(user, Roles.User.ToString());
+                await userManager.AddToRoleAsync(user, Roles.USER);
         }
     }
 
@@ -46,7 +46,7 @@ public class RoleInitializerService(IOptions<RoleInitializerTestData> roleInitia
             var result = await userManager.CreateAsync(admin, _roleInitializerData.AdminPassword);
 
             if (result.Succeeded)
-                await userManager.AddToRolesAsync(admin, new[] { Roles.Admin.ToString() });
+                await userManager.AddToRolesAsync(admin, new[] { Roles.ADMIN });
         }
     }
 }

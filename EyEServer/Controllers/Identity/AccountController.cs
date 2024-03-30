@@ -1,5 +1,5 @@
-﻿using EyEServer.Services;
-using EyEServer.Services.Email;
+﻿using EyEServer.Services.Email;
+using EyEServer.Services.Token;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +29,16 @@ public class AccountController(
         var user = new UserModel { Email = model.Email, UserName = model.Nickname };
         var createResult = await _userManager.CreateAsync(user, model.Password);
 
-        if (createResult.Succeeded && (await _userManager.AddToRoleAsync(user, Roles.User.ToString())).Succeeded)
-        {
-            await SendEmailAsync(user, response);
-            return Ok(response);
-        }
+        if (!createResult.Succeeded)
+            return BadRequest(createResult.GetErrors().FirstOrDefault());
 
-        response.Message = createResult.GetMessages().FirstOrDefault();
-        return BadRequest(response);
+        var addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.USER);
+
+        if (!addToRoleResult.Succeeded)
+            return BadRequest(addToRoleResult.GetErrors().FirstOrDefault());
+
+        await SendEmailAsync(user, response);
+        return Ok(response);
     }
 
 
@@ -47,15 +49,15 @@ public class AccountController(
         var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
 
         if (Check(user == null, IdentityResource.UserNotExists.Format(confirmEmailModel.UserId), response)
-         || Check(confirmEmailModel.Token == null, IdentityResource.EmailConfirmationTokenEmpty, response))
+         || Check(confirmEmailModel.ConfirmationToken == null, IdentityResource.EmailConfirmationTokenEmpty, response))
             return BadRequest(response);
 
-        var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.Token);
+        var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.ConfirmationToken);
 
         if (result.Succeeded)
             return View();
 
-        response.Message = result.GetMessages().FirstOrDefault();
+        response.Message = result.GetErrors().FirstOrDefault();
         return BadRequest(response);
     }
 
@@ -133,16 +135,16 @@ public class AccountController(
         if (result.Succeeded)
             return await Login(new LoginViewModel() { Email = model.Email, Password = model.Password });
 
-        response.Message = result.GetMessages().FirstOrDefault();
+        response.Message = result.GetErrors().FirstOrDefault();
         return BadRequest(response);
     }
 
     [HttpPost]
-    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenViewModel refreshToken)
+    public async Task<IActionResult> RefreshToken([FromBody] TokenViewModel refreshToken)
     {
-        var principal = _tokenService.GetPrincipalFromExpiredToken(refreshToken.Token);
+        var principal = _tokenService.GetPrincipalFromExpiredToken(refreshToken.AccessToken);
         var user = await _userManager.FindByEmailAsync(principal.Identity.Name);
-        var response = new RefreshTokenViewModel();
+        var response = new TokenViewModel();
 
         if (user == null || user.RefreshToken != refreshToken.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             return BadRequest(response.Message = "Can`t refresh JSON Web Token");
@@ -154,7 +156,7 @@ public class AccountController(
         user.RefreshToken = _tokenService.GenerateRefreshToken();
 
         await _userManager.UpdateAsync(user);
-        response.Token = token;
+        response.AccessToken = token;
         response.RefreshToken = user.RefreshToken;
         return Ok(response);
     }
@@ -172,7 +174,7 @@ public class AccountController(
         var callbackUrl = Url.Action(
             nameof(ConfirmEmail),
             "Account",
-            new EmailConfirmationViewModel { UserId = userModel.Id, Token = confirmationToken },
+            new EmailConfirmationViewModel { UserId = userModel.Id, ConfirmationToken = confirmationToken },
             protocol: HttpContext.Request.Scheme);
         await _emailService.SendEmailAsync(
             userModel.Email,

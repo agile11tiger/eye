@@ -16,6 +16,7 @@ public partial class ServerSideValidator
     {
         try
         {
+            //todo если ошибка ловится на стороне сервера, то может быть послан ответ 400 с джсоном от валидации 
             var identityModel = await content.ReadFromJsonAsync<T>();
 
             if (identityModel.Message != null)

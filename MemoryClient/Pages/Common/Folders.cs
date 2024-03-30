@@ -33,7 +33,7 @@ public class Folders<T> : Scroll<T> where T : class, IDbFolderItem, new()
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-            if (!authState.User.IsInRole(Roles.Admin.ToString()))
+            if (!authState.User.IsInRole(Roles.ADMIN))
             {
                 await Task.Delay(100);
                 await UserChecker.ShowErrorAdminPageAsync();

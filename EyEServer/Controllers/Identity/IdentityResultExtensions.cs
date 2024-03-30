@@ -5,7 +5,7 @@ namespace EyEServer.Controllers.Identity;
 
 public static class IdentityResultExtensions
 {
-    public static IEnumerable<string> GetMessages(this IdentityResult result)
+    public static IEnumerable<string> GetErrors(this IdentityResult result)
     {
         return result.Errors.Select(e => $"{e.Code}: {e.Description}");
     }

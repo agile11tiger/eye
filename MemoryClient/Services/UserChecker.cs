@@ -20,7 +20,7 @@ public class UserChecker(IJSRuntime js, ServerAuthenticationStateProvider _authe
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 
-        if (authState.User.IsInRole(Roles.Admin.ToString()))
+        if (authState.User.IsInRole(Roles.ADMIN))
             return true;
 
         await ShowErrorAlertAllowOnlyAdminAsync();

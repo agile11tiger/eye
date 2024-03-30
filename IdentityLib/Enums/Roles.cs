@@ -1,7 +1,7 @@
 ﻿namespace IdentityLib.Enums;
 
-public enum Roles
+public class Roles
 {
-    Admin,
-    User,
+    public const string ADMIN = "Admin";
+    public const string USER = "User";
 }

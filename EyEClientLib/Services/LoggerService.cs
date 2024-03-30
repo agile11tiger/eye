@@ -29,7 +29,14 @@ namespace EyEClientLib.Services
             [CallerFilePath] string sourceFilePath = default,
             [CallerLineNumber] int sourceLineNumber = default)
         {
-            Console.WriteLine($"{DateTime.UtcNow}. {sourceFilePath}. {memberName}. {sourceLineNumber}.\r\n{message}\r\n{exception}");
+            Console.WriteLine($"" +
+                $"{logLevel}. " +
+                $"{DateTime.UtcNow}. " +
+                $"{sourceFilePath}. " +
+                $"{memberName}. " +
+                $"{sourceLineNumber}.\r\n" +
+                $"{message}\r\n" +
+                $"{exception}");
         }
     }
 }

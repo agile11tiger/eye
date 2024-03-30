@@ -8,6 +8,10 @@ public class EmailService(IOptions<PettyBotEmailData> pettyBotEmailData)
 {
     private readonly PettyBotEmailData _pettyBotEmailData = pettyBotEmailData.Value;
 
+    public EmailService()
+    {
+    }
+
     public async Task SendEmailAsync(string email, string subject, string message)
     {
         var emailMessage = new MimeMessage();

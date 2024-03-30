@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-namespace EyEServer.Services;
+namespace EyEServer.Services.Token;
 
 public class TokenService
 {
@@ -64,23 +64,26 @@ public class TokenService
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
     {
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value)),
-            ValidateLifetime = false,
-            ValidIssuer = _jwtSettings.GetSection("validIssuer").Value,
-            ValidAudience = _jwtSettings.GetSection("validAudience").Value,
-        };
-
         var tokenHandler = new JwtSecurityTokenHandler();
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+        var principal = tokenHandler.ValidateToken(token, GetTokenValidationParameters(_jwtSettings), out var securityToken);
 
         return securityToken is not JwtSecurityToken jwtSecurityToken
             || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)
             ? throw new SecurityTokenException("Invalid token")
             : principal;
+    }
+
+    public static TokenValidationParameters GetTokenValidationParameters(IConfigurationSection jwtSettings)
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+            ValidAudience = jwtSettings.GetSection("validAudience").Value,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
+        };
     }
 }
